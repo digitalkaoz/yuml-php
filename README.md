@@ -1,4 +1,4 @@
-YumlPhp
+YumlPhp [![Build status...](https://secure.travis-ci.org/digitalkaoz/yuml-php.png)](http://travis-ci.org/digitalkaoz/yuml-php)
 =======
 
 a `php adapater` for `http://yuml.me`
