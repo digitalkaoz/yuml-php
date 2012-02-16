@@ -8,35 +8,44 @@ Installation
 
 ## with [`composer`](https://github.com/composer/composer.git)
 
-    ``` json
-        "require"{
-            "digitalkaoz":  ">=0.3"
-        }
-    ```
+``` json
+    "require"{
+        "digitalkaoz/yuml-php":  ">=0.3"
+    }
+```
 
 Usage
 -----
 
-## ClassDiagram-Generator
+The `classes` command generates a class diagram from all classes in the given folder
 
-    bin/yuml-php classes `path/to/classes`
-    bin/yuml-php classes --properties `path/to/classes`
-    bin/yuml-php classes --classes --properties --methods `path/to/classes`
-    bin/yuml-php classes --console `path/to/classes`
-    bin/yuml-php classes --debug `path/to/classes`
+    Usage:
+        classes [--console] [--debug] [--properties] [--methods] folder
+
+    Arguments:
+        folder      the folder to scan for classes
+
+    Options:
+        --console     log to console
+        --debug       debug
+        --properties  build with properties
+        --methods     build with methods
+
+
+```sh
+    yuml-php classes src/
+```
 
 
 Tests
 -----
 
-## with [`composer`](https://github.com/composer/composer.git)
-
     php/bin/vendors.php
     phpunit
-
 
 TODO
 ----
 
-*) ActivityDiagram-Generator
-*) UseCaseDiagram-Generator
+* ActivityDiagram-Generator
+* UseCaseDiagram-Generator
+* more Features from [http://yuml.me](http://yuml.me/diagram/scruffy/class/samples) API

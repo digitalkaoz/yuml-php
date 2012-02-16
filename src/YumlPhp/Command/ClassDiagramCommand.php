@@ -40,9 +40,7 @@ class ClassDiagramCommand extends Command
             ->setHelp(<<<EOT
 The <info>class-diagram</info> command generates a class diagram from all classes in the given folder
 
-<info>yuml-php classes src</info> classes only
-<info>yuml-php classes --methods src/</info> generate uml with methods
-<info>yuml-php classes --properties src/</info> generate uml with properties
+<info>yuml-php classes src/</info> builds class diagram for folder src/
 EOT
             )
             ->setName('classes')
