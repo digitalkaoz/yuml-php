@@ -1,0 +1,29 @@
+{
+    "name" : "yuml-php",
+    "target-dir" : "vendor/",
+    "homepage" : "http://localhost",
+    "version" : "0.3.0",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Robert Schönthal",
+            "email": "seroscho@googlemail.com",
+            "homepage": "http://digitalkaoz.net"
+        }
+    ],
+
+    "require": {
+        "php": ">=5.3.2",
+        "symfony/finder":   ">=2.0.9,<=2.1-dev",
+        "symfony/console":  ">=2.0.9,<=2.1-dev",
+        "kriswallsmith/buzz": ">=0.5"
+    },
+
+    "autoload": {
+        "psr-0": {
+            "YumlPhp": "src/"
+        }
+    },
+    "bin": ["bin/yuml-php"]
+}
