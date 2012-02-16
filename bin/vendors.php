@@ -15,5 +15,5 @@ if(file_exists($composer)){
 
 //update if composer can be run
 if (isset($composerable) && $composerable == 0) {
-    //system(sprintf('php %s', $composer.' update'));
+    system(sprintf('php %s', $composer.' update'));
 }
