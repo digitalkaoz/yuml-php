@@ -20,7 +20,9 @@
     <filter>
         <whitelist>
             <directory>./src/YumlPhp/</directory>
-            <exclude>./src/YumlPhp/Analyzer/File.php</exclude>
+            <exclude>
+                <file>./src/YumlPhp/Analyzer/File.php</file>
+            </exclude>
         </whitelist>
     </filter>
 </phpunit>

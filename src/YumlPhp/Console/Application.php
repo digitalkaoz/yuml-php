@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of yuml-php
+ *
+ * (c) Robert Schönthal <seroscho@googlemail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace YumlPhp\Console;
 
 use Symfony\Component\Console\Application as BaseApplication;
@@ -12,10 +21,12 @@ use YumlPhp\Command;
 
 /**
  * The console application that handles the commands
- *
+ * 
+ * @author Robert Schönthal <seroscho@googlemail.com>
  */
 class Application extends BaseApplication
 {
+
     /**
      * {@inheritDoc}
      */
@@ -29,7 +40,7 @@ class Application extends BaseApplication
             $formatter = new OutputFormatter(null, $styles);
             $output = new ConsoleOutput(ConsoleOutput::VERBOSITY_NORMAL, null, $formatter);
         }
-        
+
         return parent::run($input, $output);
     }
 
@@ -52,4 +63,5 @@ class Application extends BaseApplication
         $command = new Command\ClassDiagramCommand();
         $this->add($command);
     }
+
 }
