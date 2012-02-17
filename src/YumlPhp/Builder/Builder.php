@@ -14,7 +14,18 @@ abstract class Builder implements BuilderInterface
 {
     protected $path, $classes = array(), $request = array(), $configuration = array(), $namespaces = array();
 
-    abstract protected function buildRequest();    
+    /**
+     * generates a request object
+     * 
+     * @return BuilderInterface
+     */
+    abstract protected function buildRequest();
+    
+    /**
+     * processes builder from request
+     * 
+     * @return mixed
+     */
     abstract protected function requestDiagram();
     
     /**
@@ -28,10 +39,7 @@ abstract class Builder implements BuilderInterface
     }
 
     /**
-     * sets the path to crawl for classes
-     * 
-     * @param string $path
-     * @return ClassDiagramBuilder 
+     * @inheritDoc 
      */
     public function setPath($path)
     {
@@ -39,18 +47,40 @@ abstract class Builder implements BuilderInterface
 
         return $this;
     }
+    
+    /**
+     * @inheritDoc 
+     */
+    public function setFinder(Finder $finder)
+    {
+        $this->finder = $finder;
+        
+        return $this;
+    }
 
     /**
      * @inheritDoc
      */
-    public function build()
+    public function build($pattern = '*.php')
     {
-        $this->classes = $this->findClasses();
-        
         return $this
+            ->reflect($this->findClasses($pattern))
             ->buildRequest()            
             ->requestDiagram()
         ;
+    }
+    
+    protected function reflect($classes)
+    {
+        foreach ($classes as $class) {
+            if(!is_object($class)){
+                $class = new \ReflectionClass($class);
+            }
+            $this->classes[$class->getName()] = $class;
+            $this->namespaces[$class->getNamespaceName()] = $class->getNamespaceName();
+        }
+        
+        return $this;
     }
 
     /**
@@ -58,9 +88,9 @@ abstract class Builder implements BuilderInterface
      * 
      * @return array
      */
-    protected function findClasses()
+    public function findClasses($pattern = '*.php')
     {
-        $files = Finder::create()->files()->name('*.php')->in($this->path);
+        $files = $this->finder->files()->name($pattern)->in($this->path);
         $classes = array();
         $map = array();
 
@@ -68,30 +98,53 @@ abstract class Builder implements BuilderInterface
             @require_once($file);
             $classes = array_merge($classes, array_keys(File::getClassesInFile($file->getRealPath())));
         }
-
-        sort($classes);
         
-        foreach($classes as $name)
-        {
-            $class = new \ReflectionClass($name);;
-            $map[$name] = $class;
-            $this->namespaces[$class->getNamespaceName()] = $class->getNamespaceName();
-        }
-
-        return $map;
+        return $classes;
     }
         
-    protected function buildName(\ReflectionClass $class)
+    protected function buildName(\ReflectionClass $class, $prefix = '<<', $suffix = '>>' )
     {
         $name = $this->prepare($class);
 
         if ($class->isInterface()) {
-            $name = '<<'.$this->prepare($class).'>>';
+            $name = $prefix.$this->prepare($class).$suffix;
         }
         
         return $name;
     }
     
+    /**
+     * builds the parent class string
+     * 
+     * @param \ReflectionClass $class
+     * @return string
+     */
+    protected function buildParent(\ReflectionClass $class, $prefix = null, $suffix = null, $interfacePrefix = '<<', $interfaceSuffix = '>>', $interfacesGlue = null )
+    {
+        if (!$class->getParentClass()) {
+          return;  
+        } 
+
+        $interfaces = null;
+        if ($interfacesGlue) {
+            $interfaces = $this->buildInterfaces($class->getParentClass());
+            $interfaces = count($interfaces) == 1 ? join($interfacesGlue,($interfaces)).$interfacesGlue : join($interfacesGlue, $interfaces);
+        }
+
+        $prefix = $class->getParentClass()->isInterface() ? $interfacePrefix : $prefix;
+        $suffix = $class->getParentClass()->isInterface() ? $interfaceSuffix : $suffix;
+        
+        return $prefix.$interfaces.$this->prepare($class->getParentClass()).$suffix;
+    }
+    
+    /**
+     * collects all properties for current class (only self defined ones)
+     * 
+     * @param \ReflectionClass $class
+     * @param string $public
+     * @param string $private
+     * @return array
+     */
     protected function buildProperties(\ReflectionClass $class, $public = '+', $private = '-')
     {
         $props = array();
@@ -109,7 +162,16 @@ abstract class Builder implements BuilderInterface
         return $props;
     }
 
-    protected function buildMethods(\ReflectionClass $class, $public = '+', $private = '-')
+    /**
+     * collects all methods for current class (only self defined ones)
+     * 
+     * @param \ReflectionClass $class
+     * @param string $public
+     * @param string $private
+     * @param string $suffix
+     * @return array
+     */
+    protected function buildMethods(\ReflectionClass $class, $public = '+', $private = '-', $suffix = '()')
     {
         $methods = array();
         
@@ -118,31 +180,33 @@ abstract class Builder implements BuilderInterface
         }
         
         foreach ($class->getMethods() as $method) {                    
-            if ($method->getDeclaringClass() == $class || $class->isInterface()) {
-                $methods[] = (!$class->isInterface() ? ($method->isPublic() ? $public : $private) : null).$method->getName().'()';
+            if (!$method->isAbstract() && $method->getDeclaringClass() == $class && !$class->isInterface()) {
+                $methods[] = (!$class->isInterface() ? ($method->isPublic() ? $public : $private) : null).$method->getName().$suffix;
             }
         }
         
         return $methods;
     }
     
-    protected function buildInterfaces(\ReflectionClass $class)
+    /**
+     * collects all interfaces for current class (only self implemented ones)
+     * 
+     * @param \ReflectionClass $class
+     * @return array
+     */
+    protected function buildInterfaces(\ReflectionClass $class, $prefix = '<<', $suffix = '>>')
     {        
-        if($class->isInterface()){
-            return array();
-        }
-                
         $interfaces = array_diff($class->getInterfaces(),($class->getParentClass() ? $class->getParentClass()->getInterfaces() : array()));
              
         foreach ($interfaces as $key => $interface) {
-            $interfaces[$key] ='<<'.$this->prepare($interface) . '>>';
+            $interfaces[$key] = $prefix.$this->prepare($interface).$suffix;
         }
         
         return $interfaces;
     }
     
     /**
-     * prepares a class name into its FQDN if namespace not found in folder
+     * prepares a class name into its FQDN with namespace if not found in current class namespaces
      * 
      * @param \ReflectionClass $class
      * @return string 
@@ -150,10 +214,8 @@ abstract class Builder implements BuilderInterface
     protected function prepare(\ReflectionClass $class)
     {
         $name = $class->getName();
-        
-        return substr($name, strripos($name, '\\')+1);
-        
-        if (in_array($class->getNamespaceName(), array_keys($this->namespaces))) {            
+
+        if (in_array($class->getNamespaceName(), array_keys($this->namespaces))) {
             return substr($name, strripos($name, '\\')+1);
         }
         

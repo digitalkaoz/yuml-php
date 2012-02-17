@@ -54,6 +54,7 @@ class BaseBuilder extends \PHPUnit_Framework_TestCase
     {
         $this->assertEquals($expected, str_replace(array('<info>','</info>','<note>','</note>','<highlight>','</highlight>',"\t","\n"),null,$result));
     }
+    
     /**
      *
      * @return YumlClassDiagramBuilder
@@ -69,7 +70,7 @@ class BaseBuilder extends \PHPUnit_Framework_TestCase
         
         $mock->expects($this->once())->method('findClasses')->will($this->returnValue($this->buildClasses($classes)));
                   
-        return $mock->configure($config);
+        return $mock->configure($config)->setFinder($this->getMock('Symfony\Component\Finder\Finder'));;
     }
     
     private function buildClasses($classes)

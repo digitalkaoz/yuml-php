@@ -9,8 +9,8 @@ namespace YumlPhp\Builder;
  */
 class ConsoleClassDiagramBuilder extends Builder
 {
-    public function buildRequest()
-    {
+    protected function buildRequest()
+    {        
         foreach ($this->classes as $class) {
             /** @var $class \ReflectionClass */
             if(in_array($class->getNamespaceName(), $this->namespaces)){
@@ -19,10 +19,10 @@ class ConsoleClassDiagramBuilder extends Builder
             }
             
             $name = $this->buildName($class);
-            $parent = $this->buildParent($class);
+            $parent = $this->buildParent($class,' ', '', ' <<', '>>', '');
             $interfaces = $this->buildInterfaces($class);
-            $props = $this->buildProperties($class);
-            $methods = $this->buildMethods($class);
+            $props = $this->buildProperties($class,'<info>+</info>', '<highlight>-</highlight>');
+            $methods = $this->buildMethods($class, '<info>+</info>', '<highlight>-</highlight>');
                                              
             //build pattern
             $pattern = "\t<info>%s</info><note>%s</note>%s";
@@ -41,30 +41,13 @@ class ConsoleClassDiagramBuilder extends Builder
         return $this;
     }
 
-    protected function buildParent(\ReflectionClass $class)
-    {
-        if(!$class->getParentClass()) {
-          return null;  
-        } elseif($class->isInterface() && $class->getParentClass()->isInterface()) {
-            return ' <<'.$this->prepare($class->getParentClass()).'>>';
-        }else {
-            return ' '.$this->prepare($class->getParentClass());
-        }
-    }
-    
-    protected function buildProperties(\ReflectionClass $class, $public = '+', $private = '-')
-    {
-        return parent::buildProperties($class, '<info>+</info>', '<highlight>-</highlight>');
-    }
-
-    protected function buildMethods(\ReflectionClass $class, $public = '+', $private = '-')
-    {
-        return parent::buildMethods($class, '<info>+</info>', '<highlight>-</highlight>');
-    }
-    
+    /**
+     * returns the class diagram as concatenated string
+     * 
+     * @return string
+     */
     protected function requestDiagram()
     {
         return join("\n",$this->request);
     }
-
 }

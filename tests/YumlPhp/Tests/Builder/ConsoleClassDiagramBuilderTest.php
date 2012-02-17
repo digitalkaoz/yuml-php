@@ -22,14 +22,14 @@ class ConsoleClassDiagramBuilderTest extends BaseBuilder
         $return = array();
         
         $map = array(
-          "Bar"     => array($this->ns.'\Bar'),
-          "Bar"     => array($this->ns.'\Bar',$this->ns.'\Bar'),
-          "BarWithExternal Symfony\\Component\\Console\\Input\\StringInput" => array($this->ns.'\BarWithExternal'),
-          "<<BarInterface>>"                             => array($this->ns.'\BarInterface'),
-          "BarWithInterface <<BarInterface>>"            => array($this->ns.'\BarWithInterface'),
-          "Foo Bazz"                                     => array($this->ns.'\Foo'),
-          '<<FooInterface>> <<BazzInterface>>'       => array($this->ns.'\FooInterface'),
-          "FooBazzWithInterface Bazz <<BazzInterface>>"  => array($this->ns.'\FooBazzWithInterface'),
+          $this->ns."Bar"     => array($this->ns.'\Bar'),
+          $this->ns."Bar"     => array($this->ns.'\Bar',$this->ns.'\Bar'),
+          $this->ns."BarWithExternal Symfony\\Component\\Console\\Input\\StringInput" => array($this->ns.'\BarWithExternal'),
+          $this->ns."<<BarInterface>>"                             => array($this->ns.'\BarInterface'),
+          $this->ns."BarWithInterface <<BarInterface>>"            => array($this->ns.'\BarWithInterface'),
+          $this->ns."Foo Bazz"                                     => array($this->ns.'\Foo'),
+          $this->ns.'<<FooInterface>> <<BazzInterface>>'       => array($this->ns.'\FooInterface'),
+          $this->ns."FooBazzWithInterface Bazz <<BazzInterface>>"  => array($this->ns.'\FooBazzWithInterface'),
         );
 
         $config = array(
@@ -51,12 +51,12 @@ class ConsoleClassDiagramBuilderTest extends BaseBuilder
         $return = array();
         
         $map = array(
-          "Bar-foo;+bar"                                             => array($this->ns.'\Bar'),
-          "<<BarInterface>>"                                          => array($this->ns.'\BarInterface'),
-          "BarWithInterface <<BarInterface>>-foo;+bar"                => array($this->ns.'\BarWithInterface'),
-          "Foo Bazz-foo;+bar"                                      => array($this->ns.'\Foo'),
+          $this->ns."Bar-foo;+bar"                                             => array($this->ns.'\Bar'),
+          $this->ns."<<BarInterface>>"                                          => array($this->ns.'\BarInterface'),
+          $this->ns."BarWithInterface <<BarInterface>>-foo;+bar"                => array($this->ns.'\BarWithInterface'),
+          $this->ns."Foo Bazz-foo;+bar"                                      => array($this->ns.'\Foo'),
           //'[<<BazzInterface>>]^-.-[<<FooInterface>>]'                   => array($this->ns.'\FooInterface'),
-          "FooBazzWithInterface Bazz <<BazzInterface>>-foo;+bar"  => array($this->ns.'\FooBazzWithInterface'),
+          $this->ns."FooBazzWithInterface Bazz <<BazzInterface>>-foo;+bar"  => array($this->ns.'\FooBazzWithInterface'),
         );
 
         $config = array(
@@ -77,12 +77,12 @@ class ConsoleClassDiagramBuilderTest extends BaseBuilder
         $return = array();
         
         $map = array(
-          "Bar-foo();+bar()"                                             => array($this->ns.'\Bar'),
-          "<<BarInterface>>"                                          => array($this->ns.'\BarInterface'),
-          "BarWithInterface <<BarInterface>>-foo();+bar()"                => array($this->ns.'\BarWithInterface'),
-          "Foo Bazz-foo();+bar()"                                      => array($this->ns.'\Foo'),
+          $this->ns."Bar-foo();+bar()"                                             => array($this->ns.'\Bar'),
+          $this->ns."<<BarInterface>>"                                          => array($this->ns.'\BarInterface'),
+          $this->ns."BarWithInterface <<BarInterface>>-foo();+bar()"                => array($this->ns.'\BarWithInterface'),
+          $this->ns."Foo Bazz-foo();+bar()"                                      => array($this->ns.'\Foo'),
           //'[<<BazzInterface>>]^-.-[<<FooInterface>>]'                   => array($this->ns.'\FooInterface'),
-          "FooBazzWithInterface Bazz <<BazzInterface>>-foo();+bar()"  => array($this->ns.'\FooBazzWithInterface'),
+          $this->ns."FooBazzWithInterface Bazz <<BazzInterface>>-foo();+bar()"  => array($this->ns.'\FooBazzWithInterface'),
         );
 
         $config = array(
@@ -104,12 +104,12 @@ class ConsoleClassDiagramBuilderTest extends BaseBuilder
         $return = array();
         
         $map = array(
-          "Bar-foo;+bar-foo();+bar()"                                             => array($this->ns.'\Bar'),
-          "<<BarInterface>>"                                          => array($this->ns.'\BarInterface'),
-          "BarWithInterface <<BarInterface>>-foo;+bar-foo();+bar()"                => array($this->ns.'\BarWithInterface'),
-          "Foo Bazz-foo;+bar-foo();+bar()"                                      => array($this->ns.'\Foo'),
+          $this->ns."Bar-foo;+bar-foo();+bar()"                                             => array($this->ns.'\Bar'),
+          $this->ns."<<BarInterface>>"                                          => array($this->ns.'\BarInterface'),
+          $this->ns."BarWithInterface <<BarInterface>>-foo;+bar-foo();+bar()"                => array($this->ns.'\BarWithInterface'),
+          $this->ns."Foo Bazz-foo;+bar-foo();+bar()"                                      => array($this->ns.'\Foo'),
           //'[<<BazzInterface>>]^-.-[<<FooInterface>>]'                   => array($this->ns.'\FooInterface'),
-          "FooBazzWithInterface Bazz <<BazzInterface>>-foo;+bar-foo();+bar()"  => array($this->ns.'\FooBazzWithInterface'),
+          $this->ns."FooBazzWithInterface Bazz <<BazzInterface>>-foo;+bar-foo();+bar()"  => array($this->ns.'\FooBazzWithInterface'),
         );
 
         $config = array(

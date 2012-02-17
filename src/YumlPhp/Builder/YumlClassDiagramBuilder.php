@@ -11,24 +11,29 @@ use \Buzz\Browser;
  */
 class YumlClassDiagramBuilder extends Builder
 {
-    protected $browser;
+    private $browser;
     
+    /**
+     * injects the http client
+     * 
+     * @param Browser $browser 
+     */
     public function __construct(Browser $browser)
     {
         $this->browser = $browser;
     }
     
     /**
-     * @return \YumlPhp\Builder\YumlClassDiagramBuilder 
+     * @inheritDoc
      */
     protected function buildRequest()
     {
-        foreach ($this->classes as $className => $class) {
-                        
+        foreach ($this->classes as $class) {
+
             /** @var $class \ReflectionClass */
             $name = $this->buildName($class);
-            $parent = $this->buildParent($class);
-            $interfaces = $this->buildInterfaces($class);
+            $parent = $this->buildParent($class, '[',']^');
+            $interfaces = $this->buildInterfaces($class,'<<','>>]^-.-[');
             $props = $this->buildProperties($class);
             $methods = $this->buildMethods($class);
                                              
@@ -41,7 +46,7 @@ class YumlClassDiagramBuilder extends Builder
                 $pattern = "%s[%s%s|%s|%s]";
             }
             
-            $line = sprintf($pattern, $parent, (count($interfaces) == 1 ? array_pop($interfaces).';' : join(';',$interfaces)), $name, join(';', $props), join(';', $methods));
+            $line = sprintf($pattern, $parent, join(';',$interfaces), $name, join(';', $props), join(';', $methods));
             
             if($class->isInterface()) {
                 array_unshift($this->request, $line);                
@@ -53,34 +58,17 @@ class YumlClassDiagramBuilder extends Builder
         return $this;
     }
         
-    protected function buildParent(\ReflectionClass $class)
-    {
-        if($class->isInterface() && ($class->getParentClass() && $class->getParentClass()->isInterface())) {
-            $prefix = '[<<';
-            $suffix = '>>]^-.-';
-        }else {
-            $prefix = '[';
-            $suffix = ']^';
-        }
-                
-        $parentInterfaces = $class->getParentClass() ? $this->buildInterfaces($class->getParentClass()) : array();
-        $parentInterfaces = count($parentInterfaces) == 1 ? join(';',($parentInterfaces)).';' : join(';', $parentInterfaces);
-        
-        return $class->getParentClass() ? $prefix.$parentInterfaces.$this->prepare($class->getParentClass()).$suffix: null;
-    }
-    
     protected function requestDiagram()
     {
         $url = $this->configuration['url'].  urlencode($this->format(join(',', $this->request)));
         
-        if($this->configuration['debug']){
+        if ($this->configuration['debug']){
             return $this->format(join(',', $this->request));
         }
         
         $response = $this->browser->get($url);
         
-        if($response && 500 != $response->getStatusCode())
-        {
+        if ($response && 500 != $response->getStatusCode()) {
             $tiny = str_replace('"','',substr($response->getHeader('Content-Disposition'),  strpos($response->getHeader('Content-Disposition'), '="')+2));
             
             $result = array(
@@ -91,9 +79,16 @@ class YumlClassDiagramBuilder extends Builder
 
             return $result;        
         }
+        
         return array();
     }
 
+    /**
+     * yuml cant handle blackslashes, so rewriting them to slashes
+     * 
+     * @param type $string
+     * @return type 
+     */
     protected function format($string)
     {
         return str_replace('\\', '/', $string);

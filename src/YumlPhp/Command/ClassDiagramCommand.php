@@ -8,6 +8,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Output\Output;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Finder\Finder;
 use Buzz\Browser;
 
 use YumlPhp\Builder\BuilderInterface;
@@ -79,6 +80,10 @@ EOT
             $builder = new YumlClassDiagramBuilder(new Browser());
         }
         
-        return $builder->configure($config)->setPath($input->getArgument('folder'));
+        return $builder
+            ->configure($config)
+            ->setPath($input->getArgument('folder'))
+            ->setFinder(new Finder())
+        ;
     }
 }
