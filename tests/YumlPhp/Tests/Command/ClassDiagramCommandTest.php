@@ -42,6 +42,7 @@ class ClassDiagramCommandTest extends \PHPUnit_Framework_TestCase
      */
     public function testRunWithErrors()
     {
+        //$this->markTestSkipped();
         $command = new ClassDiagramCommand();
         $tester = new CommandTester($command);
         $folder = sys_get_temp_dir() . '/' . time();

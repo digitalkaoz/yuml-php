@@ -43,7 +43,8 @@ class ClassDiagramCommand extends Command
               new InputOption('console', null, InputOption::VALUE_NONE, 'log to console'),
               new InputOption('debug', null, InputOption::VALUE_NONE, 'debug'),
               new InputOption('properties', null, InputOption::VALUE_NONE, 'build with properties'),
-              new InputOption('methods', null, InputOption::VALUE_NONE, 'build with methods')
+              new InputOption('methods', null, InputOption::VALUE_NONE, 'build with methods'),
+              new InputOption('style', null, InputOption::VALUE_NONE, 'yuml style options')
             ))
             ->setDescription('creates a class diagram of a given folder')
             ->setHelp(<<<EOT
@@ -80,17 +81,24 @@ EOT
      */
     protected function createBuilder(InputInterface $input)
     {
+        //scruffy, nofunky, plain
+        //dir: LR TB RL
+        //scale: 180 120 100 80 60
+        $style = $input->getOption('style') ?: 'plain;dir:LR;scale:80;';
+        
         $config = array(
           'withMethods' => (boolean) $input->getOption('methods'),
           'withProperties' => (boolean) $input->getOption('properties'),
-          'url' => 'http://yuml.me/diagram/plain;dir:TB/class/shorturl/',
+          'url' => 'http://yuml.me/diagram/'.$style.'/class/',
           'debug' => $input->getOption('debug')
         );
 
         if ($input->getOption('console')) {
             $builder = new ConsoleClassDiagramBuilder();
         } else {
-            $builder = new YumlClassDiagramBuilder(new Browser());
+            $browser = new Browser();
+            $browser->getClient()->setTimeout(10);
+            $builder = new YumlClassDiagramBuilder($browser);
         }
 
         return $builder

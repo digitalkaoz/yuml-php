@@ -12,7 +12,7 @@
 namespace YumlPhp\Tests\Builder;
 
 use YumlPhp\Builder\YumlClassDiagramBuilder;
-
+use Buzz\Browser;
 /**
  * Description of YumlClassDiagramBuilderTest
  *
@@ -32,11 +32,12 @@ class YumlClassDiagramBuilderTest extends BaseBuilder
         $config = array(
           'withMethods' => true,
           'withProperties' => true,
-          'url' => 'http://yuml.me/diagram/plain;dir:TB/class/shorturl/',
+          'url' => 'http://yuml.me/diagram/plain;dir:TB/class/',
           'debug' => false
         );
 
-        $browser = new \Buzz\Browser();
+        $browser = new Browser();
+        $browser->getClient()->setTimeout(5);
         $builder = $this->getBuilder($this->builderClass, array('findClasses'), $classes, $config, array($browser));
         $result = $builder->build();
 
@@ -65,13 +66,13 @@ class YumlClassDiagramBuilderTest extends BaseBuilder
 
         $map = array(
           '[Bar]' => array($this->namespace . '\Bar'),
-          '[Symfony/Component/Console/Input/StringInput]^[BarWithExternal]' => array($this->namespace . '\BarWithExternal'),
+          '[Symfony\Component\Console\Input\StringInput{bg:white}]^[BarWithExternal]' => array($this->namespace . '\BarWithExternal'),
           '[Bar]' => array($this->namespace . '\Bar', $this->namespace . '\Bar'),
-          '[<<BarInterface>>],[Bar]' => array($this->namespace . '\Bar', $this->namespace . '\BarInterface'),
-          '[<<BarInterface>>]' => array($this->namespace . '\BarInterface'),
+          '[<<BarInterface>>{bg:orange}],[Bar]' => array($this->namespace . '\Bar', $this->namespace . '\BarInterface'),
+          '[<<BarInterface>>{bg:orange}]' => array($this->namespace . '\BarInterface'),
           '[<<BarInterface>>]^-.-[BarWithInterface]' => array($this->namespace . '\BarWithInterface'),
           '[Bazz]^[Foo]' => array($this->namespace . '\Foo'),
-//          '[<<BazzInterface>>]^-.-[<<FooInterface>>]'       => array($this->namespace.'\FooInterface'),
+          '[<<BazzInterface>>]^-.-[<<FooInterface>>{bg:orange}]' => array($this->namespace.'\FooInterface'),
           '[Bazz]^[<<BazzInterface>>]^-.-[FooBazzWithInterface]' => array($this->namespace . '\FooBazzWithInterface'),
         );
 
@@ -95,7 +96,7 @@ class YumlClassDiagramBuilderTest extends BaseBuilder
 
         $map = array(
           '[Bar|-foo;+bar]' => array($this->namespace . '\Bar'),
-          '[<<BarInterface>>]' => array($this->namespace . '\BarInterface'),
+          '[<<BarInterface>>{bg:orange}]' => array($this->namespace . '\BarInterface'),
           '[<<BarInterface>>]^-.-[BarWithInterface|-foo;+bar]' => array($this->namespace . '\BarWithInterface'),
           '[Bazz]^[Foo|-foo;+bar]' => array($this->namespace . '\Foo'),
           //'[<<BazzInterface>>]^-.-[<<FooInterface>>]'                   => array($this->namespace.'\FooInterface'),
@@ -122,7 +123,7 @@ class YumlClassDiagramBuilderTest extends BaseBuilder
 
         $map = array(
           '[Bar|-foo();+bar()]' => array($this->namespace . '\Bar'),
-          '[<<BazzInterface>>]^-.-[<<FooInterface>>]' => array($this->namespace . '\FooInterface'),
+          '[<<BazzInterface>>]^-.-[<<FooInterface>>{bg:orange}]' => array($this->namespace . '\FooInterface'),
           '[<<BarInterface>>]^-.-[BarWithInterface|-foo();+bar()]' => array($this->namespace . '\BarWithInterface'),
           '[Bazz]^[Foo|-foo();+bar()]' => array($this->namespace . '\Foo'),
           //'[<<BazzInterface>>]^-.-[<<FooInterface>>]'                     => array($this->namespace.'\FooInterface'),
@@ -149,7 +150,7 @@ class YumlClassDiagramBuilderTest extends BaseBuilder
 
         $map = array(
           '[Bar|-foo;+bar|-foo();+bar()]' => array($this->namespace . '\Bar'),
-          '[<<BazzInterface>>]^-.-[<<FooInterface>>]' => array($this->namespace . '\FooInterface'),
+          '[<<BazzInterface>>]^-.-[<<FooInterface>>{bg:orange}]' => array($this->namespace . '\FooInterface'),
           '[<<BarInterface>>]^-.-[BarWithInterface|-foo;+bar|-foo();+bar()]' => array($this->namespace . '\BarWithInterface'),
           '[Bazz]^[Foo|-foo;+bar|-foo();+bar()]' => array($this->namespace . '\Foo'),
           //'[<<BazzInterface>>]^-.-[<<FooInterface>>]'       => array($this->namespace.'\FooInterface'),

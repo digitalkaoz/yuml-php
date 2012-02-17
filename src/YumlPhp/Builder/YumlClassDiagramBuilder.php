@@ -49,6 +49,13 @@ class YumlClassDiagramBuilder extends Builder
             $props = $this->buildProperties($class);
             $methods = $this->buildMethods($class);
 
+            $prefix = null;
+            $suffix = null;
+            if ($class->isInterface()) {
+                $prefix = '';
+                $suffix = '{bg:orange}';
+            }
+            
             //build pattern
             $pattern = "%s[%s%s%s%s]";
             if (count($methods) || count($props)) {
@@ -58,7 +65,7 @@ class YumlClassDiagramBuilder extends Builder
                 $pattern = "%s[%s%s|%s|%s]";
             }
 
-            $line = sprintf($pattern, $parent, join(';', $interfaces), $name, join(';', $props), join(';', $methods));
+            $line = sprintf($pattern, $parent, $prefix.join(';', $interfaces), $name, join(';', $props), join(';', $methods).$suffix);
 
             if ($class->isInterface()) {
                 array_unshift($this->request, $line);
@@ -78,38 +85,52 @@ class YumlClassDiagramBuilder extends Builder
      */
     protected function requestDiagram()
     {
-        $url = $this->configuration['url'] . urlencode($this->format(join(',', $this->request)));
+        $url = $this->configuration['url'];
 
         if ($this->configuration['debug']) {
-            return $this->format(join(',', $this->request));
+            return join(',', $this->request);
         }
+        
+        if (!count($this->request)) {
+            throw new \RuntimeException('No Classes found in: '.$this->path);
+        }
+            
 
-        $response = $this->browser->get($url);
+        $response = $this->browser->post($url,array(
+          'X-Requested-With' =>'XMLHttpRequest',
+          'Content-Type' => 'application/x-www-form-urlencoded',
+          'Accept-Encoding' => 'gzip,deflate,sdch'
+        ),'dsl_text='.  urlencode(join(',', $this->request)));
 
-        if ($response && 500 != $response->getStatusCode()) {
-            $tiny = str_replace('"', '', substr($response->getHeader('Content-Disposition'), strpos($response->getHeader('Content-Disposition'), '="') + 2));
+        if ($response && 500 > $response->getStatusCode()) {
+            $file = $response->getContent();
 
             $result = array(
-              '<info>PNG</info> http://yuml.me/' . $tiny,
-              '<info>URL</info> http://yuml.me/edit/' . str_replace('.png', '', $tiny),
-              '<info>PDF</info> http://yuml.me/' . str_replace('.png', '.pdf', $tiny),
+              '<info>PNG</info> http://yuml.me/' . $file,
+              '<info>URL</info> http://yuml.me/edit/' . str_replace('.png', '', $file),
+              '<info>PDF</info> http://yuml.me/' . str_replace('.png', '.pdf', $file),
             );
 
             return $result;
         }
-
-        throw new \RuntimeException('API Error for Request:' . $this->format(join(',', $this->request)));
+        
+        throw new \RuntimeException('API Error for Request: '.$url.join(',', $this->request));
     }
 
     /**
-     * yuml cant handle blackslashes, so rewriting them to slashes
+     * prepares a class name into its FQDN with namespace if not found in current class namespaces
      * 
-     * @param type $string
-     * @return type 
+     * @param \ReflectionClass $class
+     * @return string 
      */
-    protected function format($string)
+    protected function prepare(\ReflectionClass $class)
     {
-        return str_replace('\\', '/', $string);
-    }
+        $name = parent::prepare($class);
 
+        if (!in_array($class->getNamespaceName(), array_keys($this->namespaces))) {
+            return $name.'{bg:white}';
+        }
+        
+        return $name;
+    }
 }
