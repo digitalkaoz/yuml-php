@@ -1,7 +1,7 @@
 {
-    "name" : "yuml-php",
+    "name" : "digitalkaoz/yuml-php",
     "target-dir" : "vendor/",
-    "homepage" : "http://localhost",
+    "homepage" : "https://github.com/digitalkaoz/yuml-php",
     "version" : "0.5.0",
     "type": "library",
     "license": "MIT",

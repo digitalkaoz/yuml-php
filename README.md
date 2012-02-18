@@ -13,7 +13,7 @@ Installation
 * [`Symfony Console`](https://github.com/symfony/Console)
 * [`Composer`](https://github.com/composer/composer.git) (for tests or self containing library only)
 
-## with [`composer`](https://github.com/composer/composer.git)
+## Installation with [`composer`](https://github.com/composer/composer.git)
 
 ``` json
 "require"{
@@ -24,7 +24,7 @@ Installation
 Usage
 -----
 
-# the `classes` command generates a class diagram from all classes in the given folder
+### the `classes` command generates a class diagram from all classes in the given folder
 
     Usage:
         classes [--console] [--debug] [--properties] [--methods] folder
@@ -43,7 +43,7 @@ Usage
 yuml-php classes src/
 ```
 
-# the `activity` command generates an activity diagram from a given file
+### the `activity` command generates an activity diagram from a given file
 
     Usage:
         activity [--console] [--debug] file
@@ -60,7 +60,7 @@ yuml-php classes src/
 yuml-php activity activities.txt
 ```
 
-# the `use-case` command generates a use-case diagram from a given file
+### the `use-case` command generates a use-case diagram from a given file
 
     Usage:
         use-case [--console] [--debug] file
