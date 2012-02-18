@@ -25,8 +25,6 @@ abstract class Builder implements BuilderInterface
     protected $path, $inspector, $request = array(), $configuration = array();
 
     abstract protected function doBuild();
-    abstract public function request();
-
     
     protected function getInspector()
     {
