@@ -2,7 +2,7 @@
     "name" : "yuml-php",
     "target-dir" : "vendor/",
     "homepage" : "http://localhost",
-    "version" : "0.3.0",
+    "version" : "0.5.0",
     "type": "library",
     "license": "MIT",
     "authors": [

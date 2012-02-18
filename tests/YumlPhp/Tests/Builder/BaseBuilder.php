@@ -12,6 +12,7 @@
 namespace YumlPhp\Tests\Builder;
 
 use YumlPhp\Builder\BuilderInterface;
+use YumlPhp\Builder\Request\RequestInterface;
 
 /**
  * BaseBuilder
@@ -65,36 +66,45 @@ class BaseBuilder extends \PHPUnit_Framework_TestCase
 
     protected function assertCorrectLine($expected, $result)
     {
-        $this->assertEquals($expected, str_replace(array('<info>', '</info>', '<note>', '</note>', '<highlight>', '</highlight>', "\t", "\n"), null, $result));
+        $ns = str_replace('\\', '/', $this->ns).'/';
+        $this->assertEquals($expected, str_replace(array($ns, '<info>', '</info>', '<note>', '</note>', '<highlight>', '</highlight>', "\t", "\n"), null, $result));
     }
 
     /**
      *
      * @return BuilderInterface
      */
-    protected function getBuilder($builderClass, $methods, $classes, $config, $constructArgs)
+    protected function getBuilder($builderClass, $classes, $config, $constructArgs)
     {
         $mock = $this->getMockBuilder($builderClass)
-            ->setMethods($methods)
+            ->setMethods(array('getInspector'))
             ->setMockClassName('Mock' . str_replace('YumlPhp\\Tests\\Fixtures\\', '_', join('_', $classes)) . '_' . rand(0, 999999))
             ->setConstructorArgs($constructArgs)
             ->getMock()
         ;
-
-        $mock->expects($this->once())->method('findClasses')->will($this->returnValue($this->buildClasses($classes)));
-
-        return $mock->configure($config)->setFinder($this->getMock('Symfony\Component\Finder\Finder'));
-        ;
-    }
-
-    private function buildClasses($classes)
-    {
-        $return = array();
-        foreach ($classes as $class) {
-            $return[$class] = new \ReflectionClass($class);
+        
+        if (strpos($builderClass, 'ClassesBuilder')) {
+            $inspector = $this->getMockBuilder('YumlPhp\Request\ClassesRequest')
+                ->setMethods(array('findClasses'))
+                //->setConstructorArgs(array(sys_get_temp_dir()))
+                ->getMock()
+            ;
+            $inspector->expects($this->any())->method('findClasses')->will($this->returnValue($classes));
+        } else {
+            $inspector = $this->getMockBuilder('YumlPhp\Request\FileRequest')
+//                ->setMethods(array('getClasses'))
+                ->setConstructorArgs(array(tempnam(sys_get_temp_dir(), 'yuml-php')))
+                ->getMock()
+            ;
+            //$inspector->expects($this->any())->method('getContent')->will($this->returnValue($this->buildClasses($classes)));
         }
-        return $return;
+        
+        $inspector->setConfig($config);
+            
+        //$inspector->expects($this->any())->method('getInterfaces')->will($this->returnValue($this->buildClasses($classes)));
+
+        $mock->expects($this->any())->method('getInspector')->will($this->returnValue($inspector));
+
+        return $mock->configure($config);
     }
-
 }
-

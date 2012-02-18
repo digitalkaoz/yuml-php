@@ -38,17 +38,12 @@ interface BuilderInterface
     function setPath($path);
 
     /**
-     * sets the finder
-     * 
-     * @param Finder $finder 
-     * @return BuilderInterface
-     */
-    function setFinder(Finder $finder);
-
-    /**
      * executes the build
      * 
      * @return mixed
      */
     function build();
+    
+    function request();
+    
 }

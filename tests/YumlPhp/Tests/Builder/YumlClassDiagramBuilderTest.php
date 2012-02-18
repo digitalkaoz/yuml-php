@@ -11,24 +11,133 @@
 
 namespace YumlPhp\Tests\Builder;
 
-use YumlPhp\Builder\YumlClassDiagramBuilder;
+use YumlPhp\Builder\Http\ClassesBuilder;
 use Buzz\Browser;
 /**
  * Description of YumlClassDiagramBuilderTest
  *
  * @author Robert Schönthal <seroscho@googlemail.com>
  * 
- * @covers YumlPhp\Builder\YumlClassDiagramBuilder<extended>
+ * @covers YumlPhp\Builder\Http\ClassesBuilder<extended>
  */
 class YumlClassDiagramBuilderTest extends BaseBuilder
 {
 
-    private $builderClass = 'YumlPhp\Builder\YumlClassDiagramBuilder';
-    private $namespace = 'YumlPhp\Tests\Fixtures';
+    private $builderClass = 'YumlPhp\Builder\Http\ClassesBuilder';
+    protected $ns = 'YumlPhp\Tests\Fixtures';
+
+    public function ClassesProvider()
+    {
+        $return = array();
+
+        $map = array(
+          '[Bar]' => array($this->ns . '\Bar'),
+          '[Symfony/Component/Console/Input/StringInput]^[BarWithExternal]' => array($this->ns . '\BarWithExternal'),
+          '[Bar]' => array($this->ns . '\Bar', $this->ns . '\Bar'),
+          '[<<BarInterface>>{bg:orange}],[Bar]' => array($this->ns . '\Bar', $this->ns . '\BarInterface'),
+          '[<<BarInterface>>{bg:orange}]' => array($this->ns . '\BarInterface'),
+          '[<<BarInterface>>]^-.-[BarWithInterface]' => array($this->ns . '\BarWithInterface'),
+          '[Bazz]^[Foo]' => array($this->ns . '\Foo'),
+          '[<<BazzInterface>>]^-.-[<<FooInterface>>{bg:orange}]' => array($this->ns.'\FooInterface'),
+          '[Bazz]^[<<BazzInterface>>]^-.-[FooBazzWithInterface]' => array($this->ns . '\FooBazzWithInterface'),
+        );
+
+        $config = array(
+          'withMethods' => false,
+          'withProperties' => false,
+          'url' => '',
+          'debug' => true
+        );
+
+        foreach ($map as $expect => $classes) {
+            $return[] = array($expect, $this->getBuilder($this->builderClass, $classes, $config, array($this->getMock('\Buzz\Browser'))));
+        }
+
+        return $return;
+    }
+
+    public function ClassesAndPropertiesProvider()
+    {
+        $return = array();
+
+        $map = array(
+          '[Bar|-foo;+bar]' => array($this->ns . '\Bar'),
+          '[<<BarInterface>>{bg:orange}]' => array($this->ns . '\BarInterface'),
+          '[<<BarInterface>>]^-.-[BarWithInterface|-foo;+bar]' => array($this->ns . '\BarWithInterface'),
+          '[Bazz]^[Foo|-foo;+bar]' => array($this->ns . '\Foo'),
+          '[<<BazzInterface>>]^-.-[<<FooInterface>>{bg:orange}]'                   => array($this->ns.'\FooInterface'),
+          '[Bazz]^[<<BazzInterface>>]^-.-[FooBazzWithInterface|-foo;+bar]' => array($this->ns . '\FooBazzWithInterface'),
+        );
+
+        $config = array(
+          'withMethods' => false,
+          'withProperties' => true,
+          'url' => '',
+          'debug' => true
+        );
+
+        foreach ($map as $expect => $classes) {
+            $return[] = array($expect, $this->getBuilder($this->builderClass, $classes, $config, array($this->getMock('\Buzz\Browser'))));
+        }
+
+        return $return;
+    }
+
+    public function ClassesAndMethodsProvider()
+    {
+        $return = array();
+
+        $map = array(
+          '[Bar|-foo();+bar()]' => array($this->ns . '\Bar'),
+          '[<<BazzInterface>>]^-.-[<<FooInterface>>{bg:orange}]' => array($this->ns . '\FooInterface'),
+          '[<<BarInterface>>]^-.-[BarWithInterface|-foo();+bar()]' => array($this->ns . '\BarWithInterface'),
+          '[Bazz]^[Foo|-foo();+bar()]' => array($this->ns . '\Foo'),
+          '[Bazz]^[<<BazzInterface>>]^-.-[FooBazzWithInterface|-foo();+bar()]' => array($this->ns . '\FooBazzWithInterface'),
+        );
+
+        $config = array(
+          'withMethods' => true,
+          'withProperties' => false,
+          'url' => '',
+          'debug' => true
+        );
+
+        foreach ($map as $expect => $classes) {
+            $return[] = array($expect, $this->getBuilder($this->builderClass, $classes, $config, array($this->getMock('\Buzz\Browser'))));
+        }
+
+        return $return;
+    }
+
+    public function ClassesPropertiesAndMethodsProvider()
+    {
+        $return = array();
+
+        $map = array(
+          '[Bar|-foo;+bar|-foo();+bar()]' => array($this->ns . '\Bar'),
+          '[<<BazzInterface>>]^-.-[<<FooInterface>>{bg:orange}]' => array($this->ns . '\FooInterface'),
+          '[<<BarInterface>>]^-.-[BarWithInterface|-foo;+bar|-foo();+bar()]' => array($this->ns . '\BarWithInterface'),
+          '[Bazz]^[Foo|-foo;+bar|-foo();+bar()]' => array($this->ns . '\Foo'),
+          '[Bazz]^[<<BazzInterface>>]^-.-[FooBazzWithInterface|-foo;+bar|-foo();+bar()]' => array($this->ns . '\FooBazzWithInterface'),
+        );
+
+        $config = array(
+          'withMethods' => true,
+          'withProperties' => true,
+          'url' => '',
+          'debug' => true
+        );
+
+        foreach ($map as $expect => $classes) {
+            $return[] = array($expect, $this->getBuilder($this->builderClass, $classes, $config, array($this->getMock('\Buzz\Browser'))));
+        }
+
+        return $return;
+    }
 
     public function testYumlApi()
     {
-        $classes = array($this->namespace . '\FooBazzWithInterface');
+        $classes = array($this->ns . '\FooBazzWithInterface');
         $config = array(
           'withMethods' => true,
           'withProperties' => true,
@@ -38,7 +147,7 @@ class YumlClassDiagramBuilderTest extends BaseBuilder
 
         $browser = new Browser();
         $browser->getClient()->setTimeout(5);
-        $builder = $this->getBuilder($this->builderClass, array('findClasses'), $classes, $config, array($browser));
+        $builder = $this->getBuilder($this->builderClass, $classes, $config, array($browser));
         $result = $builder->build();
 
         $this->assertInternalType('array', $result);
@@ -58,117 +167,5 @@ class YumlClassDiagramBuilderTest extends BaseBuilder
             }
             $this->assertEquals($contentType, $response->getHeader('Content-Type'));
         }
-    }
-
-    public function ClassesProvider()
-    {
-        $return = array();
-
-        $map = array(
-          '[Bar]' => array($this->namespace . '\Bar'),
-          '[Symfony\Component\Console\Input\StringInput{bg:white}]^[BarWithExternal]' => array($this->namespace . '\BarWithExternal'),
-          '[Bar]' => array($this->namespace . '\Bar', $this->namespace . '\Bar'),
-          '[<<BarInterface>>{bg:orange}],[Bar]' => array($this->namespace . '\Bar', $this->namespace . '\BarInterface'),
-          '[<<BarInterface>>{bg:orange}]' => array($this->namespace . '\BarInterface'),
-          '[<<BarInterface>>]^-.-[BarWithInterface]' => array($this->namespace . '\BarWithInterface'),
-          '[Bazz]^[Foo]' => array($this->namespace . '\Foo'),
-          '[<<BazzInterface>>]^-.-[<<FooInterface>>{bg:orange}]' => array($this->namespace.'\FooInterface'),
-          '[Bazz]^[<<BazzInterface>>]^-.-[FooBazzWithInterface]' => array($this->namespace . '\FooBazzWithInterface'),
-        );
-
-        $config = array(
-          'withMethods' => false,
-          'withProperties' => false,
-          'url' => '',
-          'debug' => true
-        );
-
-        foreach ($map as $expect => $classes) {
-            $return[] = array($expect, $this->getBuilder($this->builderClass, array('findClasses'), $classes, $config, array($this->getMock('\Buzz\Browser'))));
-        }
-
-        return $return;
-    }
-
-    public function ClassesAndPropertiesProvider()
-    {
-        $return = array();
-
-        $map = array(
-          '[Bar|-foo;+bar]' => array($this->namespace . '\Bar'),
-          '[<<BarInterface>>{bg:orange}]' => array($this->namespace . '\BarInterface'),
-          '[<<BarInterface>>]^-.-[BarWithInterface|-foo;+bar]' => array($this->namespace . '\BarWithInterface'),
-          '[Bazz]^[Foo|-foo;+bar]' => array($this->namespace . '\Foo'),
-          //'[<<BazzInterface>>]^-.-[<<FooInterface>>]'                   => array($this->namespace.'\FooInterface'),
-          '[Bazz]^[<<BazzInterface>>]^-.-[FooBazzWithInterface|-foo;+bar]' => array($this->namespace . '\FooBazzWithInterface'),
-        );
-
-        $config = array(
-          'withMethods' => false,
-          'withProperties' => true,
-          'url' => '',
-          'debug' => true
-        );
-
-        foreach ($map as $expect => $classes) {
-            $return[] = array($expect, $this->getBuilder($this->builderClass, array('findClasses'), $classes, $config, array($this->getMock('\Buzz\Browser'))));
-        }
-
-        return $return;
-    }
-
-    public function ClassesAndMethodsProvider()
-    {
-        $return = array();
-
-        $map = array(
-          '[Bar|-foo();+bar()]' => array($this->namespace . '\Bar'),
-          '[<<BazzInterface>>]^-.-[<<FooInterface>>{bg:orange}]' => array($this->namespace . '\FooInterface'),
-          '[<<BarInterface>>]^-.-[BarWithInterface|-foo();+bar()]' => array($this->namespace . '\BarWithInterface'),
-          '[Bazz]^[Foo|-foo();+bar()]' => array($this->namespace . '\Foo'),
-          //'[<<BazzInterface>>]^-.-[<<FooInterface>>]'                     => array($this->namespace.'\FooInterface'),
-          '[Bazz]^[<<BazzInterface>>]^-.-[FooBazzWithInterface|-foo();+bar()]' => array($this->namespace . '\FooBazzWithInterface'),
-        );
-
-        $config = array(
-          'withMethods' => true,
-          'withProperties' => false,
-          'url' => '',
-          'debug' => true
-        );
-
-        foreach ($map as $expect => $classes) {
-            $return[] = array($expect, $this->getBuilder($this->builderClass, array('findClasses'), $classes, $config, array($this->getMock('\Buzz\Browser'))));
-        }
-
-        return $return;
-    }
-
-    public function ClassesPropertiesAndMethodsProvider()
-    {
-        $return = array();
-
-        $map = array(
-          '[Bar|-foo;+bar|-foo();+bar()]' => array($this->namespace . '\Bar'),
-          '[<<BazzInterface>>]^-.-[<<FooInterface>>{bg:orange}]' => array($this->namespace . '\FooInterface'),
-          '[<<BarInterface>>]^-.-[BarWithInterface|-foo;+bar|-foo();+bar()]' => array($this->namespace . '\BarWithInterface'),
-          '[Bazz]^[Foo|-foo;+bar|-foo();+bar()]' => array($this->namespace . '\Foo'),
-          //'[<<BazzInterface>>]^-.-[<<FooInterface>>]'       => array($this->namespace.'\FooInterface'),
-          '[Bazz]^[<<BazzInterface>>]^-.-[FooBazzWithInterface|-foo;+bar|-foo();+bar()]' => array($this->namespace . '\FooBazzWithInterface'),
-        );
-
-        $config = array(
-          'withMethods' => true,
-          'withProperties' => true,
-          'url' => '',
-          'debug' => true
-        );
-
-        foreach ($map as $expect => $classes) {
-            $return[] = array($expect, $this->getBuilder($this->builderClass, array('findClasses'), $classes, $config, array($this->getMock('\Buzz\Browser'))));
-        }
-
-        return $return;
-    }
-
+    }    
 }

@@ -11,34 +11,34 @@
 
 namespace YumlPhp\Tests\Builder;
 
-use YumlPhp\Builder\ConsoleClassDiagramBuilder;
+use YumlPhp\Builder\Console\ClassesBuilder;
 
 /**
  * ConsoleClassDiagramBuilderTest
  *
  * @author Robert Schönthal <seroscho@googlemail.com>
  * 
- * @covers YumlPhp\Builder\ConsoleClassDiagramBuilder<extended>
+ * @covers YumlPhp\Builder\Console\ClassesBuilder<extended>
  */
 class ConsoleClassDiagramBuilderTest extends BaseBuilder
 {
 
-    private $builderClass = 'YumlPhp\Builder\ConsoleClassDiagramBuilder';
-    private $ns = 'YumlPhp\Tests\Fixtures';
+    private $builderClass = 'YumlPhp\Builder\Console\ClassesBuilder';
+    protected $ns = 'YumlPhp\Tests\Fixtures';
 
     public function ClassesProvider()
     {
         $return = array();
 
         $map = array(
-          $this->ns . "Bar" => array($this->ns . '\Bar'),
-          $this->ns . "Bar" => array($this->ns . '\Bar', $this->ns . '\Bar'),
-          $this->ns . "BarWithExternal Symfony\\Component\\Console\\Input\\StringInput" => array($this->ns . '\BarWithExternal'),
-          $this->ns . "<<BarInterface>>" => array($this->ns . '\BarInterface'),
-          $this->ns . "BarWithInterface <<BarInterface>>" => array($this->ns . '\BarWithInterface'),
-          $this->ns . "Foo Bazz" => array($this->ns . '\Foo'),
-          $this->ns . '<<FooInterface>> <<BazzInterface>>' => array($this->ns . '\FooInterface'),
-          $this->ns . "FooBazzWithInterface Bazz <<BazzInterface>>" => array($this->ns . '\FooBazzWithInterface'),
+          "Bar" => array($this->ns . '\Bar'),
+          "Bar" => array($this->ns . '\Bar', $this->ns . '\Bar'),
+          "BarWithExternal Symfony/Component/Console/Input/StringInput" => array($this->ns . '\BarWithExternal'),
+          "<<BarInterface>>" => array($this->ns . '\BarInterface'),
+          "BarWithInterface <<BarInterface>>" => array($this->ns . '\BarWithInterface'),
+          "Foo Bazz" => array($this->ns . '\Foo'),
+          '<<FooInterface>> <<BazzInterface>>' => array($this->ns . '\FooInterface'),
+          "FooBazzWithInterface Bazz <<BazzInterface>>" => array($this->ns . '\FooBazzWithInterface'),
         );
 
         $config = array(
@@ -49,7 +49,7 @@ class ConsoleClassDiagramBuilderTest extends BaseBuilder
         );
 
         foreach ($map as $expect => $classes) {
-            $return[] = array($expect, $this->getBuilder($this->builderClass, array('findClasses'), $classes, $config, array()));
+            $return[] = array($expect, $this->getBuilder($this->builderClass, $classes, $config, array()));
         }
 
         return $return;
@@ -60,12 +60,12 @@ class ConsoleClassDiagramBuilderTest extends BaseBuilder
         $return = array();
 
         $map = array(
-          $this->ns . "Bar-foo;+bar" => array($this->ns . '\Bar'),
-          $this->ns . "<<BarInterface>>" => array($this->ns . '\BarInterface'),
-          $this->ns . "BarWithInterface <<BarInterface>>-foo;+bar" => array($this->ns . '\BarWithInterface'),
-          $this->ns . "Foo Bazz-foo;+bar" => array($this->ns . '\Foo'),
+          "Bar-foo;+bar" => array($this->ns . '\Bar'),
+          "<<BarInterface>>" => array($this->ns . '\BarInterface'),
+          "BarWithInterface <<BarInterface>>-foo;+bar" => array($this->ns . '\BarWithInterface'),
+          "Foo Bazz-foo;+bar" => array($this->ns . '\Foo'),
           //'[<<BazzInterface>>]^-.-[<<FooInterface>>]'                   => array($this->ns.'\FooInterface'),
-          $this->ns . "FooBazzWithInterface Bazz <<BazzInterface>>-foo;+bar" => array($this->ns . '\FooBazzWithInterface'),
+          "FooBazzWithInterface Bazz <<BazzInterface>>-foo;+bar" => array($this->ns . '\FooBazzWithInterface'),
         );
 
         $config = array(
@@ -76,7 +76,7 @@ class ConsoleClassDiagramBuilderTest extends BaseBuilder
         );
 
         foreach ($map as $expect => $classes) {
-            $return[] = array($expect, $this->getBuilder($this->builderClass, array('findClasses'), $classes, $config, array()));
+            $return[] = array($expect, $this->getBuilder($this->builderClass, $classes, $config, array()));
         }
 
         return $return;
@@ -87,12 +87,12 @@ class ConsoleClassDiagramBuilderTest extends BaseBuilder
         $return = array();
 
         $map = array(
-          $this->ns . "Bar-foo();+bar()" => array($this->ns . '\Bar'),
-          $this->ns . "<<BarInterface>>" => array($this->ns . '\BarInterface'),
-          $this->ns . "BarWithInterface <<BarInterface>>-foo();+bar()" => array($this->ns . '\BarWithInterface'),
-          $this->ns . "Foo Bazz-foo();+bar()" => array($this->ns . '\Foo'),
+          "Bar-foo();+bar()" => array($this->ns . '\Bar'),
+          "<<BarInterface>>" => array($this->ns . '\BarInterface'),
+          "BarWithInterface <<BarInterface>>-foo();+bar()" => array($this->ns . '\BarWithInterface'),
+          "Foo Bazz-foo();+bar()" => array($this->ns . '\Foo'),
           //'[<<BazzInterface>>]^-.-[<<FooInterface>>]'                   => array($this->ns.'\FooInterface'),
-          $this->ns . "FooBazzWithInterface Bazz <<BazzInterface>>-foo();+bar()" => array($this->ns . '\FooBazzWithInterface'),
+          "FooBazzWithInterface Bazz <<BazzInterface>>-foo();+bar()" => array($this->ns . '\FooBazzWithInterface'),
         );
 
         $config = array(
@@ -103,7 +103,7 @@ class ConsoleClassDiagramBuilderTest extends BaseBuilder
         );
 
         foreach ($map as $expect => $classes) {
-            $return[] = array($expect, $this->getBuilder($this->builderClass, array('findClasses'), $classes, $config, array()));
+            $return[] = array($expect, $this->getBuilder($this->builderClass, $classes, $config, array()));
         }
 
         return $return;
@@ -114,12 +114,12 @@ class ConsoleClassDiagramBuilderTest extends BaseBuilder
         $return = array();
 
         $map = array(
-          $this->ns . "Bar-foo;+bar-foo();+bar()" => array($this->ns . '\Bar'),
-          $this->ns . "<<BarInterface>>" => array($this->ns . '\BarInterface'),
-          $this->ns . "BarWithInterface <<BarInterface>>-foo;+bar-foo();+bar()" => array($this->ns . '\BarWithInterface'),
-          $this->ns . "Foo Bazz-foo;+bar-foo();+bar()" => array($this->ns . '\Foo'),
+          "Bar-foo;+bar-foo();+bar()" => array($this->ns . '\Bar'),
+          "<<BarInterface>>" => array($this->ns . '\BarInterface'),
+          "BarWithInterface <<BarInterface>>-foo;+bar-foo();+bar()" => array($this->ns . '\BarWithInterface'),
+          "Foo Bazz-foo;+bar-foo();+bar()" => array($this->ns . '\Foo'),
           //'[<<BazzInterface>>]^-.-[<<FooInterface>>]'                   => array($this->ns.'\FooInterface'),
-          $this->ns . "FooBazzWithInterface Bazz <<BazzInterface>>-foo;+bar-foo();+bar()" => array($this->ns . '\FooBazzWithInterface'),
+          "FooBazzWithInterface Bazz <<BazzInterface>>-foo;+bar-foo();+bar()" => array($this->ns . '\FooBazzWithInterface'),
         );
 
         $config = array(
@@ -130,7 +130,7 @@ class ConsoleClassDiagramBuilderTest extends BaseBuilder
         );
 
         foreach ($map as $expect => $classes) {
-            $return[] = array($expect, $this->getBuilder($this->builderClass, array('findClasses'), $classes, $config, array()));
+            $return[] = array($expect, $this->getBuilder($this->builderClass, $classes, $config, array()));
         }
 
         return $return;

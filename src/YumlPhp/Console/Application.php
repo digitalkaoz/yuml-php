@@ -60,8 +60,13 @@ class Application extends BaseApplication
     protected function registerCommands()
     {
         //class diagram generator
-        $command = new Command\ClassDiagramCommand();
-        $this->add($command);
+        $this->add(new Command\ClassesCommand());
+        
+        //activity diagram generator
+        $this->add(new Command\ActivityCommand());
+        
+        //use-case diagram generator
+        $this->add(new Command\UseCaseCommand());
     }
 
 }

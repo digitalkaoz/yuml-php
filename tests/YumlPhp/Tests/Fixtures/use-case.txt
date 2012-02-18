@@ -1,0 +1,3 @@
+[Customer]-(Make Cup of Tea),
+(Make Cup of Tea)<(Add Milk),
+(Make Cup of Tea)>(Add Tea Bag)
