@@ -2,7 +2,7 @@
     "name" : "digitalkaoz/yuml-php",
     "target-dir" : "vendor/",
     "homepage" : "https://github.com/digitalkaoz/yuml-php",
-    "version" : "0.5.0",
+    "version" : "0.6.0",
     "type": "library",
     "license": "MIT",
     "authors": [
