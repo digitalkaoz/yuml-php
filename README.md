@@ -27,10 +27,11 @@ Usage
 ### the `classes` command generates a class diagram from all classes in the given folder
 
     Usage:
-        classes [--console] [--debug] [--properties] [--methods] folder
+        classes [--console] [--debug] [--properties] [--methods] folder basepath
 
     Arguments:
         folder      the folder to scan for classes
+        basepath    the basepath for the autoloader
 
     Options:
         --console     log to console
@@ -42,6 +43,13 @@ Usage
 ```sh
 yuml-php classes src/
 ```
+
+**if it fails cause of `Class Not Found` use the `basepath` Parameter**
+
+```sh
+yuml-php classes vendor/symfony/src/Symfony/Component/Process vendor/symfony/src/
+```
+
 
 ### the `activity` command generates an activity diagram from a given file
 

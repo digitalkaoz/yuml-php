@@ -42,7 +42,7 @@ abstract class BaseCommand extends Command
             $this->builder = new $class();
         } else {
             $browser = new Browser();
-            $browser->getClient()->setTimeout(10);
+            $browser->getClient()->setTimeout(30);
             $class = static::$httpBuilder;
             $this->builder = new $class($browser);
         }

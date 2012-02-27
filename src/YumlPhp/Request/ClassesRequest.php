@@ -27,6 +27,11 @@ class ClassesRequest implements BaseRequestInterface
 {
     private $classes = array(), $namespaces = array(),$config = array(), $path;
     
+    public function __construct()
+    {
+        spl_autoload_register(array($this, 'loadClass'), true, false);        
+    }
+    
     public function setPath($path)
     {
         $this->path = $path;
@@ -45,10 +50,11 @@ class ClassesRequest implements BaseRequestInterface
      */
     public function getClasses()
     {
-        foreach ($this->findClasses() as $class) {
+        foreach ($this->findClasses() as $class) {            
             if (!is_object($class)) {
                 $class = new \ReflectionClass($class);
             }
+            
             $this->classes[$class->getName()] = $class;
             $this->namespaces[$class->getNamespaceName()] = $class->getNamespaceName();
         }
@@ -67,13 +73,61 @@ class ClassesRequest implements BaseRequestInterface
         
         $classes = array();
 
-        foreach ($files as $file) {
-            @require_once($file);
+        foreach ($files as $file) {            
             $classes = array_merge($classes, array_keys(File::getClassesInFile($file->getRealPath())));
         }
 
         return $classes;
     }
+    
+    /**
+     * Loads the given class or interface.
+     *
+     * @param string $class The name of the class
+     * @return Boolean|null True, if loaded
+     */
+    public function loadClass($class)
+    {
+        if ($file = $this->findFile($class)) {
+            require $file;
+            return true;
+        }
+    }
+
+    /**
+     * Finds the path to the file where the class is defined.
+     *
+     * @param string $class The name of the class
+     *
+     * @return string|null The path, if found
+     */
+    public function findFile($class)
+    {
+        if ('\\' == $class[0]) {
+            $class = substr($class, 1);
+        }
+
+        if (false !== $pos = strrpos($class, '\\')) {
+            // namespaced class name
+            $classPath = str_replace('\\', DIRECTORY_SEPARATOR, substr($class, 0, $pos)) . DIRECTORY_SEPARATOR;
+            $className = substr($class, $pos + 1);
+        } else {
+            // PEAR-like class name
+            $classPath = null;
+            $className = $class;
+        }
+        
+        $classPath .= str_replace('_', DIRECTORY_SEPARATOR, $className) . '.php';
+        $path = realpath($this->config['autoload_path']);
+
+        if (file_exists($path.DIRECTORY_SEPARATOR.$classPath)) {
+            return $path.DIRECTORY_SEPARATOR.$classPath;
+        }
+
+        if ($file = stream_resolve_include_path($classPath)) {
+            return $file;
+        }
+    }    
 
     /**
      * builds the name for a class

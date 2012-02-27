@@ -41,6 +41,7 @@ class ClassesCommand extends BaseCommand
         $this
             ->setDefinition(array(
               new InputArgument('source', InputArgument::REQUIRED, 'the folder to scan'),
+              new InputArgument('basepath', InputArgument::OPTIONAL, 'the autoloader basepath'),
               new InputOption('console', null, InputOption::VALUE_NONE, 'log to console'),
               new InputOption('debug', null, InputOption::VALUE_NONE, 'debug'),
               new InputOption('properties', null, InputOption::VALUE_NONE, 'build with properties'),
@@ -74,7 +75,8 @@ EOT
           'debug' => $input->getOption('debug'),
           'withMethods' => $input->getOption('methods'),
           'withProperties' => $input->getOption('properties'),
-          'style' => $style
+          'style' => $style,
+          'autoload_path' => $input->getArgument('basepath') ?: $input->getArgument('source')
         );
     }    
 }
