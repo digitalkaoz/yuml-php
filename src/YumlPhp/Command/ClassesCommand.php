@@ -57,4 +57,24 @@ EOT
             ->setName('classes')
         ;
     }
+
+    /**
+     * @inheritDoc
+     */
+    protected function getBuilderConfig(InputInterface $input)
+    {
+        //scruffy, nofunky, plain
+        //dir: LR TB RL
+        //scale: 180 120 100 80 60
+        $style = $input->getOption('style') ?: 'plain;dir:LR;scale:80;';
+        $type = $this->getType();
+        
+        return array(
+          'url' => 'http://yuml.me/diagram/'.$style.'/'.$type.'/',
+          'debug' => $input->getOption('debug'),
+          'withMethods' => $input->getOption('methods'),
+          'withProperties' => $input->getOption('properties'),
+          'style' => $style
+        );
+    }    
 }

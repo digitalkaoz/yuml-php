@@ -46,28 +46,8 @@ abstract class BaseCommand extends Command
             $class = static::$httpBuilder;
             $this->builder = new $class($browser);
         }
-        
-        //scruffy, nofunky, plain
-        //dir: LR TB RL
-        //scale: 180 120 100 80 60
-        $style = $input->getOption('style') ?: 'plain;dir:LR;scale:80;';
-
-        if($this->builder instanceof Builder\Http\ClassesBuilder || $this->builder instanceof Builder\Console\ClassesBuilder) {
-            $type = 'class';
-        } elseif($this->builder instanceof Builder\Http\ActivityBuilder || $this->builder instanceof Builder\Console\ActivityBuilder) {
-            $type = 'activity';
-        } elseif($this->builder instanceof Builder\Http\UseCaseBuilder || $this->builder instanceof Builder\Console\UseCaseBuilder) {
-            $type = 'usecase';
-        }
-        
-        if (!isset($type)) {
-            throw new \RuntimeException('no valid builder passed');
-        }
-        
-        $config = array(
-          'url' => 'http://yuml.me/diagram/'.$style.'/'.$type.'/',
-          'debug' => $input->getOption('debug')
-        );
+                        
+        $config = $this->getBuilderConfig($input);
 
         return $this->builder
             ->configure($config)
@@ -90,4 +70,35 @@ abstract class BaseCommand extends Command
 
         $output->writeln($messages);
     }
+    
+    /**
+     * returns the builderType
+     * 
+     * @return string
+     * @throws \RuntimeException 
+     */
+    protected function getType()
+    {
+        if($this->builder instanceof Builder\Http\ClassesBuilder || $this->builder instanceof Builder\Console\ClassesBuilder) {
+            $type = 'class';
+        } elseif($this->builder instanceof Builder\Http\ActivityBuilder || $this->builder instanceof Builder\Console\ActivityBuilder) {
+            $type = 'activity';
+        } elseif($this->builder instanceof Builder\Http\UseCaseBuilder || $this->builder instanceof Builder\Console\UseCaseBuilder) {
+            $type = 'usecase';
+        }
+        
+        if (!isset($type)) {
+            throw new \RuntimeException('no valid builder passed');
+        }
+        
+        return $type;
+    }
+    
+    /**
+     * creates the builder configuration
+     * 
+     * @param InputInterface $input
+     * @return array
+     */
+    abstract protected function getBuilderConfig(InputInterface $input);
 }

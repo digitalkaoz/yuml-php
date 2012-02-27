@@ -31,7 +31,7 @@ abstract class Builder implements BuilderInterface
         if (!$this->inspector) {
             $class = $this->inspectorClass;
             $this->inspector = new $class();
-            $this->inspector->setConfig($this->configuration);
+            $this->inspector->configure($this->configuration);
             $this->inspector->setPath($this->path);
         }
         

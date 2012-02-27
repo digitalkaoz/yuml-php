@@ -30,7 +30,7 @@ class ClassesRequestTest extends \PHPUnit_Framework_TestCase
         $this->assertInternalType('array', $properties);
         $this->assertCount(0, $properties);
         
-        $request->setConfig(array('withProperties'=>true));
+        $request->configure(array('withProperties'=>true));
         $properties = $request->buildProperties(new \ReflectionClass('YumlPhp\Tests\Fixtures\Bar'));        
         $this->assertInternalType('array', $properties);
         $this->assertCount(2, $properties);
@@ -45,7 +45,7 @@ class ClassesRequestTest extends \PHPUnit_Framework_TestCase
         $this->assertInternalType('array', $methods);
         $this->assertCount(0, $methods);
         
-        $request->setConfig(array('withMethods'=>true));
+        $request->configure(array('withMethods'=>true));
         $methods = $request->buildMethods(new \ReflectionClass('YumlPhp\Tests\Fixtures\Bar'));        
         $this->assertInternalType('array', $methods);
         $this->assertCount(2, $methods);

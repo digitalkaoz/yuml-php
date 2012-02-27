@@ -99,7 +99,7 @@ class BaseBuilder extends \PHPUnit_Framework_TestCase
             //$inspector->expects($this->any())->method('getContent')->will($this->returnValue($this->buildClasses($classes)));
         }
         
-        $inspector->setConfig($config);
+        $inspector->configure($config);
             
         //$inspector->expects($this->any())->method('getInterfaces')->will($this->returnValue($this->buildClasses($classes)));
 

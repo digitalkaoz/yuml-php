@@ -13,13 +13,15 @@ namespace YumlPhp\Request;
 
 use Symfony\Component\Finder\Finder;
 use YumlPhp\Request\RequestInterface;
+use YumlPhp\Request\RequestInterface as BaseRequestInterface;
+
 
 /**
  * A Request from File
  * 
  * @author Robert Schönthal <seroscho@googlemail.com>
  */
-class FileRequest implements RequestInterface
+class FileRequest implements BaseRequestInterface
 {
     private $file, $content;
     

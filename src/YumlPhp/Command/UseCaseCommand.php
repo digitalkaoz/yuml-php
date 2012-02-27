@@ -56,4 +56,19 @@ EOT
             ->setName('use-case')
         ;
     }
+    
+    /**
+     * @inheritDoc
+     */
+    protected function getBuilderConfig(InputInterface $input)
+    {
+        $style = $input->getOption('style') ?: 'plain;dir:LR;scale:80;';
+        $type = $this->getType();
+        
+        return array(
+          'url' => 'http://yuml.me/diagram/'.$style.'/'.$type.'/',
+          'debug' => $input->getOption('debug'),
+          'style' => $input->getOption('style') ?: 'plain;dir:LR;scale:80;'
+        );
+    }    
 }

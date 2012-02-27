@@ -31,24 +31,24 @@ class ClassesBuilder extends HttpBuilder
     protected function doBuild()
     {
         $inspector = $this->getInspector();
+        
         foreach ($inspector->getClasses() as $class) {
-
             /** @var $class \ReflectionClass */
             $name = $inspector->buildName($class);
             $parent = $inspector->buildParent($class, '[', ']^');
             $interfaces = $inspector->buildInterfaces($class, '<<', '>>]^-.-[');
             $props = $inspector->buildProperties($class);
             $methods = $inspector->buildMethods($class);
-
             $prefix = null;
             $suffix = null;
+            $pattern = "%s[%s%s%s%s]";
+            
             if ($class->isInterface()) {
                 $prefix = '';
                 $suffix = '{bg:orange}';
             }
             
-            //build pattern
-            $pattern = "%s[%s%s%s%s]";
+            //rebuild pattern
             if (count($methods) || count($props)) {
                 $pattern = "%s[%s%s|%s%s]";
             }

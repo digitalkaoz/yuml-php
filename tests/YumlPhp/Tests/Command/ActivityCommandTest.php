@@ -38,7 +38,6 @@ class ActivityCommandTest extends \PHPUnit_Framework_TestCase
         $this->assertGreaterThan(0, strlen($tester->getDisplay()));
         $code = $tester->execute(array('source' => __DIR__ . '/../Fixtures/activity.txt', '--debug' => null, '--console'=>null));
         
-
         $this->assertEquals(0, $code);
         $this->assertGreaterThan(0, strlen($tester->getDisplay()));
     }

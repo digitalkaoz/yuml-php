@@ -15,13 +15,15 @@ use Symfony\Component\Finder\Finder;
 
 use YumlPhp\Request\RequestInterface;
 use YumlPhp\Analyzer\File;
+use YumlPhp\Request\RequestInterface as BaseRequestInterface;
+
 
 /**
  * The console application that handles the commands
  * 
  * @author Robert Schönthal <seroscho@googlemail.com>
  */
-class ClassesRequest implements RequestInterface
+class ClassesRequest implements BaseRequestInterface
 {
     private $classes = array(), $namespaces = array(),$config = array(), $path;
     
@@ -30,7 +32,7 @@ class ClassesRequest implements RequestInterface
         $this->path = $path;
     }
     
-    public function setConfig($config)
+    public function configure($config)
     {
         $this->config = $config;
     }
