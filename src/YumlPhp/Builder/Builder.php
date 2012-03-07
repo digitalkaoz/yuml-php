@@ -25,8 +25,13 @@ abstract class Builder implements BuilderInterface
     protected $path, $inspector, $request = array(), $configuration = array();
 
     abstract protected function doBuild();
-    
-    protected function getInspector()
+
+    /**
+     * creates and returns an inspector
+     *
+     * @return RequestInterface
+     */
+    public function getInspector()
     {
         if (!$this->inspector) {
             $class = $this->inspectorClass;
@@ -34,12 +39,12 @@ abstract class Builder implements BuilderInterface
             $this->inspector->configure($this->configuration);
             $this->inspector->setPath($this->path);
         }
-        
+
         return $this->inspector;
     }
-    
+
     /**
-     * @inheritDoc 
+     * @inheritDoc
      */
     public function configure($config)
     {
@@ -49,7 +54,7 @@ abstract class Builder implements BuilderInterface
     }
 
     /**
-     * @inheritDoc 
+     * @inheritDoc
      */
     public function setPath($path)
     {
@@ -57,7 +62,7 @@ abstract class Builder implements BuilderInterface
 
         return $this;
     }
-    
+
     /**
      * @inheritDoc
      */
@@ -65,8 +70,16 @@ abstract class Builder implements BuilderInterface
     {
         return $this
             ->doBuild()
-            ->request()
-        ;
+            ->request();
     }
 
+    /**
+     * returns the builder type
+     *
+     * @return string
+     */
+    public function getType()
+    {
+        return static::TYPE;
+    }
 }

@@ -14,26 +14,34 @@ namespace YumlPhp\Tests\Builder;
 use Buzz\Browser;
 
 use YumlPhp\Builder\Http\UseCaseBuilder;
+
 /**
  * ConsoleClassDiagramBuilderTest
  *
  * @author Robert Schönthal <seroscho@googlemail.com>
- * 
+ *
  * @covers YumlPhp\Builder\Http\UseCaseBuilder<extended>
  */
 class YumlUseCaseBuilderTest extends \PHPUnit_Framework_TestCase
 {
+    public function testType()
+    {
+        $builder = new UseCaseBuilder($this->getMock('Buzz\\Browser'));
+
+        $this->assertEquals('usecase',$builder->getType());
+    }
+
     public function testYuml()
     {
         $config = array(
-          'url' => 'http://yuml.me/diagram/plain;dir:TB/usecase/',
-          'debug' => false
+            'url'   => 'http://yuml.me/diagram/plain;dir:TB/usecase/',
+            'debug' => false
         );
-        
+
         $browser = new Browser();
         $browser->getClient()->setTimeout(5);
         $builder = new UseCaseBuilder($browser);
-        $builder->configure($config)->setPath(__DIR__.'/../Fixtures/use-case.txt');
+        $builder->configure($config)->setPath(__DIR__ . '/../Fixtures/use-case.txt');
 
         $result = $builder->build();
 
@@ -45,14 +53,17 @@ class YumlUseCaseBuilderTest extends \PHPUnit_Framework_TestCase
             $response = $browser->get($url[1]);
 
             switch ($url[0]) {
-                case '<info>PNG</info>' : $contentType = 'image/png';
+                case '<info>PNG</info>' :
+                    $contentType = 'image/png';
                     break;
-                case '<info>PDF</info>' : $contentType = 'application/pdf';
+                case '<info>PDF</info>' :
+                    $contentType = 'application/pdf';
                     break;
-                case '<info>URL</info>' : $contentType = 'text/html; charset=utf-8';
+                case '<info>URL</info>' :
+                    $contentType = 'text/html; charset=utf-8';
                     break;
             }
             $this->assertEquals($contentType, $response->getHeader('Content-Type'));
         }
-    }    
+    }
 }

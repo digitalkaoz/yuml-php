@@ -13,10 +13,10 @@ namespace YumlPhp\Request;
 
 /**
  * The console application that handles the commands
- * 
+ *
  * @author Robert Schönthal <seroscho@googlemail.com>
  */
 interface RequestInterface
 {
-    
+
 }

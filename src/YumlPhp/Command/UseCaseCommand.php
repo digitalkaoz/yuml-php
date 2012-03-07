@@ -26,7 +26,7 @@ use YumlPhp\Builder\Console\UseCaseBuilder as ConsoleBuilder;
 
 /**
  * this command generates an use-case diagram
- * 
+ *
  * @author Robert Schönthal <seroscho@googlemail.com>
  */
 class UseCaseCommand extends BaseCommand
@@ -41,34 +41,33 @@ class UseCaseCommand extends BaseCommand
     {
         $this
             ->setDefinition(array(
-              new InputArgument('source', InputArgument::REQUIRED, 'the file to read'),
-              new InputOption('console', null, InputOption::VALUE_NONE, 'log to console'),
-              new InputOption('debug', null, InputOption::VALUE_NONE, 'debug'),
-              new InputOption('style', null, InputOption::VALUE_NONE, 'yuml style options')
-            ))
+            new InputArgument('source', InputArgument::REQUIRED, 'the file to read'),
+            new InputOption('console', null, InputOption::VALUE_NONE, 'log to console'),
+            new InputOption('debug', null, InputOption::VALUE_NONE, 'debug'),
+            new InputOption('style', null, InputOption::VALUE_NONE, 'yuml style options')
+        ))
             ->setDescription('creates an use-case diagram from a file')
             ->setHelp(<<<EOT
 The <info>use-case</info> command generates an use-case diagram from a file
 
 <info>yuml-php use-case src/use-cases.txt</info> builds an use-case diagram for the file
 EOT
-            )
-            ->setName('use-case')
-        ;
+        )
+            ->setName('use-case');
     }
-    
+
     /**
      * @inheritDoc
      */
     protected function getBuilderConfig(InputInterface $input)
     {
-        $style = $input->getOption('style') ?: 'plain;dir:LR;scale:80;';
-        $type = $this->getType();
-        
+        $style = $input->getOption('style') ? : 'plain;dir:LR;scale:80;';
+        $type = $this->builder->getType();
+
         return array(
-          'url' => 'http://yuml.me/diagram/'.$style.'/'.$type.'/',
-          'debug' => $input->getOption('debug'),
-          'style' => $input->getOption('style') ?: 'plain;dir:LR;scale:80;'
+            'url'   => 'http://yuml.me/diagram/' . $style . '/' . $type . '/',
+            'debug' => $input->getOption('debug'),
+            'style' => $input->getOption('style') ? : 'plain;dir:LR;scale:80;'
         );
-    }    
+    }
 }

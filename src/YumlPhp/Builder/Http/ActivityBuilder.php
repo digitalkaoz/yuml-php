@@ -21,17 +21,17 @@ use YumlPhp\Builder\HttpBuilder;
  */
 class ActivityBuilder extends HttpBuilder
 {
+    const TYPE = 'activity';
     protected $inspectorClass = 'YumlPhp\Request\FileRequest';
-    
+
     /**
      * builds a request array for the yuml API
-     * 
+     *
      * @return ActivityBuilder
      */
     protected function doBuild()
     {
-        $this->request = explode(',',  str_replace("\n",'',file_get_contents($this->path)));
-        
-        return $this;        
+        $this->request = explode(',', str_replace("\n", '', file_get_contents($this->path)));
+        return $this;
     }
 }

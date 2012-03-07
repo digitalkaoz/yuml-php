@@ -5,7 +5,8 @@ namespace YumlPhp\Analyzer;
 /**
  * PHPUnit
  *
- * Copyright (c) 2001-2012, Sebastian Bergmann <sebastian@phpunit.de>.
+ * Copyright (c) 2001-2012, Sebastian Bergmann <sebastian
+ * @phpunit.de>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -94,20 +95,20 @@ class File
     {
         $result = array();
 
-        $tokens                     = token_get_all(
-                                        file_get_contents($filename)
-                                      );
-        $numTokens                  = count($tokens);
-        $blocks                     = array();
-        $line                       = 1;
-        $currentBlock               = FALSE;
-        $currentNamespace           = FALSE;
-        $currentClass               = FALSE;
-        $currentFunction            = FALSE;
-        $currentFunctionStartLine   = FALSE;
-        $currentFunctionTokens      = array();
-        $currentDocComment          = FALSE;
-        $currentSignature           = FALSE;
+        $tokens = token_get_all(
+            file_get_contents($filename)
+        );
+        $numTokens = count($tokens);
+        $blocks = array();
+        $line = 1;
+        $currentBlock = FALSE;
+        $currentNamespace = FALSE;
+        $currentClass = FALSE;
+        $currentFunction = FALSE;
+        $currentFunctionStartLine = FALSE;
+        $currentFunctionTokens = array();
+        $currentDocComment = FALSE;
+        $currentSignature = FALSE;
         $currentSignatureStartToken = FALSE;
 
         for ($i = 0; $i < $numTokens; $i++) {
@@ -134,7 +135,7 @@ class File
 
                         $currentSignature = trim($currentSignature);
 
-                        $block                      = $currentFunction;
+                        $block = $currentFunction;
                         $currentSignatureStartToken = FALSE;
                     }
 
@@ -153,34 +154,34 @@ class File
                     if ($block !== FALSE && $block !== NULL) {
                         if ($block == $currentFunction) {
                             if ($currentDocComment !== FALSE) {
-                                $docComment        = $currentDocComment;
+                                $docComment = $currentDocComment;
                                 $currentDocComment = FALSE;
                             } else {
                                 $docComment = '';
                             }
 
                             $tmp = array(
-                              'docComment' => $docComment,
-                              'signature'  => $currentSignature,
-                              'startLine'  => $currentFunctionStartLine,
-                              'endLine'    => $line,
-                              'tokens'     => $currentFunctionTokens
+                                'docComment' => $docComment,
+                                'signature'  => $currentSignature,
+                                'startLine'  => $currentFunctionStartLine,
+                                'endLine'    => $line,
+                                'tokens'     => $currentFunctionTokens
                             );
 
                             if ($currentClass !== FALSE) {
                                 $result[$currentClass]['methods'][$currentFunction] = $tmp;
                             }
 
-                            $currentFunction          = FALSE;
+                            $currentFunction = FALSE;
                             $currentFunctionStartLine = FALSE;
-                            $currentFunctionTokens    = array();
-                            $currentSignature         = FALSE;
+                            $currentFunctionTokens = array();
+                            $currentSignature = FALSE;
                         }
 
                         else if ($block == $currentClass) {
                             $result[$currentClass]['endLine'] = $line;
 
-                            $currentClass          = FALSE;
+                            $currentClass = FALSE;
                             $currentClassStartLine = FALSE;
                         }
                     }
@@ -190,99 +191,107 @@ class File
             }
 
             switch ($tokens[$i][0]) {
-                case T_HALT_COMPILER: {
+                case T_HALT_COMPILER:
+                    {
                     return;
-                }
-                break;
+                    }
+                    break;
 
-                case T_NAMESPACE: {
-                    $currentNamespace = $tokens[$i+2][1];
+                case T_NAMESPACE:
+                    {
+                    $currentNamespace = $tokens[$i + 2][1];
 
-                    for ($j = $i+3; $j < $numTokens; $j += 2) {
+                    for ($j = $i + 3; $j < $numTokens; $j += 2) {
                         if ($tokens[$j][0] == T_NS_SEPARATOR) {
-                            $currentNamespace .= '\\' . $tokens[$j+1][1];
+                            $currentNamespace .= '\\' . $tokens[$j + 1][1];
                         } else {
                             break;
                         }
                     }
-                }
-                break;
+                    }
+                    break;
 
-                case T_CURLY_OPEN: {
+                case T_CURLY_OPEN:
+                    {
                     $currentBlock = T_CURLY_OPEN;
                     array_push($blocks, $currentBlock);
-                }
-                break;
+                    }
+                    break;
 
-                case T_DOLLAR_OPEN_CURLY_BRACES: {
+                case T_DOLLAR_OPEN_CURLY_BRACES:
+                    {
                     $currentBlock = T_DOLLAR_OPEN_CURLY_BRACES;
                     array_push($blocks, $currentBlock);
-                }
-                break;
-                case T_INTERFACE: {
+                    }
+                    break;
+                case T_INTERFACE:
+                    {
                     $currentBlock = T_INTERFACE;
 
                     if ($currentNamespace === FALSE) {
-                        $currentClass = $tokens[$i+2][1];
+                        $currentClass = $tokens[$i + 2][1];
                     } else {
                         $currentClass = $currentNamespace . '\\' .
-                                        $tokens[$i+2][1];
+                            $tokens[$i + 2][1];
                     }
 
                     if ($currentDocComment !== FALSE) {
-                        $docComment        = $currentDocComment;
+                        $docComment = $currentDocComment;
                         $currentDocComment = FALSE;
                     } else {
                         $docComment = '';
                     }
 
                     $result[$currentClass] = array(
-                      'methods'    => array(),
-                      'docComment' => $docComment,
-                      'startLine'  => $line
+                        'methods'    => array(),
+                        'docComment' => $docComment,
+                        'startLine'  => $line
                     );
-                }
-                break;
+                    }
+                    break;
 
-                case T_CLASS: {
+                case T_CLASS:
+                    {
                     $currentBlock = T_CLASS;
 
                     if ($currentNamespace === FALSE) {
-                        $currentClass = $tokens[$i+2][1];
+                        $currentClass = $tokens[$i + 2][1];
                     } else {
                         $currentClass = $currentNamespace . '\\' .
-                                        $tokens[$i+2][1];
+                            $tokens[$i + 2][1];
                     }
 
                     if ($currentDocComment !== FALSE) {
-                        $docComment        = $currentDocComment;
+                        $docComment = $currentDocComment;
                         $currentDocComment = FALSE;
                     } else {
                         $docComment = '';
                     }
 
                     $result[$currentClass] = array(
-                      'methods'    => array(),
-                      'docComment' => $docComment,
-                      'startLine'  => $line
+                        'methods'    => array(),
+                        'docComment' => $docComment,
+                        'startLine'  => $line
                     );
-                }
-                break;
+                    }
+                    break;
 
-                case T_FUNCTION: {
-                    if (!((is_array($tokens[$i+2]) &&
-                          $tokens[$i+2][0] == T_STRING) ||
-                         (is_string($tokens[$i+2]) &&
-                          $tokens[$i+2] == '&' &&
-                          is_array($tokens[$i+3]) &&
-                          $tokens[$i+3][0] == T_STRING))) {
+                case T_FUNCTION:
+                    {
+                    if (!((is_array($tokens[$i + 2]) &&
+                        $tokens[$i + 2][0] == T_STRING) ||
+                        (is_string($tokens[$i + 2]) &&
+                            $tokens[$i + 2] == '&' &&
+                            is_array($tokens[$i + 3]) &&
+                            $tokens[$i + 3][0] == T_STRING))
+                    ) {
                         continue;
                     }
 
-                    $currentBlock             = T_FUNCTION;
+                    $currentBlock = T_FUNCTION;
                     $currentFunctionStartLine = $line;
 
-                    $done                       = FALSE;
+                    $done = FALSE;
                     $currentSignatureStartToken = $i - 1;
 
                     do {
@@ -293,39 +302,42 @@ class File
                             case T_PUBLIC:
                             case T_PROTECTED:
                             case T_STATIC:
-                            case T_WHITESPACE: {
+                            case T_WHITESPACE:
+                                {
                                 $currentSignatureStartToken--;
-                            }
-                            break;
+                                }
+                                break;
 
-                            default: {
+                            default:
+                                {
                                 $currentSignatureStartToken++;
                                 $done = TRUE;
-                            }
+                                }
                         }
                     } while (!$done);
 
-                    if (isset($tokens[$i+2][1])) {
-                        $functionName = $tokens[$i+2][1];
+                    if (isset($tokens[$i + 2][1])) {
+                        $functionName = $tokens[$i + 2][1];
                     }
 
-                    else if (isset($tokens[$i+3][1])) {
-                        $functionName = $tokens[$i+3][1];
+                    else if (isset($tokens[$i + 3][1])) {
+                        $functionName = $tokens[$i + 3][1];
                     }
 
                     if ($currentNamespace === FALSE) {
                         $currentFunction = $functionName;
                     } else {
                         $currentFunction = $currentNamespace . '\\' .
-                                           $functionName;
+                            $functionName;
                     }
-                }
-                break;
+                    }
+                    break;
 
-                case T_DOC_COMMENT: {
+                case T_DOC_COMMENT:
+                    {
                     $currentDocComment = $tokens[$i][1];
-                }
-                break;
+                    }
+                    break;
             }
 
             $line += substr_count($tokens[$i][1], "\n");

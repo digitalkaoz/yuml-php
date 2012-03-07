@@ -14,6 +14,7 @@ namespace YumlPhp\Builder\Console;
 use YumlPhp\Request\FileRequest;
 
 use YumlPhp\Builder\ConsoleBuilder;
+
 /**
  * the Activity Builder generates an ActivityDiagram for Console Output
  *
@@ -21,27 +22,28 @@ use YumlPhp\Builder\ConsoleBuilder;
  */
 class ActivityBuilder extends ConsoleBuilder
 {
+    const TYPE = 'activity';
     protected $inspectorClass = 'YumlPhp\Request\FileRequest';
-    
+
     /**
      * builds a request array
-     * 
-     * @return ActivityBuilder 
+     *
+     * @return ActivityBuilder
      */
     protected function doBuild()
     {
-        $this->request = explode(',',file_get_contents($this->path));
+        $this->request = explode(',', file_get_contents($this->path));
 
         return $this;
     }
 
     /**
      * returns the class diagram as concatenated string
-     * 
+     *
      * @return string
      */
     public function request()
     {
         return join(",\n", $this->request);
-    }    
+    }
 }

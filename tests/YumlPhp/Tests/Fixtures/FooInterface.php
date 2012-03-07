@@ -8,5 +8,6 @@ namespace YumlPhp\Tests\Fixtures;
 interface FooInterface extends BazzInterface
 {
     function foo();
+
     function bar();
 }

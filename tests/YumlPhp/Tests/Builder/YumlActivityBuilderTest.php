@@ -14,26 +14,34 @@ namespace YumlPhp\Tests\Builder;
 use Buzz\Browser;
 
 use YumlPhp\Builder\Http\ActivityBuilder;
+
 /**
  * ConsoleClassDiagramBuilderTest
  *
  * @author Robert Schönthal <seroscho@googlemail.com>
- * 
+ *
  * @covers YumlPhp\Builder\Http\ActivityBuilder<extended>
  */
 class YumlActivityBuilderTest extends \PHPUnit_Framework_TestCase
 {
+    public function testType()
+    {
+        $builder = new ActivityBuilder($this->getMock('Buzz\\Browser'));
+
+        $this->assertEquals('activity',$builder->getType());
+    }
+
     public function testYuml()
     {
         $config = array(
-          'url' => 'http://yuml.me/diagram/plain;dir:TB/activity/',
-          'debug' => false
+            'url'   => 'http://yuml.me/diagram/plain;dir:TB/activity/',
+            'debug' => false
         );
-        
+
         $browser = new Browser();
         $browser->getClient()->setTimeout(5);
         $builder = new ActivityBuilder($browser);
-        $builder->configure($config)->setPath(__DIR__.'/../Fixtures/activity.txt');
+        $builder->configure($config)->setPath(__DIR__ . '/../Fixtures/activity.txt');
 
         $result = $builder->build();
 
@@ -45,14 +53,17 @@ class YumlActivityBuilderTest extends \PHPUnit_Framework_TestCase
             $response = $browser->get($url[1]);
 
             switch ($url[0]) {
-                case '<info>PNG</info>' : $contentType = 'image/png';
+                case '<info>PNG</info>' :
+                    $contentType = 'image/png';
                     break;
-                case '<info>PDF</info>' : $contentType = 'application/pdf';
+                case '<info>PDF</info>' :
+                    $contentType = 'application/pdf';
                     break;
-                case '<info>URL</info>' : $contentType = 'text/html; charset=utf-8';
+                case '<info>URL</info>' :
+                    $contentType = 'text/html; charset=utf-8';
                     break;
             }
             $this->assertEquals($contentType, $response->getHeader('Content-Type'));
         }
-    }    
+    }
 }

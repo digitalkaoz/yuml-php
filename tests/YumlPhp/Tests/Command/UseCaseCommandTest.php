@@ -21,7 +21,7 @@ use YumlPhp\Command\UseCaseCommand;
  * Description of ClassDiagramCommandTest
  *
  * @author Robert Schönthal <seroscho@googlemail.com>
- * 
+ *
  * @covers YumlPhp\Command\UseCaseCommand<extended>
  */
 class UseCaseCommandTest extends \PHPUnit_Framework_TestCase
@@ -32,26 +32,36 @@ class UseCaseCommandTest extends \PHPUnit_Framework_TestCase
         $command = new UseCaseCommand();
         $tester = new CommandTester($command);
 
-        $code = $tester->execute(array('source' => __DIR__ . '/../Fixtures/use-case.txt', '--debug' => null));
+        $code = $tester->execute(array('source'  => __DIR__ . '/../Fixtures/use-case.txt',
+                                       '--debug' => null));
 
         $this->assertEquals(0, $code);
         $this->assertGreaterThan(0, strlen($tester->getDisplay()));
-        
-        $code = $tester->execute(array('source' => __DIR__ . '/../Fixtures/use-case.txt', '--debug' => null, '--console'=>null));
+
+        $code = $tester->execute(array('source'   => __DIR__ . '/../Fixtures/use-case.txt',
+                                       '--debug'  => null,
+                                       '--console'=> null));
 
         $this->assertEquals(0, $code);
         $this->assertGreaterThan(0, strlen($tester->getDisplay()));
     }
 
     /**
-     * @expectedException \RuntimeException 
+     * @expectedException \RuntimeException
      */
     public function testRunWithErrors()
     {
-        $this->markTestIncomplete();
-        $command = new UseCaseCommand();
-        $tester = new CommandTester($command);
-        $code = $tester->execute(array('source' => sys_get_temp_dir()));
-    }
+        $command = $this->getMockBuilder('YumlPhp\Command\UseCaseCommand')
+            ->setMethods(array('getBuilderConfig'))
+            ->getMock();
 
+        $command->expects($this->once())->method('getBuilderConfig')->will($this->returnValue(array(
+            'url'   => 'http://lolcathost/',
+            'debug' => false,
+            'style' => 'plain;dir:LR;scale:80;'
+        )));
+
+        $tester = new CommandTester($command);
+        $tester->execute(array('source' => sys_get_temp_dir()));
+    }
 }

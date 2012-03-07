@@ -20,66 +20,70 @@ use YumlPhp\Request\RequestInterface as BaseRequestInterface;
 
 /**
  * The console application that handles the commands
- * 
+ *
  * @author Robert Schönthal <seroscho@googlemail.com>
  */
 class ClassesRequest implements BaseRequestInterface
 {
-    private $classes = array(), $namespaces = array(),$config = array(), $path;
-    
+    private $classes = array(), $namespaces = array(), $config = array(), $path;
+
     public function __construct()
     {
-        spl_autoload_register(array($this, 'loadClass'), true, false);        
+        spl_autoload_register(array($this, 'loadClass'), true, false);
     }
-    
+
     public function setPath($path)
     {
         $this->path = $path;
     }
-    
+
     public function configure($config)
     {
         $this->config = $config;
     }
-    
+
     /**
      * reflects given classes
-     * 
+     *
      * @param array $config
-     * @param string path
+     * @param       string path
      */
     public function getClasses()
     {
-        foreach ($this->findClasses() as $class) {            
+        foreach ($this->findClasses() as $class) {
             if (!is_object($class)) {
-                $class = new \ReflectionClass($class);
+                try {
+                    $class = new \ReflectionClass($class);
+                } catch (\ReflectionException $e) {
+                    continue;
+                }
             }
-            
+
             $this->classes[$class->getName()] = $class;
             $this->namespaces[$class->getNamespaceName()] = $class->getNamespaceName();
         }
-        
+
         return $this->classes;
     }
 
     /**
      * find all classes in given path
-     * 
+     *
      * @return array
      */
     public function findClasses()
     {
         $files = Finder::create()->files()->name('*.php')->in($this->path);
-        
+
         $classes = array();
 
-        foreach ($files as $file) {            
+        foreach ($files as $file) {
             $classes = array_merge($classes, array_keys(File::getClassesInFile($file->getRealPath())));
         }
 
         return $classes;
     }
-    
+
     /**
      * Loads the given class or interface.
      *
@@ -116,26 +120,28 @@ class ClassesRequest implements BaseRequestInterface
             $classPath = null;
             $className = $class;
         }
-        
-        $classPath .= str_replace('_', DIRECTORY_SEPARATOR, $className) . '.php';
-        $path = realpath($this->config['autoload_path']);
 
-        if (file_exists($path.DIRECTORY_SEPARATOR.$classPath)) {
-            return $path.DIRECTORY_SEPARATOR.$classPath;
+        $classPath .= str_replace('_', DIRECTORY_SEPARATOR, $className) . '.php';
+        $path = realpath(isset($this->config['autoload_path']) ? $this->config['autoload_path'] : $this->path);
+
+        if (file_exists($path . DIRECTORY_SEPARATOR . $classPath)) {
+            return $path . DIRECTORY_SEPARATOR . $classPath;
+        } elseif(file_exists($this->path . DIRECTORY_SEPARATOR . $classPath)) {
+            return $this->path . DIRECTORY_SEPARATOR . $classPath;
         }
 
         if ($file = stream_resolve_include_path($classPath)) {
             return $file;
         }
-    }    
+    }
 
     /**
      * builds the name for a class
-     * 
+     *
      * @param \ReflectionClass $class
-     * @param string $prefix
-     * @param string $suffix
-     * @return string 
+     * @param string           $prefix
+     * @param string           $suffix
+     * @return string
      */
     public function buildName(\ReflectionClass $class, $prefix = '<<', $suffix = '>>')
     {
@@ -150,14 +156,14 @@ class ClassesRequest implements BaseRequestInterface
 
     /**
      * builds the parent for a class
-     * 
+     *
      * @param \ReflectionClass $class
-     * @param string $prefix
-     * @param string $suffix
-     * @param string $interfacePrefix
-     * @param string $interfaceSuffix
-     * @param string $interfacesGlue
-     * @return string 
+     * @param string           $prefix
+     * @param string           $suffix
+     * @param string           $interfacePrefix
+     * @param string           $interfaceSuffix
+     * @param string           $interfacesGlue
+     * @return string
      */
     public function buildParent(\ReflectionClass $class, $prefix = null, $suffix = null, $interfacePrefix = '<<', $interfaceSuffix = '>>', $interfacesGlue = null)
     {
@@ -179,10 +185,10 @@ class ClassesRequest implements BaseRequestInterface
 
     /**
      * collects all properties for current class (only self defined ones)
-     * 
+     *
      * @param \ReflectionClass $class
-     * @param string $public
-     * @param string $private
+     * @param string           $public
+     * @param string           $private
      * @return array
      */
     public function buildProperties(\ReflectionClass $class, $public = '+', $private = '-')
@@ -204,11 +210,11 @@ class ClassesRequest implements BaseRequestInterface
 
     /**
      * collects all methods for current class (only self defined ones)
-     * 
+     *
      * @param \ReflectionClass $class
-     * @param string $public
-     * @param string $private
-     * @param string $suffix
+     * @param string           $public
+     * @param string           $private
+     * @param string           $suffix
      * @return array
      */
     public function buildMethods(\ReflectionClass $class, $public = '+', $private = '-', $suffix = '()')
@@ -218,7 +224,7 @@ class ClassesRequest implements BaseRequestInterface
         if (!isset($this->config['withMethods']) || !$this->config['withMethods']) {
             return $methods;
         }
-        
+
         foreach ($class->getMethods() as $method) {
             if (!$method->isAbstract() && $method->getDeclaringClass() == $class && !$class->isInterface()) {
                 $methods[] = (!$class->isInterface() ? ($method->isPublic() ? $public : $private) : null) . $method->getName() . $suffix;
@@ -230,10 +236,10 @@ class ClassesRequest implements BaseRequestInterface
 
     /**
      * collects all interfaces for current class (only self implemented ones)
-     * 
+     *
      * @param \ReflectionClass $class
-     * @param string $prefix
-     * @param string $suffix
+     * @param string           $prefix
+     * @param string           $suffix
      * @return array
      */
     public function buildInterfaces(\ReflectionClass $class, $prefix = '<<', $suffix = '>>')
@@ -249,12 +255,12 @@ class ClassesRequest implements BaseRequestInterface
 
     /**
      * prepares a class name into its FQDN with namespace if not found in current class namespaces
-     * 
+     *
      * @param \ReflectionClass $class
-     * @return string 
+     * @return string
      */
     protected function prepare(\ReflectionClass $class)
     {
         return str_replace('\\', '/', $class->getName());
-    }    
+    }
 }

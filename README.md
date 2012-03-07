@@ -11,7 +11,7 @@ Installation
 * [`Buzz`](https://github.com/kriswallsmith/Buzz)
 * [`Symfony Finder`](https://github.com/symfony/Finder)
 * [`Symfony Console`](https://github.com/symfony/Console)
-* [`Composer`](https://github.com/composer/composer.git) (for tests or self containing library only)
+* [`Composer`](https://github.com/composer/composer) (for tests or self containing library only)
 
 ## Installation with [`composer`](https://github.com/composer/composer.git)
 

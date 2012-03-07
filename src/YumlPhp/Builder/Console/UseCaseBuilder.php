@@ -21,27 +21,28 @@ use YumlPhp\Builder\ConsoleBuilder;
  */
 class UseCaseBuilder extends ConsoleBuilder
 {
+    const TYPE = 'usecase';
     protected $inspectorClass = 'YumlPhp\Request\FileRequest';
-    
+
     /**
      * builds a request array
-     * 
-     * @return UseCaseBuilder 
+     *
+     * @return UseCaseBuilder
      */
     protected function doBuild()
     {
-        $this->request = explode(',',file_get_contents($this->path));
+        $this->request = explode(',', file_get_contents($this->path));
 
         return $this;
     }
 
     /**
      * returns the class diagram as concatenated string
-     * 
+     *
      * @return string
      */
     public function request()
     {
         return join(",\n", $this->request);
-    }    
+    }
 }

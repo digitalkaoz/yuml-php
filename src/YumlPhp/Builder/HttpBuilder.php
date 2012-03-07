@@ -27,8 +27,8 @@ abstract class HttpBuilder extends Builder
 
     /**
      * injects the http client
-     * 
-     * @param Browser $browser 
+     *
+     * @param Browser $browser
      */
     public function __construct(Browser $browser)
     {
@@ -37,9 +37,9 @@ abstract class HttpBuilder extends Builder
 
     /**
      * request the diagram from the API
-     * 
+     *
      * @return array|string
-     * @throws \RuntimeException 
+     * @throws \RuntimeException
      */
     public function request()
     {
@@ -48,29 +48,29 @@ abstract class HttpBuilder extends Builder
         if ($this->configuration['debug']) {
             return join(',', $this->request);
         }
-        
+
         if (!count($this->request)) {
-            throw new \RuntimeException('No Request built for: '.$this->path);
+            throw new \RuntimeException('No Request built for: ' . $this->path);
         }
 
-        $response = $this->browser->post($url,array(
-          'X-Requested-With' =>'XMLHttpRequest',
-          'Content-Type' => 'application/x-www-form-urlencoded',
-          'Accept-Encoding' => 'gzip,deflate,sdch'
-        ),'dsl_text='.  urlencode(join(',', $this->request)));
+        $response = $this->browser->post($url, array(
+            'X-Requested-With' => 'XMLHttpRequest',
+            'Content-Type'     => 'application/x-www-form-urlencoded',
+            'Accept-Encoding'  => 'gzip,deflate,sdch'
+        ), 'dsl_text=' . urlencode(join(',', $this->request)));
 
         if ($response && 500 > $response->getStatusCode()) {
             $file = $response->getContent();
 
             $result = array(
-              '<info>PNG</info> http://yuml.me/' . $file,
-              '<info>URL</info> http://yuml.me/edit/' . str_replace('.png', '', $file),
-              '<info>PDF</info> http://yuml.me/' . str_replace('.png', '.pdf', $file),
+                '<info>PNG</info> http://yuml.me/' . $file,
+                '<info>URL</info> http://yuml.me/edit/' . str_replace('.png', '', $file),
+                '<info>PDF</info> http://yuml.me/' . str_replace('.png', '.pdf', $file),
             );
 
             return $result;
         }
-        
-        throw new \RuntimeException('API Error for Request: '.$url.join(',', $this->request));
+
+        throw new \RuntimeException('API Error for Request: ' . $url . join(',', $this->request));
     }
 }

@@ -21,7 +21,7 @@ use YumlPhp\Command\ClassesCommand;
  * Description of ClassDiagramCommandTest
  *
  * @author Robert Schönthal <seroscho@googlemail.com>
- * 
+ *
  * @covers YumlPhp\Command\ClassesCommand<extended>
  */
 class ClassesCommandTest extends \PHPUnit_Framework_TestCase
@@ -32,26 +32,42 @@ class ClassesCommandTest extends \PHPUnit_Framework_TestCase
         $command = new ClassesCommand();
         $tester = new CommandTester($command);
 
-        $code = $tester->execute(array('source' => __DIR__ . '/../Fixtures', '--debug' => null, '--methods' => null, '--properties' => null));
+        $code = $tester->execute(array('source'       => __DIR__ . '/../Fixtures',
+                                       '--debug'      => null,
+                                       '--methods'    => null,
+                                       '--properties' => null));
 
         $this->assertEquals(0, $code);
         $this->assertGreaterThan(0, strlen($tester->getDisplay()));
-        
-        $code = $tester->execute(array('source' => __DIR__ . '/../Fixtures', '--debug' => null, '--methods' => null, '--properties' => null, '--console'=>null));
+
+        $code = $tester->execute(array('source'       => __DIR__ . '/../Fixtures',
+                                       '--debug'      => null,
+                                       '--methods'    => null,
+                                       '--properties' => null,
+                                       '--console'    => null));
 
         $this->assertEquals(0, $code);
         $this->assertGreaterThan(0, strlen($tester->getDisplay()));
     }
 
     /**
-     * @expectedException \RuntimeException 
+     * @expectedException \RuntimeException
      */
     public function testRunWithErrors()
     {
-        $this->markTestIncomplete();
-        $command = new ClassesCommand();
+        $command = $this->getMockBuilder('YumlPhp\Command\ClassesCommand')
+            ->setMethods(array('getBuilderConfig'))
+            ->getMock();
+
+        $command->expects($this->once())->method('getBuilderConfig')->will($this->returnValue(array(
+            'url'           => 'http://lolcathost/',
+            'debug'         => false,
+            'style'         => 'plain;dir:LR;scale:80;',
+            'autoload_path' => sys_get_temp_dir()
+        )));
+
         $tester = new CommandTester($command);
-        $code = $tester->execute(array('source' => sys_get_temp_dir()));
+        $tester->execute(array('source' => sys_get_temp_dir()));
     }
 
 }

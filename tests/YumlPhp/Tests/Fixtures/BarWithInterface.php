@@ -9,7 +9,12 @@ class BarWithInterface implements BarInterface
 {
     private $foo;
     public $bar;
-    
-    private function foo(){}
-    public function bar(){}
+
+    private function foo()
+    {
+    }
+
+    public function bar()
+    {
+    }
 }

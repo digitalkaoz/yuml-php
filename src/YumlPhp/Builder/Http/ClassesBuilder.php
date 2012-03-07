@@ -21,17 +21,18 @@ use YumlPhp\Builder\HttpBuilder;
  */
 class ClassesBuilder extends HttpBuilder
 {
+    const TYPE = 'class';
     protected $inspectorClass = 'YumlPhp\Request\ClassesRequest';
-        
+
     /**
      * builds a request array for the yuml API
-     * 
+     *
      * @return YumlClassDiagramBuilder
      */
     protected function doBuild()
     {
         $inspector = $this->getInspector();
-        
+
         foreach ($inspector->getClasses() as $class) {
             /** @var $class \ReflectionClass */
             $name = $inspector->buildName($class);
@@ -42,12 +43,12 @@ class ClassesBuilder extends HttpBuilder
             $prefix = null;
             $suffix = null;
             $pattern = "%s[%s%s%s%s]";
-            
+
             if ($class->isInterface()) {
                 $prefix = '';
                 $suffix = '{bg:orange}';
             }
-            
+
             //rebuild pattern
             if (count($methods) || count($props)) {
                 $pattern = "%s[%s%s|%s%s]";
@@ -56,7 +57,7 @@ class ClassesBuilder extends HttpBuilder
                 $pattern = "%s[%s%s|%s|%s]";
             }
 
-            $line = sprintf($pattern, $parent, $prefix.join(';', $interfaces), $name, join(';', $props), join(';', $methods).$suffix);
+            $line = sprintf($pattern, $parent, $prefix . join(';', $interfaces), $name, join(';', $props), join(';', $methods) . $suffix);
 
             if ($class->isInterface()) {
                 array_unshift($this->request, $line);
@@ -64,7 +65,7 @@ class ClassesBuilder extends HttpBuilder
                 $this->request[] = $line;
             }
         }
-        
+
         return $this;
     }
 }

@@ -25,7 +25,7 @@ use YumlPhp\Builder\Console\ClassesBuilder as ConsoleBuilder;
 
 /**
  * this command generates a class diagram
- * 
+ *
  * @author Robert Schönthal <seroscho@googlemail.com>
  */
 class ClassesCommand extends BaseCommand
@@ -40,23 +40,22 @@ class ClassesCommand extends BaseCommand
     {
         $this
             ->setDefinition(array(
-              new InputArgument('source', InputArgument::REQUIRED, 'the folder to scan'),
-              new InputArgument('basepath', InputArgument::OPTIONAL, 'the autoloader basepath'),
-              new InputOption('console', null, InputOption::VALUE_NONE, 'log to console'),
-              new InputOption('debug', null, InputOption::VALUE_NONE, 'debug'),
-              new InputOption('properties', null, InputOption::VALUE_NONE, 'build with properties'),
-              new InputOption('methods', null, InputOption::VALUE_NONE, 'build with methods'),
-              new InputOption('style', null, InputOption::VALUE_NONE, 'yuml style options')
-            ))
+            new InputArgument('source', InputArgument::REQUIRED, 'the folder to scan'),
+            new InputArgument('basepath', InputArgument::OPTIONAL, 'the autoloader basepath'),
+            new InputOption('console', null, InputOption::VALUE_NONE, 'log to console'),
+            new InputOption('debug', null, InputOption::VALUE_NONE, 'debug'),
+            new InputOption('properties', null, InputOption::VALUE_NONE, 'build with properties'),
+            new InputOption('methods', null, InputOption::VALUE_NONE, 'build with methods'),
+            new InputOption('style', null, InputOption::VALUE_NONE, 'yuml style options')
+        ))
             ->setDescription('creates a class diagram of a given folder')
             ->setHelp(<<<EOT
 The <info>class-diagram</info> command generates a class diagram from all classes in the given folder
 
 <info>yuml-php classes src/</info> builds class diagram for folder src/
 EOT
-            )
-            ->setName('classes')
-        ;
+        )
+            ->setName('classes');
     }
 
     /**
@@ -67,16 +66,16 @@ EOT
         //scruffy, nofunky, plain
         //dir: LR TB RL
         //scale: 180 120 100 80 60
-        $style = $input->getOption('style') ?: 'plain;dir:LR;scale:80;';
-        $type = $this->getType();
-        
+        $style = $input->getOption('style') ? : 'plain;dir:LR;scale:80;';
+        $type = $this->builder->getType();
+
         return array(
-          'url' => 'http://yuml.me/diagram/'.$style.'/'.$type.'/',
-          'debug' => $input->getOption('debug'),
-          'withMethods' => $input->getOption('methods'),
-          'withProperties' => $input->getOption('properties'),
-          'style' => $style,
-          'autoload_path' => $input->getArgument('basepath') ?: $input->getArgument('source')
+            'url'            => 'http://yuml.me/diagram/' . $style . '/' . $type . '/',
+            'debug'          => $input->getOption('debug'),
+            'withMethods'    => $input->getOption('methods'),
+            'withProperties' => $input->getOption('properties'),
+            'style'          => $style,
+            'autoload_path'  => $input->getArgument('basepath') ? : $input->getArgument('source')
         );
-    }    
+    }
 }

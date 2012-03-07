@@ -20,18 +20,19 @@ use YumlPhp\Builder\ConsoleBuilder;
  * @author Robert Schönthal <seroscho@googlemail.com>
  */
 class ClassesBuilder extends ConsoleBuilder
-{    
+{
+    const TYPE = 'class';
     protected $inspectorClass = 'YumlPhp\Request\ClassesRequest';
-    
+
     /**
      * builds a request array
-     * 
-     * @return ConsoleClassDiagramBuilder 
+     *
+     * @return ConsoleClassDiagramBuilder
      */
     protected function doBuild()
     {
         $inspector = $this->getInspector();
-        
+
         foreach ($inspector->getClasses($this->path) as $class) {
             /** @var $class \ReflectionClass */
             $name = $inspector->buildName($class);
@@ -56,5 +57,4 @@ class ClassesBuilder extends ConsoleBuilder
 
         return $this;
     }
-    
 }

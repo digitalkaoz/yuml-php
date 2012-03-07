@@ -23,7 +23,7 @@ interface BuilderInterface
 
     /**
      * configures the builder
-     * 
+     *
      * @param array $config
      * @return BuilderInterface
      */
@@ -31,7 +31,7 @@ interface BuilderInterface
 
     /**
      * sets the path to crawl for classes
-     * 
+     *
      * @param string $path
      * @return BuilderInterface
      */
@@ -39,11 +39,11 @@ interface BuilderInterface
 
     /**
      * executes the build
-     * 
+     *
      * @return mixed
      */
     function build();
-    
+
     function request();
-    
+
 }

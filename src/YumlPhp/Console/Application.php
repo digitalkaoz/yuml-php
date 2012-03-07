@@ -21,7 +21,7 @@ use YumlPhp\Command;
 
 /**
  * The console application that handles the commands
- * 
+ *
  * @author Robert Schönthal <seroscho@googlemail.com>
  */
 class Application extends BaseApplication
@@ -61,10 +61,10 @@ class Application extends BaseApplication
     {
         //class diagram generator
         $this->add(new Command\ClassesCommand());
-        
+
         //activity diagram generator
         $this->add(new Command\ActivityCommand());
-        
+
         //use-case diagram generator
         $this->add(new Command\UseCaseCommand());
     }

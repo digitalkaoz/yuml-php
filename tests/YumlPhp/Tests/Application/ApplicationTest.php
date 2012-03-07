@@ -22,7 +22,7 @@ use YumlPhp\Console\Application;
  * ApplicationTest
  *
  * @author Robert Schönthal <seroscho@googlemail.com>
- * 
+ *
  * @covers YumlPhp\Console\Application
  */
 class ApplicationTest extends \PHPUnit_Framework_TestCase
@@ -37,6 +37,8 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         //$tester->run(array());
 
         $this->assertTrue($app->has('classes'));
+        $this->assertTrue($app->has('activity'));
+        $this->assertTrue($app->has('use-case'));
     }
 
 }

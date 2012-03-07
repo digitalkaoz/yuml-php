@@ -25,19 +25,22 @@ use YumlPhp\Builder;
 
 /**
  * this common command
- * 
+ *
  * @author Robert Schönthal <seroscho@googlemail.com>
  */
 abstract class BaseCommand extends Command
 {
-    private $builder;
-    
+    /**
+     * @var BuilderInterface
+     */
+    protected $builder;
+
     /**
      * @inheritDoc
      */
     protected function createBuilder(InputInterface $input)
     {
-        if($input->getOption('console')) {
+        if ($input->getOption('console')) {
             $class = static::$consoleBuilder;
             $this->builder = new $class();
         } else {
@@ -46,17 +49,16 @@ abstract class BaseCommand extends Command
             $class = static::$httpBuilder;
             $this->builder = new $class($browser);
         }
-                        
+
         $config = $this->getBuilderConfig($input);
 
         return $this->builder
             ->configure($config)
-            ->setPath($input->getArgument('source'))
-        ;
+            ->setPath($input->getArgument('source'));
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
@@ -70,33 +72,10 @@ abstract class BaseCommand extends Command
 
         $output->writeln($messages);
     }
-    
-    /**
-     * returns the builderType
-     * 
-     * @return string
-     * @throws \RuntimeException 
-     */
-    protected function getType()
-    {
-        if($this->builder instanceof Builder\Http\ClassesBuilder || $this->builder instanceof Builder\Console\ClassesBuilder) {
-            $type = 'class';
-        } elseif($this->builder instanceof Builder\Http\ActivityBuilder || $this->builder instanceof Builder\Console\ActivityBuilder) {
-            $type = 'activity';
-        } elseif($this->builder instanceof Builder\Http\UseCaseBuilder || $this->builder instanceof Builder\Console\UseCaseBuilder) {
-            $type = 'usecase';
-        }
-        
-        if (!isset($type)) {
-            throw new \RuntimeException('no valid builder passed');
-        }
-        
-        return $type;
-    }
-    
+
     /**
      * creates the builder configuration
-     * 
+     *
      * @param InputInterface $input
      * @return array
      */

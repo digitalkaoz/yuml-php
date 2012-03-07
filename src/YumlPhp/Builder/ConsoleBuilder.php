@@ -20,7 +20,7 @@ abstract class ConsoleBuilder extends Builder
 {
     /**
      * returns the class diagram as concatenated string
-     * 
+     *
      * @return string
      */
     public function request()

@@ -21,17 +21,18 @@ use YumlPhp\Builder\HttpBuilder;
  */
 class UseCaseBuilder extends HttpBuilder
 {
+    const TYPE = 'usecase';
     protected $inspectorClass = 'YumlPhp\Request\FileRequest';
-    
+
     /**
      * builds a request array for the yuml API
-     * 
+     *
      * @return UseCaseBuilder
      */
     protected function doBuild()
     {
-        $this->request = explode(',',  str_replace("\n",'',file_get_contents($this->path)));
-        
+        $this->request = explode(',', str_replace("\n", '', file_get_contents($this->path)));
+
         return $this;
     }
 }

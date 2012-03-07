@@ -18,28 +18,28 @@ use YumlPhp\Request\RequestInterface as BaseRequestInterface;
 
 /**
  * A Request from File
- * 
+ *
  * @author Robert Schönthal <seroscho@googlemail.com>
  */
 class FileRequest implements BaseRequestInterface
 {
     private $file, $content;
-    
+
     public function getContent()
     {
         return $this->content;
     }
-    
+
     public function getFile()
     {
         return $this->file;
     }
-    
+
     /**
      * reflects given classes
-     * 
+     *
      * @param array $config
-     * @param string path
+     * @param       string path
      */
     public function __construct($file)
     {

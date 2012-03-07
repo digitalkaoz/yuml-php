@@ -5,7 +5,7 @@ namespace YumlPhp\Tests\Fixtures;
  *
  * @author caziel
  */
-interface BarInterface 
+interface BarInterface
 {
     //put your code here
 }

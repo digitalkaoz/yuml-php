@@ -25,7 +25,7 @@ use YumlPhp\Builder\Console\ActivityBuilder as ConsoleBuilder;
 
 /**
  * this command generates an activity diagram
- * 
+ *
  * @author Robert Schönthal <seroscho@googlemail.com>
  */
 class ActivityCommand extends BaseCommand
@@ -40,22 +40,21 @@ class ActivityCommand extends BaseCommand
     {
         $this
             ->setDefinition(array(
-              new InputArgument('source', InputArgument::REQUIRED, 'the file to read'),
-              new InputOption('console', null, InputOption::VALUE_NONE, 'log to console'),
-              new InputOption('debug', null, InputOption::VALUE_NONE, 'debug'),
-              new InputOption('style', null, InputOption::VALUE_NONE, 'yuml style options')
-            ))
+            new InputArgument('source', InputArgument::REQUIRED, 'the file to read'),
+            new InputOption('console', null, InputOption::VALUE_NONE, 'log to console'),
+            new InputOption('debug', null, InputOption::VALUE_NONE, 'debug'),
+            new InputOption('style', null, InputOption::VALUE_NONE, 'yuml style options')
+        ))
             ->setDescription('creates an activity diagram from a file')
             ->setHelp(<<<EOT
 The <info>activity</info> command generates an activity diagram from a file
 
 <info>yuml-php activity src/activities.txt</info> builds an activity diagram for the file
 EOT
-            )
-            ->setName('activity')
-        ;
-    }    
-    
+        )
+            ->setName('activity');
+    }
+
     /**
      * @inheritDoc
      */
@@ -64,14 +63,14 @@ EOT
         //scruffy, nofunky, plain
         //dir: LR TB RL
         //scale: 180 120 100 80 60
-        $style = $input->getOption('style') ?: 'plain;dir:LR;scale:80;';
-        $type = $this->getType();
-        
+        $style = $input->getOption('style') ? : 'plain;dir:LR;scale:80;';
+        $type = $this->builder->getType();
+
         return array(
-          'url' => 'http://yuml.me/diagram/'.$style.'/'.$type.'/',
-          'debug' => $input->getOption('debug'),
-          'style' => $input->getOption('style') ?: 'plain;dir:LR;scale:80;'
+            'url'   => 'http://yuml.me/diagram/' . $style . '/' . $type . '/',
+            'debug' => $input->getOption('debug'),
+            'style' => $input->getOption('style') ? : 'plain;dir:LR;scale:80;'
         );
-    }    
-    
+    }
+
 }
