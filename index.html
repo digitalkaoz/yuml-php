@@ -9,12 +9,9 @@
 
     <!-- Le styles -->
     <link href="vendor/twitter/bootstrap/docs/assets/css/bootstrap.css" rel="stylesheet">
-    <style>
-        body {
-            padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
-        }
-    </style>
     <link href="vendor/twitter/bootstrap/docs/assets/css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="vendor/twitter/bootstrap/docs/assets/css/docs.css" rel="stylesheet">
+    <link href="vendor/twitter/bootstrap/docs/assets/js/google-code-prettify/prettify.css" type="text/css" rel="stylesheet" />
 
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
@@ -26,8 +23,6 @@
     <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
     <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
     <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
-    <link href="google-code-prettify/prettify.css" type="text/css" rel="stylesheet" />
-    <link href="vendor/twitter/bootstrap/docs/assets/js/google-code-prettify/prettify.css" type="text/css" rel="stylesheet" />
 </head>
 
 <body data-spy="scroll">
@@ -77,21 +72,26 @@
 
 <div class="container">
 
-    <h1>A PHP Adapater for <a href="http://yuml.me">YUML</a></h1>
+    <h1>A PHP Adapater for <a href="http://yuml.me">YUML.me</a></h1>
 
-    <p>this Tool lets you build various UML Diagrams from your Source-Code.</p>
-    <pre class="prettyprint pre-scrollable"><code>php yuml-php.phar classes src/</code></pre>
+    <div class="span12">
+        <p>this Tool lets you build various UML Diagrams from your Source-Code.</p>
+        <pre class="prettyprint"><code>$ php yuml-php.phar classes src/</code></pre>
 
-    <div id="myCarousel" class="carousel">
-      <!-- Carousel items -->
-      <div class="carousel-inner">
-        <div class="active item">…</div>
-        <div class="item">…</div>
-        <div class="item">…</div>
-      </div>
-      <!-- Carousel nav -->
-      <a class="carousel-control left" href="#myCarousel" data-slide="prev">&lsaquo;</a>
-      <a class="carousel-control right" href="#myCarousel" data-slide="next">&rsaquo;</a>
+        <div id="myCarousel" class="carousel">
+          <!-- Carousel items -->
+          <div class="carousel-inner">
+            <div class="active item"><img src="examples/activity_01.png"/></div>
+            <div class="item"><img src="examples/classes_01.png"/></div>
+            <div class="item"><img src="examples/classes_02.png"/></div>
+            <div class="item"><img src="examples/usecase-01.png"/></div>
+            <div class="item"><img src="examples/classes_03.png"/></div>
+            <div class="item"><img src="examples/classes_04.png"/></div>
+          </div>
+          <!-- Carousel nav -->
+          <a class="carousel-control left" href="#myCarousel" data-slide="prev">&lsaquo;</a>
+          <a class="carousel-control right" href="#myCarousel" data-slide="next">&rsaquo;</a>
+        </div>
     </div>
 
     <!-- installation -->
@@ -99,78 +99,83 @@
         <div class="page-header">
             <h1>Installation</h1>
         </div>
-        <div class="row">
-            <p>you have different installations available:</p>
-        </div>
     </section>
+
     <section id="InstallationPhar">
         <div class="page-header">
             <h2>Installation as PHAR Archive
             </h2>
         </div>
-        <div class="row">
-            <p>Download the Phar the PHAR <a href="yuml-php.phar">here</a></p>
-            <p>Use it:</p>
-            <pre class="pre-scrollable prettyprint lang-sh">$ php yuml-php.phar</pre>
-        </div>
+        <div class="row"><div class="span12">
+            <p><span class="label label-success">#1</span>Download the Phar the PHAR <a href="yuml-php.phar">here</a></p>
+            <p><span class="label label-success">#2</span> Use it</p>
+            <pre class="prettyprint lang-sh">$ php yuml-php.phar</pre>
+        </div></div>
     </section>
+
     <section id="InstallationComposer">
         <div class="page-header">
             <h2>Installation with Composer
             </h2>
         </div>
-        <div class="row">
-            <p>Use it in your composer.json<a href="yuml-php.phar" target="_blank"></a></p>
-            <pre class="pre-scrollable prettyprint lang-sh">
+        <div class="row"><div class="span12">
+            <p><span class="label label-success">#1</span> define <span class="label">yuml-php</span> in your <span class="label">composer.json</span><a href="yuml-php.phar" target="_blank"></a></p>
+            <pre class="prettyprint lang-sh">
 {
     "require" : {
         "digitalkaoz/yuml-php" : ">=0.6"
     }
 }
 </pre>
-        </div>
+            <p><span class="label label-success">#2</span> Use it</p>
+            <pre class="prettyprint"><code>$ php composer.phar update</code></pre>
+        </div></div>
     </section>
+
     <section id="InstallationSource">
         <div class="page-header">
             <h2>Installation from Source
             </h2>
         </div>
-        <div class="row">
-            <p>Clone the Github Repository (<a href="https://github.com/digitalkaoz/yuml-php" target="_blank">git://github.com/digitalkaoz/yuml-php.git</a>)</p>
-            <p>Install Dependencies with <a href="http://getcomposer.org/" target="_blank">Composer</a></p>
+        <div class="row"><div class="span12">
+            <p><span class="label label-success">#1</span> Clone the <a href="https://github.com/digitalkaoz/yuml-php" target="_blank">Github Repository</a></p>
             <pre class="prettyprint"><code class="language-sh">$ git clone git://github.com/digitalkaoz/yuml-php.git
 $ cd yuml-php
-$ php composer.phar install
-$ bin/yuml-php
 </code></pre>
-        </div>
+            <p><span class="label label-success">#2</span> Install Dependencies with <a href="http://getcomposer.org/" target="_blank">Composer</a></p>
+            <pre class="prettyprint"><code class="language-sh">$ git clone git://github.com/digitalkaoz/yuml-php.git
+$ curl -s http://getcomposer.org/installer | php
+$ php composer.phar install
+</code></pre>
+            <p><span class="label label-success">#3</span> Use it</p>
+            <pre class="prettyprint"><code class="language-sh">$ bin/yuml-php</code></pre>
+        </div></div>
     </section>
+
     <section id="InstallationSymfony">
         <div class="page-header">
             <h2>Installation as Symfony Bundle
             </h2>
         </div>
-        <div class="row">
+        <div class="row"><div class="span12">
             <div class="alert alert-info">The Symfony2 Bundle is not available yet.</div>
-        </div>
+        </div></div>
     </section>
 
     <!-- usage -->
     <section id="Usage">
         <div class="page-header">
-            <h1>Usage
-                <small>bootstrap-tab.js</small>
-            </h1>
-        </div>
-        <div class="row">
+            <h1>Usage</h1>
         </div>
     </section>
+
     <section id="UsageClass">
         <div class="page-header">
-            <h2>Using Class Diagram Builder
+            <h2>Using the Class Diagram Builder
             </h2>
         </div>
-        <div class="row">
+        <div class="row"><div class="span6">
+            <p><span class="label label-info"><strong>Available Options</strong></span></p>
             <pre class="prettyprint"><code class="language-java">
 Usage:
     classes [--console] [--debug] [--properties] [--methods] folder basepath
@@ -186,13 +191,26 @@ Options:
     --methods     build with methods
 </code></pre>
         </div>
+        <div class="span6">
+            <p><span class="label label-info"><strong>Examples</strong></span></p>
+            <pre class="prettyprint"><code class="language-sh">
+$ php yuml-php.phar classes src/
+$ php yuml-php.phar classes --methods src/
+$ php yuml-php.phar classes --properties src/
+$ php yuml-php.phar classes --debug src/
+$ php yuml-php.phar classes --style="scruffy;dir:TB;scale:80;" src/
+$ php yuml-php.phar classes src/ /autoload/path
+</code></pre>
+        </div></div>
     </section>
+
     <section id="UsageActivity">
         <div class="page-header">
-            <h2>Using Activity Builder
+            <h2>Using the Activity Builder
             </h2>
         </div>
-        <div class="row">
+        <div class="row"><div class="span6">
+            <p><span class="label label-info"><strong>Available Options</strong></span></p>
             <pre class="prettyprint"><code class="language-java">
 Usage:
     activity [--console] [--debug] file
@@ -205,13 +223,23 @@ Options:
     --debug       debug
 </code></pre>
         </div>
+        <div class="span6">
+            <p><span class="label label-info"><strong>Examples</strong></span></p>
+            <pre class="prettyprint"><code class="language-sh">
+$ php yuml-php.phar activity activity.txt
+$ php yuml-php.phar activity --debug activity.txt
+$ php yuml-php.phar activity --style="scruffy;dir:TB;scale:80;" activity.txt
+</code></pre>
+        </div></div>
     </section>
+
     <section id="UsageUseCase">
         <div class="page-header">
-            <h2>Using UseCase Builder
+            <h2>Using the UseCase Builder
             </h2>
         </div>
-        <div class="row">
+        <div class="row"><div class="span6">
+            <p><span class="label label-info"><strong>Available Options</strong></span></p>
             <pre class="prettyprint"><code class="language-java">
 Usage:
     use-case [--console] [--debug] file
@@ -224,6 +252,14 @@ Options:
     --debug       debug
 </code></pre>
         </div>
+        <div class="span6">
+            <p><span class="label label-info"><strong>Examples</strong></span></p>
+            <pre class="prettyprint"><code class="language-sh">
+$ php yuml-php.phar use-case usecase.txt
+$ php yuml-php.phar use-case --debug usecase.txt
+$ php yuml-php.phar use-case --style="scruffy;dir:TB;scale:80;" usecase.txt
+</code></pre>
+        </div></div>
     </section>
 
     <!-- dev -->
@@ -231,34 +267,33 @@ Options:
         <div class="page-header">
             <h1>Development</h1>
         </div>
-        <div class="row">
-        </div>
     </section>
+
     <section id="DevGithub">
         <div class="page-header">
             <h2>Github
             </h2>
         </div>
-        <div class="row">
+        <div class="row"><div class="span12">
             <p>all Development is happening at <a href="https://github.com/digitalkaoz/yuml-php" target="_blank">Github</a>. So open your tickets or pull requests there.</p>
-        </div>
+        </div></div>
     </section>
+
     <section id="DevTests">
         <div class="page-header">
             <h2>Running Tests
             </h2>
         </div>
-        <div class="row">
+        <div class="row"><div class="span12">
             <p>Install yuml-php and all its dependencies (<a href="#InstallationSource">read</a>)</p>
             <pre class="prettyprint"><code class="language-sh">$ phpunit</code></pre>
-        </div>
+        </div></div>
     </section>
+
     <section id="DevTravis">
         <div class="page-header">
             <h2>Travis CI <a href="http://travis-ci.org/digitalkaoz/yuml-php" target="_blank"><img src="https://secure.travis-ci.org/digitalkaoz/yuml-php.png" alt="Build status..."></a>
             </h2>
-        </div>
-        <div class="row">
         </div>
     </section>
 </div>
