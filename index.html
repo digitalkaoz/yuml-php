@@ -11,7 +11,8 @@
     <link href="vendor/twitter/bootstrap/docs/assets/css/bootstrap.css" rel="stylesheet">
     <link href="vendor/twitter/bootstrap/docs/assets/css/bootstrap-responsive.css" rel="stylesheet">
     <link href="vendor/twitter/bootstrap/docs/assets/css/docs.css" rel="stylesheet">
-    <link href="vendor/twitter/bootstrap/docs/assets/js/google-code-prettify/prettify.css" type="text/css" rel="stylesheet" />
+    <link href="vendor/twitter/bootstrap/docs/assets/js/google-code-prettify/prettify.css" type="text/css"
+          rel="stylesheet"/>
 
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
@@ -23,6 +24,12 @@
     <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
     <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
     <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+    <style type="text/css">
+        @media (max-width: 480px) {
+            .forkme{display: none;}
+        }
+        .navbar .container .brand{color:#fff;}
+    </style>
 </head>
 
 <body data-spy="scroll">
@@ -44,6 +51,7 @@
                         <ul class="dropdown-menu">
                             <li><a href="#InstallationPhar">Phar</a></li>
                             <li><a href="#InstallationSource">Source</a></li>
+                            <li><a href="#InstallationComposer">Composer</a></li>
                             <li><a href="#InstallationSymfony">Symfony</a></li>
                         </ul>
                     </li>
@@ -71,124 +79,144 @@
 </div>
 
 <div class="container">
+<a href="https://github.com/digitalkaoz/yuml-php" class="forkme"><img style="position: absolute; top: 35px; right: 0; border: 0;" src="https://a248.e.akamai.net/assets.github.com/img/7afbc8b248c68eb468279e8c17986ad46549fb71/687474703a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" /></a>
 
-    <h1>A PHP Adapater for <a href="http://yuml.me">YUML.me</a></h1>
+<h1>A PHP Adapater for <a href="http://yuml.me">YUML.me</a></h1>
 
-    <div class="span12">
-        <p>this Tool lets you build various UML Diagrams from your Source-Code.</p>
-        <pre class="prettyprint"><code>$ php yuml-php.phar classes src/</code></pre>
+<div class="row">
+<div class="span12">
+    <p>build various UML Diagrams from your Source-Code in No-Time</p>
 
-        <div id="myCarousel" class="carousel">
-          <!-- Carousel items -->
-          <div class="carousel-inner">
-            <div class="active item"><img src="examples/activity_01.png"/></div>
-            <div class="item"><img src="examples/classes_01.png"/></div>
-            <div class="item"><img src="examples/classes_02.png"/></div>
-            <div class="item"><img src="examples/usecase-01.png"/></div>
-            <div class="item"><img src="examples/classes_03.png"/></div>
-            <div class="item"><img src="examples/classes_04.png"/></div>
-          </div>
-          <!-- Carousel nav -->
-          <a class="carousel-control left" href="#myCarousel" data-slide="prev">&lsaquo;</a>
-          <a class="carousel-control right" href="#myCarousel" data-slide="next">&rsaquo;</a>
+    <div id="myCarousel" class="carousel" width="100%">
+        <!-- Carousel items -->
+        <div class="carousel-inner">
+            <div class="active item"><img src="examples/activity_01.png" width="100%"/></div>
+            <div class="item"><img src="examples/classes_01.png" width="100%"/></div>
+            <div class="item"><img src="examples/classes_02.png" width="100%"/></div>
+            <div class="item"><img src="examples/usecase-01.png" width="100%"/></div>
+            <div class="item"><img src="examples/classes_03.png" width="100%"/></div>
+            <div class="item"><img src="examples/classes_04.png" width="100%"/></div>
         </div>
+        <!-- Carousel nav -->
+        <a class="carousel-control left" href="#myCarousel" data-slide="prev">&lsaquo;</a>
+        <a class="carousel-control right" href="#myCarousel" data-slide="next">&rsaquo;</a>
     </div>
 
-    <!-- installation -->
-    <section id="Installation">
-        <div class="page-header">
-            <h1>Installation</h1>
-        </div>
-    </section>
+    <pre class="prettyprint"><code>$ php yuml-php.phar classes src/</code></pre>
 
-    <section id="InstallationPhar">
-        <div class="page-header">
-            <h2>Installation as PHAR Archive
-            </h2>
-        </div>
-        <div class="row"><div class="span12">
-            <p><span class="label label-success">#1</span>Download the Phar the PHAR <a href="yuml-php.phar">here</a></p>
+    <p>you get an <a href="http://yuml.me/58029bd9.png" target="_blank">Image Url</a> to the Rendered Diagram (or <a
+        href="http://yuml.me/58029bd9.pdf" target="_blank">PDF</a> or an <a href="http://yuml.me/edit/58029bd9"
+                                                                            target="_blank">Editable Link</a>)</p>
+</div>
+</div>
+
+<!-- installation -->
+<section id="Installation">
+    <div class="page-header">
+        <h2>Installation</h2>
+    </div>
+</section>
+
+<section id="InstallationPhar">
+    <div class="page-header">
+        <h3>Installation as PHAR Archive</h3>
+    </div>
+    <div class="row">
+        <div class="span12">
+            <p><span class="label label-success">#1</span>Download the Phar <a href="yuml-php.phar">here</a>
+            </p>
+
             <p><span class="label label-success">#2</span> Use it</p>
             <pre class="prettyprint lang-sh">$ php yuml-php.phar</pre>
-        </div></div>
-    </section>
-
-    <section id="InstallationComposer">
-        <div class="page-header">
-            <h2>Installation with Composer
-            </h2>
         </div>
-        <div class="row"><div class="span12">
-            <p><span class="label label-success">#1</span> define <span class="label">yuml-php</span> in your <span class="label">composer.json</span><a href="yuml-php.phar" target="_blank"></a></p>
-            <pre class="prettyprint lang-sh">
-{
+    </div>
+</section>
+
+<section id="InstallationComposer">
+    <div class="page-header">
+        <h3>Installation with Composer</h3>
+    </div>
+    <div class="row">
+        <div class="span12">
+            <p><span class="label label-success">#1</span> define <span class="label">yuml-php</span> in your <span
+                class="label">composer.json</span><a href="yuml-php.phar" target="_blank"></a></p>
+            <pre class="prettyprint"><code class="language-sh">{
     "require" : {
         "digitalkaoz/yuml-php" : ">=0.6"
     }
 }
-</pre>
+</code></pre>
             <p><span class="label label-success">#2</span> Use it</p>
             <pre class="prettyprint"><code>$ php composer.phar update</code></pre>
-        </div></div>
-    </section>
-
-    <section id="InstallationSource">
-        <div class="page-header">
-            <h2>Installation from Source
-            </h2>
         </div>
-        <div class="row"><div class="span12">
-            <p><span class="label label-success">#1</span> Clone the <a href="https://github.com/digitalkaoz/yuml-php" target="_blank">Github Repository</a></p>
+    </div>
+</section>
+
+<section id="InstallationSource">
+    <div class="page-header">
+        <h3>Installation from Source</h3>
+    </div>
+    <div class="row">
+        <div class="span12">
+            <p><span class="label label-success">#1</span> Clone the <a href="https://github.com/digitalkaoz/yuml-php"
+                                                                        target="_blank">Github Repository</a></p>
             <pre class="prettyprint"><code class="language-sh">$ git clone git://github.com/digitalkaoz/yuml-php.git
 $ cd yuml-php
 </code></pre>
-            <p><span class="label label-success">#2</span> Install Dependencies with <a href="http://getcomposer.org/" target="_blank">Composer</a></p>
-            <pre class="prettyprint"><code class="language-sh">$ git clone git://github.com/digitalkaoz/yuml-php.git
-$ curl -s http://getcomposer.org/installer | php
+            <p><span class="label label-success">#2</span> Install Dependencies with <a href="http://getcomposer.org/"
+                                                                                        target="_blank">Composer</a></p>
+            <pre class="prettyprint"><code class="language-sh">$ curl -s http://getcomposer.org/installer | php
 $ php composer.phar install
 </code></pre>
             <p><span class="label label-success">#3</span> Use it</p>
             <pre class="prettyprint"><code class="language-sh">$ bin/yuml-php</code></pre>
-        </div></div>
-    </section>
-
-    <section id="InstallationSymfony">
-        <div class="page-header">
-            <h2>Installation as Symfony Bundle
-            </h2>
         </div>
-        <div class="row"><div class="span12">
+    </div>
+</section>
+
+<section id="InstallationSymfony">
+    <div class="page-header">
+        <h3>Installation as Symfony Bundle</h3>
+    </div>
+    <div class="row">
+        <div class="span12">
             <div class="alert alert-info">The Symfony2 Bundle is not available yet.</div>
-        </div></div>
-    </section>
-
-    <!-- usage -->
-    <section id="Usage">
-        <div class="page-header">
-            <h1>Usage</h1>
         </div>
-    </section>
+    </div>
+</section>
 
-    <section id="UsageClass">
-        <div class="page-header">
-            <h2>Using the Class Diagram Builder
-            </h2>
+<!-- usage -->
+<section id="Usage">
+    <div class="page-header">
+        <h2>Usage</h2>
+    </div>
+</section>
+
+<section id="UsageClass">
+    <div class="page-header">
+        <h3>Building a Class Diagram</h3>
+    </div>
+    <div class="row">
+        <div class="span12">
+            <div class="alert alert-success">The <span class="label">Class Diagram Builder</span> lets you build UML
+                Class Diagrams from your PHP Source Files.
+            </div>
         </div>
-        <div class="row"><div class="span6">
+        <div class="span6">
             <p><span class="label label-info"><strong>Available Options</strong></span></p>
             <pre class="prettyprint"><code class="language-java">
 Usage:
-    classes [--console] [--debug] [--properties] [--methods] folder basepath
+classes [--console] [--debug] [--properties] [--methods] folder basepath
 
 Arguments:
-    folder      the folder to scan for classes
-    basepath    the basepath for the autoloader
+folder the folder to scan for classes
+basepath the basepath for the autoloader
 
 Options:
-    --console     log to console
-    --debug       debug
-    --properties  build with properties
-    --methods     build with methods
+--console log to console
+--debug debug
+--properties build with properties
+--methods build with methods
 </code></pre>
         </div>
         <div class="span6">
@@ -201,26 +229,32 @@ $ php yuml-php.phar classes --debug src/
 $ php yuml-php.phar classes --style="scruffy;dir:TB;scale:80;" src/
 $ php yuml-php.phar classes src/ /autoload/path
 </code></pre>
-        </div></div>
-    </section>
-
-    <section id="UsageActivity">
-        <div class="page-header">
-            <h2>Using the Activity Builder
-            </h2>
         </div>
-        <div class="row"><div class="span6">
+    </div>
+</section>
+
+<section id="UsageActivity">
+    <div class="page-header">
+        <h3>Building an Activity Diagram</h3>
+    </div>
+    <div class="row">
+        <div class="span12">
+            <div class="alert alert-success">The <span class="label">Activity Diagram Builder</span> lets you build a
+                UML Activity Diagram from a file.
+            </div>
+        </div>
+        <div class="span6">
             <p><span class="label label-info"><strong>Available Options</strong></span></p>
             <pre class="prettyprint"><code class="language-java">
 Usage:
-    activity [--console] [--debug] file
+activity [--console] [--debug] file
 
 Arguments:
-    file          the file to read
+file the file to read
 
 Options:
-    --console     log to console
-    --debug       debug
+--console log to console
+--debug debug
 </code></pre>
         </div>
         <div class="span6">
@@ -230,26 +264,32 @@ $ php yuml-php.phar activity activity.txt
 $ php yuml-php.phar activity --debug activity.txt
 $ php yuml-php.phar activity --style="scruffy;dir:TB;scale:80;" activity.txt
 </code></pre>
-        </div></div>
-    </section>
-
-    <section id="UsageUseCase">
-        <div class="page-header">
-            <h2>Using the UseCase Builder
-            </h2>
         </div>
-        <div class="row"><div class="span6">
+    </div>
+</section>
+
+<section id="UsageUseCase">
+    <div class="page-header">
+        <h3>Building a Use-Case Diagram</h3>
+    </div>
+    <div class="row">
+        <div class="span12">
+            <div class="alert alert-success">The <span class="label">Use-Case Diagram Builder</span> lets you build a
+                UML Use-Case Diagram from a file.
+            </div>
+        </div>
+        <div class="span6">
             <p><span class="label label-info"><strong>Available Options</strong></span></p>
             <pre class="prettyprint"><code class="language-java">
 Usage:
-    use-case [--console] [--debug] file
+use-case [--console] [--debug] file
 
 Arguments:
-    file          the file to read
+file the file to read
 
 Options:
-    --console     log to console
-    --debug       debug
+--console log to console
+--debug debug
 </code></pre>
         </div>
         <div class="span6">
@@ -259,43 +299,49 @@ $ php yuml-php.phar use-case usecase.txt
 $ php yuml-php.phar use-case --debug usecase.txt
 $ php yuml-php.phar use-case --style="scruffy;dir:TB;scale:80;" usecase.txt
 </code></pre>
-        </div></div>
-    </section>
-
-    <!-- dev -->
-    <section id="Dev">
-        <div class="page-header">
-            <h1>Development</h1>
         </div>
-    </section>
+    </div>
+</section>
 
-    <section id="DevGithub">
-        <div class="page-header">
-            <h2>Github
-            </h2>
-        </div>
-        <div class="row"><div class="span12">
-            <p>all Development is happening at <a href="https://github.com/digitalkaoz/yuml-php" target="_blank">Github</a>. So open your tickets or pull requests there.</p>
-        </div></div>
-    </section>
+<!-- dev -->
+<section id="Dev">
+    <div class="page-header">
+        <h2>Development</h2>
+    </div>
+</section>
 
-    <section id="DevTests">
-        <div class="page-header">
-            <h2>Running Tests
-            </h2>
+<section id="DevGithub">
+    <div class="page-header">
+        <h3>Github</h3>
+    </div>
+    <div class="row">
+        <div class="span12">
+            <p>all Development is happening at <a href="https://github.com/digitalkaoz/yuml-php"
+                                                  target="_blank">Github</a>. So open your tickets or pull requests
+                there.</p>
         </div>
-        <div class="row"><div class="span12">
+    </div>
+</section>
+
+<section id="DevTests">
+    <div class="page-header">
+        <h3>Running Tests</h3>
+    </div>
+    <div class="row">
+        <div class="span12">
             <p>Install yuml-php and all its dependencies (<a href="#InstallationSource">read</a>)</p>
             <pre class="prettyprint"><code class="language-sh">$ phpunit</code></pre>
-        </div></div>
-    </section>
-
-    <section id="DevTravis">
-        <div class="page-header">
-            <h2>Travis CI <a href="http://travis-ci.org/digitalkaoz/yuml-php" target="_blank"><img src="https://secure.travis-ci.org/digitalkaoz/yuml-php.png" alt="Build status..."></a>
-            </h2>
         </div>
-    </section>
+    </div>
+</section>
+
+<section id="DevTravis">
+    <div class="page-header">
+        <h3>Travis CI <a href="http://travis-ci.org/digitalkaoz/yuml-php" target="_blank"><img
+            src="https://secure.travis-ci.org/digitalkaoz/yuml-php.png" alt="Build status..."></a>
+        </h3>
+    </div>
+</section>
 </div>
 <!-- /container -->
 
@@ -318,5 +364,22 @@ $ php yuml-php.phar use-case --style="scruffy;dir:TB;scale:80;" usecase.txt
 <script src="vendor/twitter/bootstrap/js/bootstrap-typeahead.js"></script>
 
 <script src="yuml.js"></script>
+
+<script type="text/javascript">
+
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-5342621-3']);
+    _gaq.push(['_trackPageview']);
+
+    (function () {
+        var ga = document.createElement('script');
+        ga.type = 'text/javascript';
+        ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(ga, s);
+    })();
+
+</script>
 </body>
 </html>
