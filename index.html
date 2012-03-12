@@ -1,5 +1,287 @@
-<html>
-	<title>yuml-php</title>
-	<body><a href="https://github.com/digitalkaoz/yuml-php">Github Repo</a><h1>TODO</h1></body>
-</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>yuml-php - a PHP Adapter for http://yuml.me</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
 
+    <!-- Le styles -->
+    <link href="vendor/twitter/bootstrap/docs/assets/css/bootstrap.css" rel="stylesheet">
+    <style>
+        body {
+            padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+        }
+    </style>
+    <link href="vendor/twitter/bootstrap/docs/assets/css/bootstrap-responsive.css" rel="stylesheet">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+    <script src="//html5shim.googlepre.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le fav and touch icons -->
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+    <link href="google-code-prettify/prettify.css" type="text/css" rel="stylesheet" />
+    <link href="vendor/twitter/bootstrap/docs/assets/js/google-code-prettify/prettify.css" type="text/css" rel="stylesheet" />
+</head>
+
+<body data-spy="scroll">
+
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+            </a>
+            <a class="brand" href="#">yuml-php</a>
+
+            <div class="nav-collapse">
+                <ul class="nav">
+                    <li class="active"><a href="#">Home</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Installation <b
+                            class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#InstallationPhar">Phar</a></li>
+                            <li><a href="#InstallationSource">Source</a></li>
+                            <li><a href="#InstallationSymfony">Symfony</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Usage <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#UsageClass">Class Diagram</a></li>
+                            <li><a href="#UsageActivity">Activity Diagram</a></li>
+                            <li><a href="#UsageUseCase">UseCase Diagram</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Development <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#DevGithub">Github</a></li>
+                            <li><a href="#DevTests">Tests</a></li>
+                            <li><a href="#DevTravis">Travis CI</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <!--/.nav-collapse -->
+        </div>
+    </div>
+</div>
+
+<div class="container">
+
+    <h1>A PHP Adapater for <a href="http://yuml.me">YUML</a></h1>
+
+    <p>this Tool lets you build various UML Diagrams from your Source-Code.</p>
+    <pre class="prettyprint pre-scrollable"><code>php yuml-php.phar classes src/</code></pre>
+
+    <div id="myCarousel" class="carousel">
+      <!-- Carousel items -->
+      <div class="carousel-inner">
+        <div class="active item">…</div>
+        <div class="item">…</div>
+        <div class="item">…</div>
+      </div>
+      <!-- Carousel nav -->
+      <a class="carousel-control left" href="#myCarousel" data-slide="prev">&lsaquo;</a>
+      <a class="carousel-control right" href="#myCarousel" data-slide="next">&rsaquo;</a>
+    </div>
+
+    <!-- installation -->
+    <section id="Installation">
+        <div class="page-header">
+            <h1>Installation</h1>
+        </div>
+        <div class="row">
+            <p>you have different installations available:</p>
+        </div>
+    </section>
+    <section id="InstallationPhar">
+        <div class="page-header">
+            <h2>Installation as PHAR Archive
+            </h2>
+        </div>
+        <div class="row">
+            <p>Download the Phar the PHAR <a href="yuml-php.phar">here</a></p>
+            <p>Use it:</p>
+            <pre class="pre-scrollable prettyprint lang-sh">$ php yuml-php.phar</pre>
+        </div>
+    </section>
+    <section id="InstallationComposer">
+        <div class="page-header">
+            <h2>Installation with Composer
+            </h2>
+        </div>
+        <div class="row">
+            <p>Use it in your composer.json<a href="yuml-php.phar" target="_blank"></a></p>
+            <pre class="pre-scrollable prettyprint lang-sh">
+{
+    "require" : {
+        "digitalkaoz/yuml-php" : ">=0.6"
+    }
+}
+</pre>
+        </div>
+    </section>
+    <section id="InstallationSource">
+        <div class="page-header">
+            <h2>Installation from Source
+            </h2>
+        </div>
+        <div class="row">
+            <p>Clone the Github Repository (<a href="https://github.com/digitalkaoz/yuml-php" target="_blank">git://github.com/digitalkaoz/yuml-php.git</a>)</p>
+            <p>Install Dependencies with <a href="http://getcomposer.org/" target="_blank">Composer</a></p>
+            <pre class="prettyprint"><code class="language-sh">$ git clone git://github.com/digitalkaoz/yuml-php.git
+$ cd yuml-php
+$ php composer.phar install
+$ bin/yuml-php
+</code></pre>
+        </div>
+    </section>
+    <section id="InstallationSymfony">
+        <div class="page-header">
+            <h2>Installation as Symfony Bundle
+            </h2>
+        </div>
+        <div class="row">
+            <div class="alert alert-info">The Symfony2 Bundle is not available yet.</div>
+        </div>
+    </section>
+
+    <!-- usage -->
+    <section id="Usage">
+        <div class="page-header">
+            <h1>Usage
+                <small>bootstrap-tab.js</small>
+            </h1>
+        </div>
+        <div class="row">
+        </div>
+    </section>
+    <section id="UsageClass">
+        <div class="page-header">
+            <h2>Using Class Diagram Builder
+            </h2>
+        </div>
+        <div class="row">
+            <pre class="prettyprint"><code class="language-java">
+Usage:
+    classes [--console] [--debug] [--properties] [--methods] folder basepath
+
+Arguments:
+    folder      the folder to scan for classes
+    basepath    the basepath for the autoloader
+
+Options:
+    --console     log to console
+    --debug       debug
+    --properties  build with properties
+    --methods     build with methods
+</code></pre>
+        </div>
+    </section>
+    <section id="UsageActivity">
+        <div class="page-header">
+            <h2>Using Activity Builder
+            </h2>
+        </div>
+        <div class="row">
+            <pre class="prettyprint"><code class="language-java">
+Usage:
+    activity [--console] [--debug] file
+
+Arguments:
+    file          the file to read
+
+Options:
+    --console     log to console
+    --debug       debug
+</code></pre>
+        </div>
+    </section>
+    <section id="UsageUseCase">
+        <div class="page-header">
+            <h2>Using UseCase Builder
+            </h2>
+        </div>
+        <div class="row">
+            <pre class="prettyprint"><code class="language-java">
+Usage:
+    use-case [--console] [--debug] file
+
+Arguments:
+    file          the file to read
+
+Options:
+    --console     log to console
+    --debug       debug
+</code></pre>
+        </div>
+    </section>
+
+    <!-- dev -->
+    <section id="Dev">
+        <div class="page-header">
+            <h1>Development</h1>
+        </div>
+        <div class="row">
+        </div>
+    </section>
+    <section id="DevGithub">
+        <div class="page-header">
+            <h2>Github
+            </h2>
+        </div>
+        <div class="row">
+            <p>all Development is happening at <a href="https://github.com/digitalkaoz/yuml-php" target="_blank">Github</a>. So open your tickets or pull requests there.</p>
+        </div>
+    </section>
+    <section id="DevTests">
+        <div class="page-header">
+            <h2>Running Tests
+            </h2>
+        </div>
+        <div class="row">
+            <p>Install yuml-php and all its dependencies (<a href="#InstallationSource">read</a>)</p>
+            <pre class="prettyprint"><code class="language-sh">$ phpunit</code></pre>
+        </div>
+    </section>
+    <section id="DevTravis">
+        <div class="page-header">
+            <h2>Travis CI <a href="http://travis-ci.org/digitalkaoz/yuml-php" target="_blank"><img src="https://secure.travis-ci.org/digitalkaoz/yuml-php.png" alt="Build status..."></a>
+            </h2>
+        </div>
+        <div class="row">
+        </div>
+    </section>
+</div>
+<!-- /container -->
+
+<!-- Le javascript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script type="text/javascript" src="google-code-prettify/prettify.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<script src="vendor/twitter/bootstrap/js/bootstrap-transition.js"></script>
+<script src="vendor/twitter/bootstrap/js/bootstrap-alert.js"></script>
+<script src="vendor/twitter/bootstrap/js/bootstrap-modal.js"></script>
+<script src="vendor/twitter/bootstrap/js/bootstrap-dropdown.js"></script>
+<script src="vendor/twitter/bootstrap/js/bootstrap-scrollspy.js"></script>
+<script src="vendor/twitter/bootstrap/js/bootstrap-tab.js"></script>
+<script src="vendor/twitter/bootstrap/js/bootstrap-tooltip.js"></script>
+<script src="vendor/twitter/bootstrap/js/bootstrap-popover.js"></script>
+<script src="vendor/twitter/bootstrap/js/bootstrap-button.js"></script>
+<script src="vendor/twitter/bootstrap/js/bootstrap-collapse.js"></script>
+<script src="vendor/twitter/bootstrap/js/bootstrap-carousel.js"></script>
+<script src="vendor/twitter/bootstrap/js/bootstrap-typeahead.js"></script>
+
+<script src="yuml.js"></script>
+</body>
+</html>
