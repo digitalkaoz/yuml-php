@@ -27,6 +27,11 @@ use YumlPhp\Command;
 class Application extends BaseApplication
 {
 
+    public function __construct()
+    {
+        parent::__construct('yuml-php', '@package_version@');
+    }
+
     /**
      * {@inheritDoc}
      */
