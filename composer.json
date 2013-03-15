@@ -1,8 +1,6 @@
 {
     "name" : "digitalkaoz/yuml-php",
-    "target-dir" : "vendor/",
     "homepage" : "https://github.com/digitalkaoz/yuml-php",
-    "version" : "0.6.0",
     "type": "library",
     "license": "MIT",
     "authors": [
@@ -15,8 +13,8 @@
 
     "require": {
         "php": ">=5.3.2",
-        "symfony/finder":   ">=2.0.9,<=2.1",
-        "symfony/console":  ">=2.0.9,<=2.1",
+        "symfony/finder":   ">=2.0.9",
+        "symfony/console":  ">=2.0.9",
         "kriswallsmith/buzz": ">=0.5"
     },
 
