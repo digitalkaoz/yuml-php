@@ -46,22 +46,4 @@ class UseCaseCommandTest extends \PHPUnit_Framework_TestCase
         $this->assertGreaterThan(0, strlen($tester->getDisplay()));
     }
 
-    /**
-     * @expectedException \RuntimeException
-     */
-    public function testRunWithErrors()
-    {
-        $command = $this->getMockBuilder('YumlPhp\Command\UseCaseCommand')
-            ->setMethods(array('getBuilderConfig'))
-            ->getMock();
-
-        $command->expects($this->once())->method('getBuilderConfig')->will($this->returnValue(array(
-            'url'   => 'http://lolcathost/',
-            'debug' => false,
-            'style' => 'plain;dir:LR;scale:80;'
-        )));
-
-        $tester = new CommandTester($command);
-        $tester->execute(array('source' => sys_get_temp_dir()));
-    }
 }
