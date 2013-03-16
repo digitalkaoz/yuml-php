@@ -1,6 +1,7 @@
 {
     "name" : "digitalkaoz/yuml-php",
     "homepage" : "https://github.com/digitalkaoz/yuml-php",
+    "description" : "a PHP Adapter for http://yuml.me",
     "type": "library",
     "license": "MIT",
     "authors": [
