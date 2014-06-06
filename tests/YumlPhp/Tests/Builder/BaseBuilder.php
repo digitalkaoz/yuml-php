@@ -11,6 +11,7 @@
 
 namespace YumlPhp\Tests\Builder;
 
+use TokenReflection\Broker;
 use YumlPhp\Builder\BuilderInterface;
 use YumlPhp\Request\RequestInterface;
 
@@ -69,6 +70,19 @@ class BaseBuilder extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expected, str_replace(array($ns, '<info>', '</info>', '<note>', '</note>', '<highlight>', '</highlight>', "\t", "\n"), null, $result));
     }
 
+    private function convertClasses(array $classes)
+    {
+        $broker = new Broker(new Broker\Backend\Memory());
+        $broker->processDirectory(__DIR__.'/../Fixtures/');
+
+        $newClasses = [];
+        foreach ($classes as $cls) {
+            $newClasses[$cls] = $broker->getClass($cls);
+        }
+
+        return $newClasses;
+    }
+
     /**
      *
      * @return BuilderInterface
@@ -80,6 +94,8 @@ class BaseBuilder extends \PHPUnit_Framework_TestCase
             ->setMockClassName('Mock' . str_replace('YumlPhp\\Tests\\Fixtures\\', '_', join('_', $classes)) . '_' . rand(0, 999999))
             ->setConstructorArgs($constructArgs)
             ->getMock();
+
+        $classes = $this->convertClasses($classes);
 
         if (strpos($builderClass, 'ClassesBuilder')) {
             $inspector = $this->getMockBuilder('YumlPhp\Request\ClassesRequest')

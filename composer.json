@@ -13,10 +13,11 @@
     ],
 
     "require": {
-        "php": ">=5.3.2",
-        "symfony/finder":   "~2.0",
-        "symfony/console":  "~2.0",
-        "kriswallsmith/buzz": "~0.9"
+        "ext-tokenizer":    "*",
+        "symfony/finder":   "@stable",
+        "symfony/console":  "@stable",
+        "kriswallsmith/buzz": "@stable",
+        "andrewsville/php-token-reflection": "@stable"
     },
 
     "autoload": {
