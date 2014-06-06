@@ -75,7 +75,7 @@ class BaseBuilder extends \PHPUnit_Framework_TestCase
         $broker = new Broker(new Broker\Backend\Memory());
         $broker->processDirectory(__DIR__.'/../Fixtures/');
 
-        $newClasses = [];
+        $newClasses = array();
         foreach ($classes as $cls) {
             $newClasses[$cls] = $broker->getClass($cls);
         }
