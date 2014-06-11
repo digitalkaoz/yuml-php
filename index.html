@@ -142,7 +142,7 @@
                 class="label">composer.json</span><a href="yuml-php.phar" target="_blank"></a></p>
             <pre class="prettyprint"><code class="language-sh">{
     "require" : {
-        "digitalkaoz/yuml-php" : ">=0.6"
+        "digitalkaoz/yuml-php" : "@stable"
     }
 }
 </code></pre>
@@ -206,11 +206,10 @@ $ php composer.phar install
             <p><span class="label label-info"><strong>Available Options</strong></span></p>
             <pre class="prettyprint"><code class="language-java">
 Usage:
-classes [--console] [--debug] [--properties] [--methods] folder basepath
+classes [--console] [--debug] [--properties] [--methods] folder
 
 Arguments:
 folder the folder to scan for classes
-basepath the basepath for the autoloader
 
 Options:
 --console log to console
@@ -227,7 +226,6 @@ $ php yuml-php.phar classes --methods src/
 $ php yuml-php.phar classes --properties src/
 $ php yuml-php.phar classes --debug src/
 $ php yuml-php.phar classes --style="scruffy;dir:TB;scale:80;" src/
-$ php yuml-php.phar classes src/ /autoload/path
 </code></pre>
         </div>
     </div>
