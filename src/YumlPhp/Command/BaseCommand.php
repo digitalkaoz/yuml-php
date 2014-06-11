@@ -36,25 +36,40 @@ abstract class BaseCommand extends Command
     protected $builder;
 
     /**
-     * @inheritDoc
+     * @var BuilderInterface
      */
-    protected function createBuilder(InputInterface $input)
+    protected $httpBuilder;
+
+    /**
+     * @var BuilderInterface
+     */
+    protected $consoleBuilder;
+
+
+    /**
+     * @param BuilderInterface $httpBuilder
+     * @param BuilderInterface $consoleBuilder
+     */
+    public function __construct(BuilderInterface $httpBuilder, BuilderInterface $consoleBuilder)
     {
-        if ($input->getOption('console')) {
-            $class = static::$consoleBuilder;
-            $this->builder = new $class();
-        } else {
-            $browser = new Browser();
-            $browser->getClient()->setTimeout(30);
-            $class = static::$httpBuilder;
-            $this->builder = new $class($browser);
-        }
+        $this->httpBuilder = $httpBuilder;
+        $this->consoleBuilder = $consoleBuilder;
 
-        $config = $this->getBuilderConfig($input);
+        parent::__construct();
+    }
 
-        return $this->builder
-            ->configure($config)
-            ->setPath($input->getArgument('source'));
+    /**
+     * creates the builder
+     *
+     * @return BuilderInterface
+     */
+    private function createBuilder(InputInterface $input)
+    {
+        $builder = $input->getOption('console') ? $this->consoleBuilder : $this->httpBuilder;
+        $builder->configure($this->getBuilderConfig($builder, $input));
+        $builder->setPath($input->getArgument('source'));
+
+        return $builder;
     }
 
     /**
@@ -64,7 +79,7 @@ abstract class BaseCommand extends Command
     {
         $messages = $this->createBuilder($input)->build();
 
-        if (!count($messages)) {
+        if (!$messages) {
             $input->setOption('debug', true);
             $messages = $this->createBuilder($input)->build();
             throw new \RuntimeException('Uml Build Error ' . "\n" . join("\n", $messages ? : array()));
@@ -76,8 +91,9 @@ abstract class BaseCommand extends Command
     /**
      * creates the builder configuration
      *
-     * @param InputInterface $input
+     * @param \YumlPhp\Builder\BuilderInterface $builder
+     * @param InputInterface                    $input
      * @return array
      */
-    abstract protected function getBuilderConfig(InputInterface $input);
+    abstract protected function getBuilderConfig(BuilderInterface $builder, InputInterface $input);
 }

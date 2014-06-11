@@ -18,5 +18,9 @@ namespace YumlPhp\Request;
  */
 interface RequestInterface
 {
+    public function setPath($path);
 
+    public function configure(array $config);
+
+    public function build();
 }

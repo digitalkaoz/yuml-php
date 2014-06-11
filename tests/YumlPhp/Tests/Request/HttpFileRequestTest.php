@@ -9,16 +9,16 @@
  * file that was distributed with this source code.
  */
 
-namespace YumlPhp\Tests\Application;
+namespace YumlPhp\Tests\Request;
 
-use YumlPhp\Request\FileRequest;
+use YumlPhp\Request\Http\FileRequest;
 
 /**
  * FileRequestTest
  *
  * @author Robert Schönthal <seroscho@googlemail.com>
  *
- * @covers YumlPhp\Request\FileRequest<extended>
+ * @covers YumlPhp\Request\Http\FileRequest<extended>
  */
 class FileRequestTest extends \PHPUnit_Framework_TestCase
 {
@@ -26,9 +26,15 @@ class FileRequestTest extends \PHPUnit_Framework_TestCase
     {
         $file = __DIR__ . '/../Fixtures/activity.txt';
 
-        $request = new FileRequest($file);
+        $request = new FileRequest();
+        $request->setPath($file);
 
-        $this->assertEquals($file, $request->getFile());
-        $this->assertStringEqualsFile($file, $request->getContent());
+        $this->assertEquals(array(
+            '(start)->|a|',
+            '|a|->(Make Coffee)->|b|',
+            '|a|->(Make Breakfast)->|b|',
+            '|b|-><c>[want more coffee]->(Make Coffee)',
+            '<c>[satisfied]->(end)'
+        ), $request->build());
     }
 }

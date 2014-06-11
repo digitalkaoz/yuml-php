@@ -30,9 +30,6 @@ use YumlPhp\Builder\Console\ActivityBuilder as ConsoleBuilder;
  */
 class ActivityCommand extends BaseCommand
 {
-    static protected $httpBuilder = 'YumlPhp\Builder\Http\ActivityBuilder';
-    static protected $consoleBuilder = 'YumlPhp\Builder\Console\ActivityBuilder';
-
     /**
      * @inheritDoc
      */
@@ -58,13 +55,13 @@ EOT
     /**
      * @inheritDoc
      */
-    protected function getBuilderConfig(InputInterface $input)
+    protected function getBuilderConfig(BuilderInterface $builder, InputInterface $input)
     {
         //scruffy, nofunky, plain
         //dir: LR TB RL
         //scale: 180 120 100 80 60
         $style = $input->getOption('style') ? : 'plain;dir:LR;scale:80;';
-        $type = $this->builder->getType();
+        $type = $builder->getType();
 
         return array(
             'url'   => 'http://yuml.me/diagram/' . $style . '/' . $type . '/',

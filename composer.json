@@ -1,29 +1,42 @@
 {
-    "name" : "digitalkaoz/yuml-php",
-    "homepage" : "https://github.com/digitalkaoz/yuml-php",
-    "description" : "a PHP Adapter for http://yuml.me",
-    "type": "library",
-    "license": "MIT",
+    "name":         "digitalkaoz/yuml-php",
+    "homepage":     "https://github.com/digitalkaoz/yuml-php",
+    "description":  "a PHP Adapter for http://yuml.me",
+    "type":         "library",
+    "license":      "MIT",
+
     "authors": [
         {
-            "name": "Robert Schönthal",
-            "email": "seroscho@googlemail.com",
+            "name":     "Robert Schönthal",
+            "email":    "seroscho@googlemail.com",
             "homepage": "http://digitalkaoz.net"
         }
     ],
 
     "require": {
-        "ext-tokenizer":    "*",
-        "symfony/finder":   "@stable",
-        "symfony/console":  "@stable",
-        "kriswallsmith/buzz": "@stable",
-        "andrewsville/php-token-reflection": "@stable"
+        "ext-tokenizer":                        "*",
+        "symfony/finder":                       "@stable",
+        "pimple/pimple":                        "@stable",
+        "symfony/console":                      "@stable",
+        "kriswallsmith/buzz":                   "@stable",
+        "andrewsville/php-token-reflection":    "@stable"
+    },
+
+    "require-dev" : {
+        "kherge/box": "@stable"
     },
 
     "autoload": {
-        "psr-0": {
-            "YumlPhp": "src/"
+        "psr-4": {
+            "YumlPhp\\":        "src/YumlPhp"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "YumlPhp\\Tests\\": "tests/YumlPhp/Tests",
+            "YumlPhp\\Tests\\Integration\\": "tests/Integration"
+        }
+    },
+
     "bin": ["bin/yuml-php"]
 }

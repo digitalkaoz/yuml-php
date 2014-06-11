@@ -44,6 +44,8 @@ interface BuilderInterface
      */
     function build();
 
-    function request();
+    function request(array $request);
+
+    function getType();
 
 }

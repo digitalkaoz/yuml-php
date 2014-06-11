@@ -6,20 +6,17 @@ a `php adapater` for [http://yuml.me](http://yuml.me)
 Installation
 ------------
 
-## Dependencies
-
-* [`Buzz`](https://github.com/kriswallsmith/Buzz)
-* [`Symfony Finder`](https://github.com/symfony/Finder)
-* [`Symfony Console`](https://github.com/symfony/Console)
-* [`Composer`](https://github.com/composer/composer) (for tests or self containing library only)
-
 ## Installation with [`composer`](https://github.com/composer/composer.git)
 
 ``` json
 "require"{
-    "digitalkaoz/yuml-php":  ">=0.3"
+    "digitalkaoz/yuml-php":  "@stable"
 }
 ```
+
+## Installation with `PHAR`
+
+    wget http://digitalkaoz.github.io/yuml-php/yuml-php.phar
 
 Usage
 -----
@@ -27,11 +24,10 @@ Usage
 ### the `classes` command generates a class diagram from all classes in the given folder
 
     Usage:
-        classes [--console] [--debug] [--properties] [--methods] folder basepath
+        classes [--console] [--debug] [--properties] [--methods] folder
 
     Arguments:
         folder      the folder to scan for classes
-        basepath    the basepath for the autoloader
 
     Options:
         --console     log to console
@@ -43,13 +39,6 @@ Usage
 ```sh
 yuml-php classes src/
 ```
-
-**if it fails cause of `Class Not Found` use the `basepath` Parameter**
-
-```sh
-yuml-php classes vendor/symfony/src/Symfony/Component/Process vendor/symfony/src/
-```
-
 
 ### the `activity` command generates an activity diagram from a given file
 
@@ -84,13 +73,17 @@ yuml-php activity activities.txt
 ```sh
 yuml-php use-case use-cases.txt
 ```
+Building the PHAR
+-----------------
 
+    php vendor/bin/box build
 
 Tests
 -----
 
     php/bin/vendors.php
     phpunit
+
 
 TODO
 ----

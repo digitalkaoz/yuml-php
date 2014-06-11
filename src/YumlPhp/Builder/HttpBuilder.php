@@ -11,28 +11,34 @@
 
 namespace YumlPhp\Builder;
 
-use Symfony\Component\Finder\Finder;
 use Buzz\Browser;
-
-use YumlPhp\Analyzer\File;
+use Symfony\Component\Finder\Finder;
+use YumlPhp\Request\RequestInterface;
 
 /**
  * common HttpBuilder for API requests
  *
  * @author Robert Schönthal <seroscho@googlemail.com>
  */
-abstract class HttpBuilder extends Builder
+class HttpBuilder extends Builder
 {
+    /**
+     * @var \Buzz\Browser
+     */
     private $browser;
 
     /**
      * injects the http client
      *
-     * @param Browser $browser
+     * @param RequestInterface $request
+     * @param Browser          $browser
+     * @param                  $type
      */
-    public function __construct(Browser $browser)
+    public function __construct(RequestInterface $request, Browser $browser, $type)
     {
         $this->browser = $browser;
+
+        parent::__construct($request, $type);
     }
 
     /**
@@ -41,15 +47,15 @@ abstract class HttpBuilder extends Builder
      * @return array|string
      * @throws \RuntimeException
      */
-    public function request()
+    public function request(array $request)
     {
         $url = $this->configuration['url'];
 
         if ($this->configuration['debug']) {
-            return join(',', $this->request);
+            return join(',', $request);
         }
 
-        if (!count($this->request)) {
+        if (!count($request)) {
             throw new \RuntimeException('No Request built for: ' . $this->path);
         }
 
@@ -57,20 +63,18 @@ abstract class HttpBuilder extends Builder
             'X-Requested-With' => 'XMLHttpRequest',
             'Content-Type'     => 'application/x-www-form-urlencoded',
             'Accept-Encoding'  => 'gzip,deflate,sdch'
-        ), 'dsl_text=' . urlencode(join(',', $this->request)));
+        ), 'dsl_text=' . urlencode(join(',', $request)));
 
         if ($response && 500 > $response->getStatusCode()) {
             $file = $response->getContent();
 
-            $result = array(
+            return array(
                 '<info>PNG</info> http://yuml.me/' . $file,
                 '<info>URL</info> http://yuml.me/edit/' . str_replace('.png', '', $file),
                 '<info>PDF</info> http://yuml.me/' . str_replace('.png', '.pdf', $file),
             );
-
-            return $result;
         }
 
-        throw new \RuntimeException('API Error for Request: ' . $url . join(',', $this->request));
+        throw new \RuntimeException('API Error for Request: ' . $url . join(',', $request));
     }
 }

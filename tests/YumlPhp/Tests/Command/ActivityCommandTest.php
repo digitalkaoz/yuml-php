@@ -14,7 +14,6 @@ namespace YumlPhp\Tests\Command;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\StreamOutput;
 use Symfony\Component\Console\Tester\CommandTester;
-
 use YumlPhp\Command\ActivityCommand;
 
 /**
@@ -29,17 +28,17 @@ class ActivityCommandTest extends \PHPUnit_Framework_TestCase
 
     public function testRun()
     {
-        $command = new ActivityCommand();
+        $builder = $this->getMock('YumlPhp\Builder\BuilderInterface');
+        $builder->expects($this->any())->method('build')->will($this->returnValue(array('foo')));
+
+        $command = new ActivityCommand($builder, $builder);
         $tester = new CommandTester($command);
 
-        $code = $tester->execute(array('source'  => __DIR__ . '/../Fixtures/activity.txt',
-                                       '--debug' => null));
-
-        $this->assertEquals(0, $code);
-        $this->assertGreaterThan(0, strlen($tester->getDisplay()));
-        $code = $tester->execute(array('source'   => __DIR__ . '/../Fixtures/activity.txt',
-                                       '--debug'  => null,
-                                       '--console'=> null));
+        $code = $tester->execute(array(
+            'source'    => __DIR__ . '/../Fixtures/activity.txt',
+            '--debug'   => null,
+            '--console' => null
+        ));
 
         $this->assertEquals(0, $code);
         $this->assertGreaterThan(0, strlen($tester->getDisplay()));

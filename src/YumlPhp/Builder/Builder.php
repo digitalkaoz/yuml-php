@@ -21,10 +21,28 @@ use YumlPhp\Request\RequestInterface;
  */
 abstract class Builder implements BuilderInterface
 {
+    /**
+     * @var RequestInterface
+     */
+    protected $inspector;
 
-    protected $path, $inspector, $request = array(), $configuration = array();
+    protected $path, $request = array(), $configuration = array();
+    /**
+     * @var
+     */
+    private $type;
 
-    abstract protected function doBuild();
+
+    /**
+     * @param RequestInterface $inspector
+     * @param                  $type
+     */
+    public function __construct(RequestInterface $inspector, $type)
+
+    {
+        $this->inspector = $inspector;
+        $this->type = $type;
+    }
 
     /**
      * creates and returns an inspector
@@ -33,12 +51,8 @@ abstract class Builder implements BuilderInterface
      */
     public function getInspector()
     {
-        if (!$this->inspector) {
-            $class = $this->inspectorClass;
-            $this->inspector = new $class();
-            $this->inspector->configure($this->configuration);
-            $this->inspector->setPath($this->path);
-        }
+        $this->inspector->configure($this->configuration);
+        $this->inspector->setPath($this->path);
 
         return $this->inspector;
     }
@@ -68,9 +82,9 @@ abstract class Builder implements BuilderInterface
      */
     public function build($pattern = '*.php')
     {
-        return $this
-            ->doBuild()
-            ->request();
+        $request = $this->getInspector()->build();
+
+        return $this->request($request);
     }
 
     /**
@@ -80,6 +94,6 @@ abstract class Builder implements BuilderInterface
      */
     public function getType()
     {
-        return static::TYPE;
+        return $this->type;
     }
 }

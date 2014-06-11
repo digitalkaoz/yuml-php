@@ -31,9 +31,6 @@ use YumlPhp\Builder\Console\UseCaseBuilder as ConsoleBuilder;
  */
 class UseCaseCommand extends BaseCommand
 {
-    static $httpBuilder = 'YumlPhp\Builder\Http\UseCaseBuilder';
-    static $consoleBuilder = 'YumlPhp\Builder\Console\UseCaseBuilder';
-
     /**
      * @inheritDoc
      */
@@ -59,10 +56,10 @@ EOT
     /**
      * @inheritDoc
      */
-    protected function getBuilderConfig(InputInterface $input)
+    protected function getBuilderConfig(BuilderInterface $builder, InputInterface $input)
     {
         $style = $input->getOption('style') ? : 'plain;dir:LR;scale:80;';
-        $type = $this->builder->getType();
+        $type = $builder->getType();
 
         return array(
             'url'   => 'http://yuml.me/diagram/' . $style . '/' . $type . '/',

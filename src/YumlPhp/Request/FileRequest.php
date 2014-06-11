@@ -12,8 +12,6 @@
 namespace YumlPhp\Request;
 
 use Symfony\Component\Finder\Finder;
-use YumlPhp\Request\RequestInterface;
-use YumlPhp\Request\RequestInterface as BaseRequestInterface;
 
 
 /**
@@ -21,29 +19,21 @@ use YumlPhp\Request\RequestInterface as BaseRequestInterface;
  *
  * @author Robert Schönthal <seroscho@googlemail.com>
  */
-class FileRequest implements BaseRequestInterface
+abstract class FileRequest implements RequestInterface
 {
-    private $file, $content;
+    private $file;
 
-    public function getContent()
-    {
-        return $this->content;
-    }
-
-    public function getFile()
-    {
-        return $this->file;
-    }
-
-    /**
-     * reflects given classes
-     *
-     * @param array $config
-     * @param       string path
-     */
-    public function __construct($file)
+    public function setPath($file)
     {
         $this->file = $file;
-        $this->content = file_get_contents($file);
+    }
+
+    public function configure(array $config)
+    {
+    }
+
+    protected function getData()
+    {
+        return file_get_contents($this->file);
     }
 }

@@ -12,21 +12,16 @@
 namespace YumlPhp\Request;
 
 use Symfony\Component\Finder\Finder;
-
 use TokenReflection\Broker;
 use TokenReflection\IReflectionClass;
 use TokenReflection\IReflectionMethod;
-use YumlPhp\Request\RequestInterface;
-use YumlPhp\Analyzer\File;
-use YumlPhp\Request\RequestInterface as BaseRequestInterface;
-
 
 /**
  * The console application that handles the commands
  *
  * @author Robert Schönthal <seroscho@googlemail.com>
  */
-class ClassesRequest implements BaseRequestInterface
+abstract class ClassesRequest implements RequestInterface
 {
     private $classes = array(), $namespaces = array(), $config = array(), $path;
 
@@ -35,7 +30,7 @@ class ClassesRequest implements BaseRequestInterface
         $this->path = $path;
     }
 
-    public function configure($config)
+    public function configure(array $config)
     {
         $this->config = $config;
     }
@@ -45,27 +40,17 @@ class ClassesRequest implements BaseRequestInterface
      *
      * @return array
      */
-    public function getClasses()
+    protected function getClasses()
     {
-        foreach ($this->findClasses() as $class) {
+        $broker = new Broker(new Broker\Backend\Memory());
+        $broker->processDirectory(realpath($this->path));
+
+        foreach ($broker->getClasses() as $class) {
             $this->classes[$class->getName()] = $class;
             $this->namespaces[$class->getNamespaceName()] = $class->getNamespaceName();
         }
 
         return $this->classes;
-    }
-
-    /**
-     * find all classes in given path
-     *
-     * @return IReflectionClass[]
-     */
-    public function findClasses()
-    {
-        $broker = new Broker(new Broker\Backend\Memory());
-        $broker->processDirectory(realpath($this->path));
-
-        return $broker->getClasses();
     }
 
     /**
@@ -76,7 +61,7 @@ class ClassesRequest implements BaseRequestInterface
      * @param string           $suffix
      * @return string
      */
-    public function buildName(IReflectionClass $class, $prefix = '<<', $suffix = '>>')
+    protected function buildName(IReflectionClass $class, $prefix = '<<', $suffix = '>>')
     {
         $name = $this->prepare($class);
 
@@ -98,7 +83,7 @@ class ClassesRequest implements BaseRequestInterface
      * @param string           $interfacesGlue
      * @return string
      */
-    public function buildParent(IReflectionClass $class, $prefix = null, $suffix = null, $interfacePrefix = '<<', $interfaceSuffix = '>>', $interfacesGlue = null)
+    protected function buildParent(IReflectionClass $class, $prefix = null, $suffix = null, $interfacePrefix = '<<', $interfaceSuffix = '>>', $interfacesGlue = null)
     {
         if (!$class->getParentClass()) {
             return;
@@ -124,7 +109,7 @@ class ClassesRequest implements BaseRequestInterface
      * @param string           $private
      * @return array
      */
-    public function buildProperties(IReflectionClass $class, $public = '+', $private = '-')
+    protected function buildProperties(IReflectionClass $class, $public = '+', $private = '-')
     {
         $props = array();
 
@@ -150,7 +135,7 @@ class ClassesRequest implements BaseRequestInterface
      * @param string           $suffix
      * @return array
      */
-    public function buildMethods(IReflectionClass $class, $public = '+', $private = '-', $suffix = '()')
+    protected function buildMethods(IReflectionClass $class, $public = '+', $private = '-', $suffix = '()')
     {
         $methods = array();
 
@@ -176,7 +161,7 @@ class ClassesRequest implements BaseRequestInterface
      * @param string           $suffix
      * @return array
      */
-    public function buildInterfaces(IReflectionClass $class, $prefix = '<<', $suffix = '>>')
+    protected function buildInterfaces(IReflectionClass $class, $prefix = '<<', $suffix = '>>')
     {
         $interfaces = array_diff($class->getInterfaces(), ($class->getParentClass() ? $class->getParentClass()->getInterfaces() : array()));
 

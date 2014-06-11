@@ -16,16 +16,13 @@ namespace YumlPhp\Builder;
  *
  * @author Robert Schönthal <seroscho@googlemail.com>
  */
-abstract class ConsoleBuilder extends Builder
+class ConsoleBuilder extends Builder
 {
     /**
-     * returns the class diagram as concatenated string
-     *
-     * @return string
+     * @inheritDoc
      */
-    public function request()
+    public function request(array $request)
     {
-        return join("\n", $this->request);
+        return join(",\n", $request);
     }
-
 }
