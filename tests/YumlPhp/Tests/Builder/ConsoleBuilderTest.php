@@ -39,11 +39,8 @@ class ConsoleBuilderTest extends \PHPUnit_Framework_TestCase
             ->setPath($data)
             ->build();
 
-        $expected = explode("\n", file_get_contents($fixture));
-        $current = explode("\n", str_replace(array('<question>','<comment>', '<info>', '</comment>', '</question>', '</info>'), '', str_replace("\n\n", "\n", $result)));
-
-        sort($expected);
-        sort($current);
+        $expected = file_get_contents($fixture);
+        $current = str_replace(array('<question>','<comment>', '<info>', '</comment>', '</question>', '</info>'), '', str_replace("\n\n", "\n", $result));
 
         $this->assertEquals($expected, $current);
     }

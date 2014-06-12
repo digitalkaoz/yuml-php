@@ -20,18 +20,12 @@ class ConsoleFileRequestTest extends \PHPUnit_Framework_TestCase
         $request = new FileRequest();
         $request->setPath($file);
 
-        $expected = array(
+        $this->assertEquals(array(
             "(start)->|a|",
             "\n\n|a|->(Make Coffee)->|b|",
             "\n\n|a|->(Make Breakfast)->|b|",
             "\n\n|b|-><c>[want more coffee]->(Make Coffee)",
             "\n\n<c>[satisfied]->(end)"
-        );
-
-        $current = $request->build();
-
-        sort($expected);
-        sort($current);
-        $this->assertEquals($expected, $current);
+        ), $request->build());
     }
 }

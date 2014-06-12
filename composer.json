@@ -23,8 +23,7 @@
     },
 
     "require-dev" : {
-        "kherge/box": "@stable",
-        "phpunit/phpunit": "<4.0"
+        "kherge/box": "@stable"
     },
 
     "autoload": {
