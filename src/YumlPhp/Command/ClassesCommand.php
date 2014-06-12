@@ -35,23 +35,20 @@ class ClassesCommand extends BaseCommand
      */
     protected function configure()
     {
+        parent::configure();
+
+        $this->getDefinition()->addOption(new InputOption('properties', null, InputOption::VALUE_NONE, 'build with properties'));
+        $this->getDefinition()->addOption(new InputOption('methods', null, InputOption::VALUE_NONE, 'build with methods'));
+
         $this
-            ->setDefinition(array(
-            new InputArgument('source', InputArgument::REQUIRED, 'the folder to scan'),
-            new InputOption('console', null, InputOption::VALUE_NONE, 'log to console'),
-            new InputOption('debug', null, InputOption::VALUE_NONE, 'debug'),
-            new InputOption('properties', null, InputOption::VALUE_NONE, 'build with properties'),
-            new InputOption('methods', null, InputOption::VALUE_NONE, 'build with methods'),
-            new InputOption('style', null, InputOption::VALUE_NONE, 'yuml style options')
-        ))
+            ->setName('classes')
             ->setDescription('creates a class diagram of a given folder')
             ->setHelp(<<<EOT
 The <info>class-diagram</info> command generates a class diagram from all classes in the given folder
 
 <info>yuml-php classes src/</info> builds class diagram for folder src/
 EOT
-        )
-            ->setName('classes');
+        );
     }
 
     /**

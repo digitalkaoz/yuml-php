@@ -11,17 +11,16 @@
 
 namespace YumlPhp\Command;
 
-use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Output\Output;
-use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Finder\Finder;
 use Buzz\Browser;
-
-use YumlPhp\Builder\BuilderInterface;
+use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\Output;
+use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Finder\Finder;
 use YumlPhp\Builder;
+use YumlPhp\Builder\BuilderInterface;
 
 /**
  * this common command
@@ -56,6 +55,16 @@ abstract class BaseCommand extends Command
         $this->consoleBuilder = $consoleBuilder;
 
         parent::__construct();
+    }
+
+    protected function configure()
+    {
+        $this->setDefinition(array(
+            new InputArgument('source', InputArgument::REQUIRED, 'the input source'),
+            new InputOption('console', null, InputOption::VALUE_NONE, 'log to console'),
+            new InputOption('debug', null, InputOption::VALUE_NONE, 'debug'),
+            new InputOption('style', null, InputOption::VALUE_NONE, 'yuml style options')
+        ));
     }
 
     /**

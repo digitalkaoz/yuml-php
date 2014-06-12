@@ -35,21 +35,17 @@ class ActivityCommand extends BaseCommand
      */
     protected function configure()
     {
+        parent::configure();
+
         $this
-            ->setDefinition(array(
-            new InputArgument('source', InputArgument::REQUIRED, 'the file to read'),
-            new InputOption('console', null, InputOption::VALUE_NONE, 'log to console'),
-            new InputOption('debug', null, InputOption::VALUE_NONE, 'debug'),
-            new InputOption('style', null, InputOption::VALUE_NONE, 'yuml style options')
-        ))
+            ->setName('activity')
             ->setDescription('creates an activity diagram from a file')
             ->setHelp(<<<EOT
 The <info>activity</info> command generates an activity diagram from a file
 
 <info>yuml-php activity src/activities.txt</info> builds an activity diagram for the file
 EOT
-        )
-            ->setName('activity');
+        );
     }
 
     /**

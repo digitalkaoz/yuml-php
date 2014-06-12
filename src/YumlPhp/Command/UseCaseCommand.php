@@ -36,21 +36,17 @@ class UseCaseCommand extends BaseCommand
      */
     protected function configure()
     {
+        parent::configure();
+
         $this
-            ->setDefinition(array(
-            new InputArgument('source', InputArgument::REQUIRED, 'the file to read'),
-            new InputOption('console', null, InputOption::VALUE_NONE, 'log to console'),
-            new InputOption('debug', null, InputOption::VALUE_NONE, 'debug'),
-            new InputOption('style', null, InputOption::VALUE_NONE, 'yuml style options')
-        ))
+            ->setName('use-case')
             ->setDescription('creates an use-case diagram from a file')
             ->setHelp(<<<EOT
 The <info>use-case</info> command generates an use-case diagram from a file
 
 <info>yuml-php use-case src/use-cases.txt</info> builds an use-case diagram for the file
 EOT
-        )
-            ->setName('use-case');
+        );
     }
 
     /**
