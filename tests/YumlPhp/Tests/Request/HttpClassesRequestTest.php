@@ -28,16 +28,16 @@ class HttpClassesRequestTest extends \PHPUnit_Framework_TestCase
         $request->setPath(__DIR__ . '/../Fixtures');
 
         $this->assertEquals(array(
+            '[<<YumlPhp/Tests/Fixtures/BarInterface>>]^-.-[YumlPhp/Tests/Fixtures/BarWithInterface]',
+            '[<<YumlPhp/Tests/Fixtures/BarInterface>>{bg:orange}]',
+            '[<<YumlPhp/Tests/Fixtures/BazzInterface>>]^-.-[;<<YumlPhp/Tests/Fixtures/FooInterface>>]^-.-[YumlPhp/Tests/Fixtures/FooWithInterface]',
             '[<<YumlPhp/Tests/Fixtures/BazzInterface>>]^-.-[<<YumlPhp/Tests/Fixtures/FooInterface>>{bg:orange}]',
             '[<<YumlPhp/Tests/Fixtures/BazzInterface>>{bg:orange}]',
-            '[<<YumlPhp/Tests/Fixtures/BarInterface>>{bg:orange}]',
-            '[YumlPhp/Tests/Fixtures/Bar]',
             '[Symfony/Component/Console/Input/StringInput]^[YumlPhp/Tests/Fixtures/BarWithExternal]',
-            '[<<YumlPhp/Tests/Fixtures/BarInterface>>]^-.-[YumlPhp/Tests/Fixtures/BarWithInterface]',
+            '[YumlPhp/Tests/Fixtures/Bar]',
             '[YumlPhp/Tests/Fixtures/Bazz]',
-            '[YumlPhp/Tests/Fixtures/Bazz]^[YumlPhp/Tests/Fixtures/Foo]',
             '[YumlPhp/Tests/Fixtures/Bazz]^[<<YumlPhp/Tests/Fixtures/BazzInterface>>]^-.-[YumlPhp/Tests/Fixtures/FooBazzWithInterface]',
-            '[<<YumlPhp/Tests/Fixtures/BazzInterface>>]^-.-[;<<YumlPhp/Tests/Fixtures/FooInterface>>]^-.-[YumlPhp/Tests/Fixtures/FooWithInterface]'
+            '[YumlPhp/Tests/Fixtures/Bazz]^[YumlPhp/Tests/Fixtures/Foo]',
         ), $request->build());
     }
 }

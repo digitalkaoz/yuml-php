@@ -48,6 +48,8 @@ class ClassesRequest extends BaseRequest
             }
         }
 
+        sort($request);
+
         return $request;
     }
 }
