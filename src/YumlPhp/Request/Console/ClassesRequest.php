@@ -2,7 +2,6 @@
 
 namespace YumlPhp\Request\Console;
 
-use TokenReflection\IReflectionClass;
 use YumlPhp\Request\ClassesRequest as BaseRequest;
 
 /**

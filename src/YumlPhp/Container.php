@@ -29,11 +29,13 @@ class Container extends \Pimple
     private function addCommonServices(array &$services)
     {
         $services['browser'] = function () {
-            $client = function_exists('curl_version') ? new \Buzz\Client\Curl() : new \Buzz\Client\FileGetContents();
-            $browser = new \Buzz\Browser($client);
-            if ($client instanceof \Buzz\Client\Curl) {
-                $browser->getClient()->setTimeout(30);
+            if (function_exists('curl_version')) {
+                $client = new \Buzz\Client\Curl();
+                $client->setTimeout(30);
+            } else {
+                $client = new \Buzz\Client\FileGetContents();
             }
+            $browser = new \Buzz\Browser($client);
 
             return $browser;
         };

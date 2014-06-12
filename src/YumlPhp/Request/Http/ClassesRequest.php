@@ -2,7 +2,6 @@
 
 namespace YumlPhp\Request\Http;
 
-use TokenReflection\IReflectionClass;
 use YumlPhp\Request\ClassesRequest as BaseRequest;
 
 /**
