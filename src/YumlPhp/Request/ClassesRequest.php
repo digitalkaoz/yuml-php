@@ -125,6 +125,8 @@ abstract class ClassesRequest implements RequestInterface
             }
         }
 
+        sort($props);
+
         return $props;
     }
 
@@ -152,6 +154,8 @@ abstract class ClassesRequest implements RequestInterface
             }
         }
 
+        sort($methods);
+
         return $methods;
     }
 
@@ -170,6 +174,8 @@ abstract class ClassesRequest implements RequestInterface
         foreach ($interfaces as $key => $interface) {
             $interfaces[$key] = $prefix . $this->prepare($interface) . $suffix;
         }
+
+        sort($interfaces);
 
         return $interfaces;
     }

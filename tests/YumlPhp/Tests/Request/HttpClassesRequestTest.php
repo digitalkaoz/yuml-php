@@ -37,7 +37,7 @@ class HttpClassesRequestTest extends \PHPUnit_Framework_TestCase
             '[YumlPhp/Tests/Fixtures/Bazz]',
             '[YumlPhp/Tests/Fixtures/Bazz]^[YumlPhp/Tests/Fixtures/Foo]',
             '[YumlPhp/Tests/Fixtures/Bazz]^[<<YumlPhp/Tests/Fixtures/BazzInterface>>]^-.-[YumlPhp/Tests/Fixtures/FooBazzWithInterface]',
-            '[<<YumlPhp/Tests/Fixtures/FooInterface>>]^-.-[;<<YumlPhp/Tests/Fixtures/BazzInterface>>]^-.-[YumlPhp/Tests/Fixtures/FooWithInterface]'
+            '[<<YumlPhp/Tests/Fixtures/BazzInterface>>]^-.-[;<<YumlPhp/Tests/Fixtures/FooInterface>>]^-.-[YumlPhp/Tests/Fixtures/FooWithInterface]'
         ), $request->build());
     }
 }
