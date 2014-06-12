@@ -65,7 +65,7 @@ abstract class ClassesRequest implements RequestInterface
             $broker->processDirectory(realpath($this->path), $this->config['filter']);
             $classes = $broker->getClasses();
 
-            sort($classes);
+            natcasesort($classes);
 
             return $classes;
         } catch (BaseException $e) {
@@ -144,7 +144,7 @@ abstract class ClassesRequest implements RequestInterface
             }
         }
 
-        sort($props);
+        natcasesort($props);
 
         return $props;
     }
@@ -173,7 +173,7 @@ abstract class ClassesRequest implements RequestInterface
             }
         }
 
-        sort($methods);
+        natcasesort($methods);
 
         return $methods;
     }
@@ -194,7 +194,7 @@ abstract class ClassesRequest implements RequestInterface
             $interfaces[$key] = $prefix . $this->prepare($interface) . $suffix;
         }
 
-        sort($interfaces);
+        natcasesort($interfaces);
 
         return $interfaces;
     }

@@ -48,7 +48,7 @@ class ClassesRequest extends BaseRequest
             }
         }
 
-        sort($request);
+        natcasesort($request);
 
         return $request;
     }

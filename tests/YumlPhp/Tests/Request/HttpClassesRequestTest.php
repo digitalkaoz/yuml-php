@@ -38,6 +38,6 @@ class HttpClassesRequestTest extends \PHPUnit_Framework_TestCase
             '[YumlPhp/Tests/Fixtures/Bazz]',
             '[YumlPhp/Tests/Fixtures/Bazz]^[<<YumlPhp/Tests/Fixtures/BazzInterface>>]^-.-[YumlPhp/Tests/Fixtures/FooBazzWithInterface]',
             '[YumlPhp/Tests/Fixtures/Bazz]^[YumlPhp/Tests/Fixtures/Foo]',
-        ), $request->build());
+        ), array_values($request->build()));
     }
 }
