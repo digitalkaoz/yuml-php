@@ -206,7 +206,7 @@ $ php composer.phar install
             <p><span class="label label-info"><strong>Available Options</strong></span></p>
             <pre class="prettyprint"><code class="language-java">
 Usage:
-classes [--console] [--debug] [--properties] [--methods] folder
+classes [--console] [--debug] [--properties] [--methods] [--filter] folder
 
 Arguments:
 folder the folder to scan for classes
@@ -216,6 +216,7 @@ Options:
 --debug debug
 --properties build with properties
 --methods build with methods
+--filter to include/exclude folder/files
 </code></pre>
         </div>
         <div class="span6">
@@ -225,6 +226,7 @@ $ php yuml-php.phar classes src/
 $ php yuml-php.phar classes --methods src/
 $ php yuml-php.phar classes --properties src/
 $ php yuml-php.phar classes --debug src/
+$ php yuml-php.phar classes --filter=\!/Test --filter=/Include src/
 $ php yuml-php.phar classes --style="scruffy;dir:TB;scale:80;" src/
 </code></pre>
         </div>
