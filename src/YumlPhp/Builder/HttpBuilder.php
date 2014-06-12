@@ -12,6 +12,7 @@
 namespace YumlPhp\Builder;
 
 use Buzz\Browser;
+use Buzz\Message\Response;
 use Symfony\Component\Finder\Finder;
 use YumlPhp\Request\RequestInterface;
 
@@ -65,7 +66,7 @@ class HttpBuilder extends Builder
             'Accept-Encoding'  => 'gzip,deflate,sdch'
         ), 'dsl_text=' . urlencode(join(',', $request)));
 
-        if ($response && 500 > $response->getStatusCode()) {
+        if ($response instanceof Response && $response->isSuccessful()) {
             $file = $response->getContent();
 
             return array(

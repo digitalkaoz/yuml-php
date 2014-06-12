@@ -3,6 +3,7 @@
 
 namespace YumlPhp\Request\Http;
 
+use TokenReflection\IReflectionClass;
 use YumlPhp\Request\ClassesRequest as BaseRequest;
 
 /**
@@ -12,11 +13,14 @@ use YumlPhp\Request\ClassesRequest as BaseRequest;
 class ClassesRequest extends BaseRequest
 {
 
+    /**
+     * @inheritDoc
+     */
     public function build()
     {
         $request = array();
         foreach ($this->getClasses() as $class) {
-            /** @var $class \ReflectionClass */
+            /** @var $class IReflectionClass */
             $name = $this->buildName($class);
             $parent = $this->buildParent($class, '[', ']^');
             $interfaces = $this->buildInterfaces($class, '<<', '>>]^-.-[');

@@ -41,7 +41,7 @@ class Application extends BaseApplication
     /**
      * {@inheritDoc}
      */
-    public function doRun(InputInterface $input = null, OutputInterface $output)
+    public function doRun(InputInterface $input, OutputInterface $output)
     {
         $this->registerCommands();
 

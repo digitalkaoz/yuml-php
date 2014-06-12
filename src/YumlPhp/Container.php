@@ -33,25 +33,27 @@ class Container extends \Pimple
 
     private function addCommonServices(array &$services)
     {
-        $services['browser'] = function(\Pimple $container) {
+        $services['browser'] = function() {
             $client = function_exists('curl_version') ? new Curl() : new FileGetContents();
             $browser = new \Buzz\Browser($client);
-            $browser->getClient()->setTimeout(30);
+            if ($client instanceof Curl) {
+                $browser->getClient()->setTimeout(30);
+            }
 
             return $browser;
         };
 
-        $services['request.classes.http'] = function(\Pimple $container) {
+        $services['request.classes.http'] = function() {
             return new \YumlPhp\Request\Http\ClassesRequest();
         };
-        $services['request.classes.console'] = function(\Pimple $container) {
+        $services['request.classes.console'] = function() {
             return new \YumlPhp\Request\Console\ClassesRequest();
         };
 
-        $services['request.file.http'] = function(\Pimple $container) {
+        $services['request.file.http'] = function() {
             return new \YumlPhp\Request\Http\FileRequest();
         };
-        $services['request.file.console'] = function(\Pimple $container) {
+        $services['request.file.console'] = function() {
             return new \YumlPhp\Request\Console\FileRequest();
         };
     }
