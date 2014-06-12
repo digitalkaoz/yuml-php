@@ -44,8 +44,10 @@ abstract class ClassesRequest implements RequestInterface
     {
         $broker = new Broker(new Broker\Backend\Memory());
         $broker->processDirectory(realpath($this->path));
+        $classes = $broker->getClasses();
+        sort($classes);
 
-        foreach ($broker->getClasses() as $class) {
+        foreach ($classes as $class) {
             $this->classes[$class->getName()] = $class;
             $this->namespaces[$class->getNamespaceName()] = $class->getNamespaceName();
         }

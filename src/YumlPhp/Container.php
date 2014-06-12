@@ -3,6 +3,8 @@
 
 namespace YumlPhp;
 
+use Buzz\Client\Curl;
+use Buzz\Client\FileGetContents;
 use YumlPhp\Builder\HttpBuilder;
 
 /**
@@ -32,7 +34,8 @@ class Container extends \Pimple
     private function addCommonServices(array &$services)
     {
         $services['browser'] = function(\Pimple $container) {
-            $browser = new \Buzz\Browser();
+            $client = function_exists('curl_version') ? new Curl() : new FileGetContents();
+            $browser = new \Buzz\Browser($client);
             $browser->getClient()->setTimeout(30);
 
             return $browser;
