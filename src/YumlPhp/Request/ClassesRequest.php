@@ -14,6 +14,7 @@ namespace YumlPhp\Request;
 use TokenReflection\Broker;
 use TokenReflection\IReflectionClass;
 use TokenReflection\IReflectionMethod;
+use TokenReflection\IReflectionProperty;
 
 /**
  * The console application that handles the commands
@@ -22,7 +23,14 @@ use TokenReflection\IReflectionMethod;
  */
 abstract class ClassesRequest implements RequestInterface
 {
-    private $config = array(), $path;
+    private $config = array(
+        'filter' => array(),
+        'withProperties' => false,
+        'withMethods' => false,
+        'debug' => false
+    );
+
+    private $path;
 
     /**
      * @inheritDoc
@@ -39,7 +47,7 @@ abstract class ClassesRequest implements RequestInterface
      */
     public function configure(array $config)
     {
-        $this->config = $config;
+        $this->config = array_merge($this->config, $config);
 
         return $this;
     }
@@ -52,7 +60,7 @@ abstract class ClassesRequest implements RequestInterface
     protected function getClasses()
     {
         $broker = new Broker(new Broker\Backend\Memory());
-        $broker->processDirectory(realpath($this->path));
+        $broker->processDirectory(realpath($this->path), $this->config['filter']);
         $classes = $broker->getClasses();
 
         sort($classes);
@@ -120,11 +128,12 @@ abstract class ClassesRequest implements RequestInterface
     {
         $props = array();
 
-        if (!isset($this->config['withProperties']) || !$this->config['withProperties'] || $class->isInterface()) {
+        if (!$this->config['withProperties'] || $class->isInterface()) {
             return $props;
         }
 
         foreach ($class->getProperties() as $property) {
+            /** @var IReflectionProperty $property */
             if ($property->getDeclaringClass() == $class) {
                 $props[] = ($property->isPublic() ? $public : $private) . $property->getName();
             }
@@ -148,7 +157,7 @@ abstract class ClassesRequest implements RequestInterface
     {
         $methods = array();
 
-        if (!isset($this->config['withMethods']) || !$this->config['withMethods']) {
+        if (!$this->config['withMethods']) {
             return $methods;
         }
 

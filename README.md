@@ -31,7 +31,7 @@ Usage
 ### the `classes` command generates a class diagram from all classes in the given folder
 
     Usage:
-        classes [--console] [--debug] [--properties] [--methods] folder
+        classes [--console] [--debug] [--properties] [--methods] [--filter] folder
 
     Arguments:
         folder      the folder to scan for classes
@@ -41,6 +41,7 @@ Usage
         --debug       debug
         --properties  build with properties
         --methods     build with methods
+        --filter      to include/exclude files/folder
 
 
 ```sh

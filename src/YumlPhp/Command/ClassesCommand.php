@@ -31,6 +31,7 @@ class ClassesCommand extends BaseCommand
 
         $this->getDefinition()->addOption(new InputOption('properties', null, InputOption::VALUE_NONE, 'build with properties'));
         $this->getDefinition()->addOption(new InputOption('methods', null, InputOption::VALUE_NONE, 'build with methods'));
+        $this->getDefinition()->addOption(new InputOption('filter', null, InputOption::VALUE_IS_ARRAY|InputOption::VALUE_REQUIRED, 'glob pattern filter'));
 
         $this
             ->setName('classes')
@@ -60,6 +61,7 @@ EOT
             'withMethods'    => $input->getOption('methods'),
             'withProperties' => $input->getOption('properties'),
             'style'          => $style,
+            'filter'         => $input->getOption('filter'),
             'autoload_path'  => $input->getArgument('source')
         );
     }

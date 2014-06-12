@@ -18,7 +18,7 @@
         "pimple/pimple":                        "@stable",
         "symfony/console":                      "@stable",
         "kriswallsmith/buzz":                   "@stable",
-        "andrewsville/php-token-reflection":    "@stable"
+        "andrewsville/php-token-reflection":    "dev-develop@dev"
     },
 
     "require-dev" : {
@@ -36,6 +36,14 @@
             "YumlPhp\\Tests\\Integration\\": "tests/Integration"
         }
     },
+
+    "repositories" : [
+        {
+            "type" : "vcs",
+            "url" : "https://github.com/digitalkaoz/PHP-Token-Reflection"
+        }
+    ],
+
 
     "bin": ["bin/yuml-php"]
 }
