@@ -61,13 +61,11 @@ class HttpBuilder extends Builder
         }
 
         $response = $this->browser->post($url, array(
-            'X-Requested-With' => 'XMLHttpRequest',
-            'Content-Type'     => 'application/x-www-form-urlencoded',
-            'Accept-Encoding'  => 'gzip,deflate,sdch'
         ), 'dsl_text=' . urlencode(join(',', $request)));
 
         if ($response instanceof Response && $response->isSuccessful()) {
             $file = $response->getContent();
+
 
             return array(
                 '<info>PNG</info> http://yuml.me/' . $file,
