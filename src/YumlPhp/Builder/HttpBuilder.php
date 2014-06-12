@@ -65,8 +65,7 @@ class HttpBuilder extends Builder
 
         if ($response instanceof Response && $response->isSuccessful()) {
             $file = $response->getContent();
-
-
+x
             return array(
                 '<info>PNG</info> http://yuml.me/' . $file,
                 '<info>URL</info> http://yuml.me/edit/' . str_replace('.png', '', $file),

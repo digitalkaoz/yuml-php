@@ -46,7 +46,7 @@ class HttpBuilderTest extends \PHPUnit_Framework_TestCase
     public function testRequest()
     {
         $response = $this->getMock('Buzz\Message\Response');
-        $response->expects($this->atLeastOnce())->method('getStatusCode')->will($this->returnValue(201));
+        $response->expects($this->atLeastOnce())->method('isSuccessful')->will($this->returnValue(true));
         $response->expects($this->atLeastOnce())->method('getContent')->will($this->returnValue('foo'));
 
         $this->browser->expects($this->atLeastOnce())->method('post')->will($this->returnValue($response));
