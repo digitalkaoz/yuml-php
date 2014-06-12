@@ -31,7 +31,7 @@ class ConsoleClassesRequestTest extends \PHPUnit_Framework_TestCase
         ));
         $request->setPath(__DIR__ . '/../Fixtures');
 
-        $this->assertEquals(array(
+        $expected = array(
             '<info>YumlPhp/Tests/Fixtures/Bar</info><comment></comment>',
             "\t<question>-</question>foo;<info>+</info>bar",
             "\t<question>-</question>foo();<info>+</info>bar()",
@@ -53,6 +53,11 @@ class ConsoleClassesRequestTest extends \PHPUnit_Framework_TestCase
             '<info><<YumlPhp/Tests/Fixtures/FooInterface>></info><comment></comment> <<YumlPhp/Tests/Fixtures/BazzInterface>>',
             '<info>YumlPhp/Tests/Fixtures/FooWithInterface</info><comment></comment> <<YumlPhp/Tests/Fixtures/FooInterface>> <<YumlPhp/Tests/Fixtures/BazzInterface>>',
             "\t<info>+</info>bar();<info>+</info>foo()"
-        ), $request->build());
+        );
+        $current = $request->build();
+
+        sort($expected);
+        sort($current);
+        $this->assertEquals($expected, $current);
     }
 }

@@ -29,12 +29,17 @@ class FileRequestTest extends \PHPUnit_Framework_TestCase
         $request = new FileRequest();
         $request->setPath($file);
 
-        $this->assertEquals(array(
+        $expected = array(
             '(start)->|a|',
             '|a|->(Make Coffee)->|b|',
             '|a|->(Make Breakfast)->|b|',
             '|b|-><c>[want more coffee]->(Make Coffee)',
             '<c>[satisfied]->(end)'
-        ), $request->build());
+        );
+        $current = $request->build();
+
+        sort($expected);
+        sort($current);
+        $this->assertEquals($expected, $current);
     }
 }

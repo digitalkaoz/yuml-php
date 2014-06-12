@@ -27,7 +27,7 @@ class HttpClassesRequestTest extends \PHPUnit_Framework_TestCase
         $request = new ClassesRequest();
         $request->setPath(__DIR__ . '/../Fixtures');
 
-        $this->assertEquals(array(
+        $expected = array(
             '[<<YumlPhp/Tests/Fixtures/BazzInterface>>]^-.-[<<YumlPhp/Tests/Fixtures/FooInterface>>{bg:orange}]',
             '[<<YumlPhp/Tests/Fixtures/BazzInterface>>{bg:orange}]',
             '[<<YumlPhp/Tests/Fixtures/BarInterface>>{bg:orange}]',
@@ -38,6 +38,11 @@ class HttpClassesRequestTest extends \PHPUnit_Framework_TestCase
             '[YumlPhp/Tests/Fixtures/Bazz]^[YumlPhp/Tests/Fixtures/Foo]',
             '[YumlPhp/Tests/Fixtures/Bazz]^[<<YumlPhp/Tests/Fixtures/BazzInterface>>]^-.-[YumlPhp/Tests/Fixtures/FooBazzWithInterface]',
             '[<<YumlPhp/Tests/Fixtures/FooInterface>>]^-.-[;<<YumlPhp/Tests/Fixtures/BazzInterface>>]^-.-[YumlPhp/Tests/Fixtures/FooWithInterface]'
-        ), $request->build());
+        );
+        $current = $request->build();
+
+        sort($expected);
+        sort($current);
+        $this->assertEquals($expected, $current);
     }
 }
