@@ -68,6 +68,8 @@ class HttpBuilder extends Builder
                 '<info>PNG</info> http://yuml.me/' . $file,
                 '<info>URL</info> http://yuml.me/edit/' . str_replace('.png', '', $file),
                 '<info>PDF</info> http://yuml.me/' . str_replace('.png', '.pdf', $file),
+                '<info>JSON</info> http://yuml.me/' . str_replace('.png', '.json', $file),
+                '<info>SVG</info> http://yuml.me/' . str_replace('.png', '.svg', $file),
             );
         }
 

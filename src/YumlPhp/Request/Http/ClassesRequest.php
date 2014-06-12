@@ -19,17 +19,13 @@ class ClassesRequest extends BaseRequest
         foreach ($this->getClasses() as $class) {
             $name = $this->buildName($class);
             $parent = $this->buildParent($class, '[', ']^');
-            $interfaces = $this->buildInterfaces($class, '<<', '>>]^-.-[');
+            $interfaces = $this->buildInterfaces($class, '<<', '>>{bg:orange}]^-.-[');
             $props = $this->buildProperties($class);
             $methods = $this->buildMethods($class);
+            $usages = $this->buildUsages($class);
             $prefix = null;
             $suffix = null;
             $pattern = "%s[%s%s%s%s]";
-
-            if ($class->isInterface()) {
-                $prefix = '';
-                $suffix = '{bg:orange}';
-            }
 
             //rebuild pattern
             if (count($methods) || count($props)) {
@@ -39,7 +35,13 @@ class ClassesRequest extends BaseRequest
                 $pattern = "%s[%s%s|%s|%s]";
             }
 
-            $line = sprintf($pattern, $parent, $prefix . join(';', $interfaces), $name, join(';', $props), join(';', $methods) . $suffix);
+            $line = sprintf($pattern, $parent, $prefix . join(';', $interfaces), $name, join(';', $props), join(';', $methods));
+
+            if (!$class->isInterface()) {
+                foreach ($usages as $usage) {
+                    $request[] = sprintf('[%s]-.->[%s]', $name, $this->buildName($usage));
+                }
+            }
 
             if ($class->isInterface()) {
                 array_unshift($request, $line);

@@ -28,9 +28,9 @@ class Application extends BaseApplication
     private $container;
 
     /**
-     * @param \Pimple $container
+     * @param Container $container
      */
-    public function __construct(\Pimple $container)
+    public function __construct(Container $container)
     {
         parent::__construct('yuml-php', '@package_version@');
 

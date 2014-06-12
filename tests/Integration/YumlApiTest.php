@@ -39,6 +39,12 @@ class YumlApiTest extends \PHPUnit_Framework_TestCase
                 case '<info>URL</info>' :
                     $contentType = 'text/html; charset=utf-8';
                     break;
+                case '<info>JSON</info>' :
+                    $contentType = 'application/json';
+                    break;
+                case '<info>SVG</info>' :
+                    $contentType = 'image/svg+xml';
+                    break;
             }
             $this->assertEquals($contentType, $response->getHeader('Content-Type'));
         }

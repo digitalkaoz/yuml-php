@@ -15,6 +15,7 @@ use TokenReflection\Broker;
 use TokenReflection\Exception\BaseException;
 use TokenReflection\IReflectionClass;
 use TokenReflection\IReflectionMethod;
+use TokenReflection\IReflectionParameter;
 use TokenReflection\IReflectionProperty;
 
 /**
@@ -85,11 +86,17 @@ abstract class ClassesRequest implements RequestInterface
     {
         $name = $this->prepare($class);
 
-        if ($class->isInterface()) {
-            $name = $prefix . $this->prepare($class) . $suffix;
+        if ($class->isInterface() || substr($name, -strlen('Interface')) === 'Interface') {
+            $suffix = $suffix.'{bg:orange}';
+        } elseif ($class->isAbstract()) {
+            $prefix = '';
+            $suffix = '{bg:blue}';
+        } else {
+            $prefix = '';
+            $suffix = '';
         }
 
-        return $name;
+        return $prefix . $this->prepare($class) . $suffix;
     }
 
     /**
@@ -176,6 +183,31 @@ abstract class ClassesRequest implements RequestInterface
         natcasesort($methods);
 
         return $methods;
+    }
+
+    /**
+     * extracts usages to other classes
+     *
+     * @param IReflectionClass $class
+     * @return IReflectionClass[]
+     */
+    protected function buildUsages(IReflectionClass $class)
+    {
+        $usages = [];
+        foreach ($class->getMethods() as $method) {
+            /** @var IReflectionMethod $method */
+            if ($method->getDeclaringClass() !== $class) {
+                continue;
+            }
+            foreach ($method->getParameters() as $parameter) {
+                /** @var IReflectionParameter $parameter */
+                if ($parameter->getClass()) {
+                    $usages[$parameter->getClassName()] = $parameter->getClass();
+                }
+            };
+        }
+
+        return array_unique($usages);
     }
 
     /**

@@ -52,7 +52,7 @@ EOT
         //scruffy, nofunky, plain
         //dir: LR TB RL
         //scale: 180 120 100 80 60
-        $style = $input->getOption('style') ? : 'plain;dir:LR;scale:80;';
+        $style = $input->getOption('style') ? : 'plain;dir:TB;scale:80;';
         $type = $builder->getType();
 
         return array(

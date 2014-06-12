@@ -64,7 +64,9 @@ class HttpBuilderTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(array(
             '<info>PNG</info> http://yuml.me/foo',
             '<info>URL</info> http://yuml.me/edit/foo',
-            '<info>PDF</info> http://yuml.me/foo'
+            '<info>PDF</info> http://yuml.me/foo',
+            '<info>JSON</info> http://yuml.me/foo',
+            '<info>SVG</info> http://yuml.me/foo'
         ), $result);
     }
 }
