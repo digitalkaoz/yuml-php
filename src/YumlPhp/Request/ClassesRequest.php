@@ -12,6 +12,7 @@
 namespace YumlPhp\Request;
 
 use TokenReflection\Broker;
+use TokenReflection\Exception\BaseException;
 use TokenReflection\IReflectionClass;
 use TokenReflection\IReflectionMethod;
 use TokenReflection\IReflectionProperty;
@@ -59,13 +60,17 @@ abstract class ClassesRequest implements RequestInterface
      */
     protected function getClasses()
     {
-        $broker = new Broker(new Broker\Backend\Memory());
-        $broker->processDirectory(realpath($this->path), $this->config['filter']);
-        $classes = $broker->getClasses();
+        try {
+            $broker = new Broker(new Broker\Backend\Memory());
+            $broker->processDirectory(realpath($this->path), $this->config['filter']);
+            $classes = $broker->getClasses();
 
-        sort($classes);
+            sort($classes);
 
-        return $classes;
+            return $classes;
+        } catch (BaseException $e) {
+            throw new \RuntimeException($e->getDetail());
+        }
     }
 
     /**
