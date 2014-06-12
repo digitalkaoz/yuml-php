@@ -13,7 +13,6 @@ namespace YumlPhp\Command;
 
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Command\Command;
-
 use YumlPhp\Builder\BuilderInterface;
 
 /**
@@ -46,9 +45,6 @@ EOT
      */
     protected function getBuilderConfig(BuilderInterface $builder, InputInterface $input)
     {
-        //scruffy, nofunky, plain
-        //dir: LR TB RL
-        //scale: 180 120 100 80 60
         $style = $input->getOption('style') ? : 'plain;dir:LR;scale:80;';
         $type = $builder->getType();
 

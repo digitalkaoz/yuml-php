@@ -18,7 +18,6 @@ namespace YumlPhp\Builder;
  */
 interface BuilderInterface
 {
-
     /**
      * configures the builder
      *

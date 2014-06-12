@@ -13,7 +13,6 @@ namespace YumlPhp\Command;
 
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
-
 use YumlPhp\Builder\BuilderInterface;
 
 /**

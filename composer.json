@@ -15,7 +15,6 @@
 
     "require": {
         "ext-tokenizer":                        "*",
-        "symfony/finder":                       "@stable",
         "pimple/pimple":                        "@stable",
         "symfony/console":                      "@stable",
         "kriswallsmith/buzz":                   "@stable",

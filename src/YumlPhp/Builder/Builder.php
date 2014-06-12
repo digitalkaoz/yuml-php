@@ -11,7 +11,6 @@
 
 namespace YumlPhp\Builder;
 
-use YumlPhp\Analyzer\File;
 use YumlPhp\Request\RequestInterface;
 
 /**
@@ -34,10 +33,9 @@ abstract class Builder implements BuilderInterface
 
     /**
      * @param RequestInterface $inspector
-     * @param                  $type
+     * @param string           $type
      */
     public function __construct(RequestInterface $inspector, $type)
-
     {
         $this->inspector = $inspector;
         $this->type = $type;
@@ -48,7 +46,7 @@ abstract class Builder implements BuilderInterface
      *
      * @return RequestInterface
      */
-    public function getInspector()
+    private function getInspector()
     {
         $this->inspector->configure($this->configuration);
         $this->inspector->setPath($this->path);

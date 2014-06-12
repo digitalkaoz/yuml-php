@@ -2,6 +2,7 @@
 
 namespace YumlPhp\Request\Console;
 
+use TokenReflection\IReflectionClass;
 use YumlPhp\Request\ClassesRequest as BaseRequest;
 
 /**
@@ -18,7 +19,7 @@ class ClassesRequest extends BaseRequest
         $request = array();
 
         foreach ($this->getClasses() as $class) {
-            /** @var $class \ReflectionClass */
+            /** @var $class IReflectionClass */
             $name = $this->buildName($class);
             $parent = $this->buildParent($class, ' ', '', ' <<', '>>', '');
             $interfaces = $this->buildInterfaces($class);
