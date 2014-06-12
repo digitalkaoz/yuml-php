@@ -193,7 +193,7 @@ abstract class ClassesRequest implements RequestInterface
      */
     protected function buildUsages(IReflectionClass $class)
     {
-        $usages = [];
+        $usages = array();
         foreach ($class->getMethods() as $method) {
             /** @var IReflectionMethod $method */
             if ($method->getDeclaringClass() !== $class) {
