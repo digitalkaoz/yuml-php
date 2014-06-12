@@ -1,8 +1,6 @@
 <?php
 
-
 namespace YumlPhp\Tests\Integration;
-
 
 use Buzz\Browser;
 use YumlPhp\Builder\BuilderInterface;
@@ -64,4 +62,3 @@ class YumlApiTest extends \PHPUnit_Framework_TestCase
         );
     }
 }
- 

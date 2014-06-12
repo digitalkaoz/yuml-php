@@ -1,6 +1,5 @@
 <?php
 
-
 namespace YumlPhp;
 
 use Buzz\Client\Curl;
@@ -33,7 +32,7 @@ class Container extends \Pimple
 
     private function addCommonServices(array &$services)
     {
-        $services['browser'] = function() {
+        $services['browser'] = function () {
             $client = function_exists('curl_version') ? new Curl() : new FileGetContents();
             $browser = new \Buzz\Browser($client);
             if ($client instanceof Curl) {
@@ -43,62 +42,61 @@ class Container extends \Pimple
             return $browser;
         };
 
-        $services['request.classes.http'] = function() {
+        $services['request.classes.http'] = function () {
             return new \YumlPhp\Request\Http\ClassesRequest();
         };
-        $services['request.classes.console'] = function() {
+        $services['request.classes.console'] = function () {
             return new \YumlPhp\Request\Console\ClassesRequest();
         };
 
-        $services['request.file.http'] = function() {
+        $services['request.file.http'] = function () {
             return new \YumlPhp\Request\Http\FileRequest();
         };
-        $services['request.file.console'] = function() {
+        $services['request.file.console'] = function () {
             return new \YumlPhp\Request\Console\FileRequest();
         };
     }
 
     private function addBuilders(array &$services)
     {
-        $services['builder.classes.http'] = function(\Pimple $container) {
+        $services['builder.classes.http'] = function (\Pimple $container) {
             return new \YumlPhp\Builder\HttpBuilder($container['request.classes.http'], $container['browser'], 'class');
         };
 
-        $services['builder.activity.http'] = function(\Pimple $container) {
+        $services['builder.activity.http'] = function (\Pimple $container) {
             return new \YumlPhp\Builder\HttpBuilder($container['request.file.http'], $container['browser'], 'activity');
         };
 
-        $services['builder.use_case.http'] = function(\Pimple $container) {
+        $services['builder.use_case.http'] = function (\Pimple $container) {
             return new \YumlPhp\Builder\HttpBuilder($container['request.file.http'], $container['browser'], 'usecase');
         };
 
-        $services['builder.classes.console'] = function(\Pimple $container) {
+        $services['builder.classes.console'] = function (\Pimple $container) {
             return new \YumlPhp\Builder\ConsoleBuilder($container['request.classes.console'], 'class');
         };
 
-        $services['builder.activity.console'] = function(\Pimple $container) {
+        $services['builder.activity.console'] = function (\Pimple $container) {
             return new \YumlPhp\Builder\ConsoleBuilder($container['request.file.console'], 'activity');
         };
 
-        $services['builder.use_case.console'] = function(\Pimple $container) {
+        $services['builder.use_case.console'] = function (\Pimple $container) {
             return new \YumlPhp\Builder\ConsoleBuilder($container['request.file.console'], 'usecase');
         };
     }
 
     private function addCommands(array &$services)
     {
-        $services['command.classes'] = function(\Pimple $container) {
+        $services['command.classes'] = function (\Pimple $container) {
             return new \YumlPhp\Command\ClassesCommand($container['builder.classes.http'], $container['builder.classes.console']);
         };
 
-        $services['command.activity'] = function(\Pimple $container) {
+        $services['command.activity'] = function (\Pimple $container) {
             return new \YumlPhp\Command\ActivityCommand($container['builder.activity.http'], $container['builder.activity.console']);
         };
 
-        $services['command.use_case'] = function(\Pimple $container) {
+        $services['command.use_case'] = function (\Pimple $container) {
             return new \YumlPhp\Command\UseCaseCommand($container['builder.use_case.http'], $container['builder.use_case.console']);
         };
     }
 
-
-} 
+}

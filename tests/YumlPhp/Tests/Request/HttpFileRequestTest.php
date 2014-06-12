@@ -20,7 +20,7 @@ use YumlPhp\Request\Http\FileRequest;
  *
  * @covers YumlPhp\Request\Http\FileRequest<extended>
  */
-class FileRequestTest extends \PHPUnit_Framework_TestCase
+class HttpFileRequestTest extends \PHPUnit_Framework_TestCase
 {
     public function testGetContent()
     {

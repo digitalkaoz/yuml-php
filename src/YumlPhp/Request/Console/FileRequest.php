@@ -1,6 +1,5 @@
 <?php
 
-
 namespace YumlPhp\Request\Console;
 
 use YumlPhp\Request\FileRequest as BaseRequest;
@@ -11,7 +10,9 @@ use YumlPhp\Request\FileRequest as BaseRequest;
  */
 class FileRequest extends BaseRequest
 {
-
+    /**
+     * @inheritDoc
+     */
     public function build()
     {
         return explode(',', $this->getData());

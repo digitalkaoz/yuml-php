@@ -32,7 +32,6 @@ abstract class Builder implements BuilderInterface
      */
     private $type;
 
-
     /**
      * @param RequestInterface $inspector
      * @param                  $type

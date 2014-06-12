@@ -11,9 +11,7 @@
 
 namespace YumlPhp\Tests;
 
-use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\ArrayInput;
-use Symfony\Component\Console\Output\StreamOutput;
 use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Console\Tester\ApplicationTester;
 use YumlPhp\Application;

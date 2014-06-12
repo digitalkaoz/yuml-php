@@ -13,7 +13,6 @@ namespace YumlPhp\Builder;
 
 use Buzz\Browser;
 use Buzz\Message\Response;
-use Symfony\Component\Finder\Finder;
 use YumlPhp\Request\RequestInterface;
 
 /**
@@ -33,7 +32,7 @@ class HttpBuilder extends Builder
      *
      * @param RequestInterface $request
      * @param Browser          $browser
-     * @param                  $type
+     * @param string           $type
      */
     public function __construct(RequestInterface $request, Browser $browser, $type)
     {
@@ -60,12 +59,11 @@ class HttpBuilder extends Builder
             throw new \RuntimeException('No Request built for: ' . $this->path);
         }
 
-        $response = $this->browser->post($url, array(
-        ), 'dsl_text=' . urlencode(join(',', $request)));
+        $response = $this->browser->post($url, array(), 'dsl_text=' . urlencode(join(',', $request)));
 
         if ($response instanceof Response && $response->isSuccessful()) {
             $file = $response->getContent();
-x
+
             return array(
                 '<info>PNG</info> http://yuml.me/' . $file,
                 '<info>URL</info> http://yuml.me/edit/' . str_replace('.png', '', $file),

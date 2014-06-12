@@ -11,9 +11,6 @@
 
 namespace YumlPhp\Request;
 
-use Symfony\Component\Finder\Finder;
-
-
 /**
  * A Request from File
  *
@@ -23,13 +20,22 @@ abstract class FileRequest implements RequestInterface
 {
     private $file;
 
+    /**
+     * @inheritDoc
+     */
     public function setPath($file)
     {
         $this->file = $file;
+
+        return $this;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function configure(array $config)
     {
+        return $this;
     }
 
     protected function getData()

@@ -11,14 +11,12 @@
 
 namespace YumlPhp\Command;
 
-use Buzz\Browser;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\Output;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Finder\Finder;
 use YumlPhp\Builder;
 use YumlPhp\Builder\BuilderInterface;
 
@@ -43,7 +41,6 @@ abstract class BaseCommand extends Command
      * @var BuilderInterface
      */
     protected $consoleBuilder;
-
 
     /**
      * @param BuilderInterface $httpBuilder
@@ -100,8 +97,8 @@ abstract class BaseCommand extends Command
     /**
      * creates the builder configuration
      *
-     * @param \YumlPhp\Builder\BuilderInterface $builder
-     * @param InputInterface                    $input
+     * @param  \YumlPhp\Builder\BuilderInterface $builder
+     * @param  InputInterface                    $input
      * @return array
      */
     abstract protected function getBuilderConfig(BuilderInterface $builder, InputInterface $input);

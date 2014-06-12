@@ -11,8 +11,6 @@
 
 namespace YumlPhp\Tests\Command;
 
-use Symfony\Component\Console\Input\ArrayInput;
-use Symfony\Component\Console\Output\StreamOutput;
 use Symfony\Component\Console\Tester\CommandTester;
 use YumlPhp\Command\UseCaseCommand;
 

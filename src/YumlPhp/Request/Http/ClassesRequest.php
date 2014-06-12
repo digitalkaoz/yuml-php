@@ -1,6 +1,5 @@
 <?php
 
-
 namespace YumlPhp\Request\Http;
 
 use TokenReflection\IReflectionClass;
@@ -12,7 +11,6 @@ use YumlPhp\Request\ClassesRequest as BaseRequest;
  */
 class ClassesRequest extends BaseRequest
 {
-
     /**
      * @inheritDoc
      */
@@ -54,4 +52,4 @@ class ClassesRequest extends BaseRequest
 
         return $request;
     }
-} 
+}

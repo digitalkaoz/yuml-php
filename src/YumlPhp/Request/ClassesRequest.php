@@ -11,7 +11,6 @@
 
 namespace YumlPhp\Request;
 
-use Symfony\Component\Finder\Finder;
 use TokenReflection\Broker;
 use TokenReflection\IReflectionClass;
 use TokenReflection\IReflectionMethod;
@@ -23,16 +22,26 @@ use TokenReflection\IReflectionMethod;
  */
 abstract class ClassesRequest implements RequestInterface
 {
-    private $classes = array(), $namespaces = array(), $config = array(), $path;
+    private $config = array(), $path;
 
+    /**
+     * @inheritDoc
+     */
     public function setPath($path)
     {
         $this->path = $path;
+
+        return $this;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function configure(array $config)
     {
         $this->config = $config;
+
+        return $this;
     }
 
     /**
@@ -45,22 +54,18 @@ abstract class ClassesRequest implements RequestInterface
         $broker = new Broker(new Broker\Backend\Memory());
         $broker->processDirectory(realpath($this->path));
         $classes = $broker->getClasses();
+
         sort($classes);
 
-        foreach ($classes as $class) {
-            $this->classes[$class->getName()] = $class;
-            $this->namespaces[$class->getNamespaceName()] = $class->getNamespaceName();
-        }
-
-        return $this->classes;
+        return $classes;
     }
 
     /**
      * builds the name for a class
      *
-     * @param IReflectionClass $class
-     * @param string           $prefix
-     * @param string           $suffix
+     * @param  IReflectionClass $class
+     * @param  string           $prefix
+     * @param  string           $suffix
      * @return string
      */
     protected function buildName(IReflectionClass $class, $prefix = '<<', $suffix = '>>')
@@ -77,12 +82,12 @@ abstract class ClassesRequest implements RequestInterface
     /**
      * builds the parent for a class
      *
-     * @param IReflectionClass $class
-     * @param string           $prefix
-     * @param string           $suffix
-     * @param string           $interfacePrefix
-     * @param string           $interfaceSuffix
-     * @param string           $interfacesGlue
+     * @param  IReflectionClass $class
+     * @param  string           $prefix
+     * @param  string           $suffix
+     * @param  string           $interfacePrefix
+     * @param  string           $interfaceSuffix
+     * @param  string           $interfacesGlue
      * @return string
      */
     protected function buildParent(IReflectionClass $class, $prefix = null, $suffix = null, $interfacePrefix = '<<', $interfaceSuffix = '>>', $interfacesGlue = null)
@@ -106,9 +111,9 @@ abstract class ClassesRequest implements RequestInterface
     /**
      * collects all properties for current class (only self defined ones)
      *
-     * @param IReflectionClass $class
-     * @param string           $public
-     * @param string           $private
+     * @param  IReflectionClass $class
+     * @param  string           $public
+     * @param  string           $private
      * @return array
      */
     protected function buildProperties(IReflectionClass $class, $public = '+', $private = '-')
@@ -133,10 +138,10 @@ abstract class ClassesRequest implements RequestInterface
     /**
      * collects all methods for current class (only self defined ones)
      *
-     * @param IReflectionClass $class
-     * @param string           $public
-     * @param string           $private
-     * @param string           $suffix
+     * @param  IReflectionClass $class
+     * @param  string           $public
+     * @param  string           $private
+     * @param  string           $suffix
      * @return array
      */
     protected function buildMethods(IReflectionClass $class, $public = '+', $private = '-', $suffix = '()')
@@ -162,9 +167,9 @@ abstract class ClassesRequest implements RequestInterface
     /**
      * collects all interfaces for current class (only self implemented ones)
      *
-     * @param IReflectionClass $class
-     * @param string           $prefix
-     * @param string           $suffix
+     * @param  IReflectionClass $class
+     * @param  string           $prefix
+     * @param  string           $suffix
      * @return array
      */
     protected function buildInterfaces(IReflectionClass $class, $prefix = '<<', $suffix = '>>')
@@ -183,7 +188,7 @@ abstract class ClassesRequest implements RequestInterface
     /**
      * prepares a class name into its FQDN with namespace if not found in current class namespaces
      *
-     * @param IReflectionClass $class
+     * @param  IReflectionClass $class
      * @return string
      */
     protected function prepare(IReflectionClass $class)

@@ -10,7 +10,9 @@ use YumlPhp\Request\ClassesRequest as BaseRequest;
  */
 class ClassesRequest extends BaseRequest
 {
-
+    /**
+     * @inheritDoc
+     */
     public function build()
     {
         $request = array();
@@ -39,4 +41,4 @@ class ClassesRequest extends BaseRequest
 
         return $request;
     }
-} 
+}

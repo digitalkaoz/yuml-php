@@ -7,7 +7,7 @@ namespace YumlPhp\Tests\Fixtures;
  */
 interface FooInterface extends BazzInterface
 {
-    function foo();
+    public function foo();
 
-    function bar();
+    public function bar();
 }

@@ -11,8 +11,6 @@
 
 namespace YumlPhp\Builder;
 
-use Symfony\Component\Finder\Finder;
-
 /**
  * the common builder interface
  *
@@ -24,28 +22,36 @@ interface BuilderInterface
     /**
      * configures the builder
      *
-     * @param array $config
+     * @param  array            $config
      * @return BuilderInterface
      */
-    function configure($config);
+    public function configure($config);
 
     /**
      * sets the path to crawl for classes
      *
-     * @param string $path
+     * @param  string           $path
      * @return BuilderInterface
      */
-    function setPath($path);
+    public function setPath($path);
 
     /**
      * executes the build
      *
      * @return mixed
      */
-    function build();
+    public function build();
 
-    function request(array $request);
+    /**
+     * perforns the request
+     *
+     * @param  array $request
+     * @return mixed
+     */
+    public function request(array $request);
 
-    function getType();
-
+    /**
+     * @return string
+     */
+    public function getType();
 }

@@ -13,7 +13,6 @@ namespace YumlPhp\Tests\Builder;
 
 use Buzz\Browser;
 use YumlPhp\Builder\BuilderInterface;
-use YumlPhp\Builder\Http\ActivityBuilder;
 use YumlPhp\Builder\HttpBuilder;
 use YumlPhp\Request\Http\FileRequest;
 
