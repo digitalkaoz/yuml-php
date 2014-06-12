@@ -47,7 +47,7 @@ abstract class ClassesRequest implements RequestInterface
     /**
      * reflects given classes
      *
-     * @return array
+     * @return IReflectionClass[]
      */
     protected function getClasses()
     {

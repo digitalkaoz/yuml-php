@@ -19,7 +19,6 @@ class ClassesRequest extends BaseRequest
         $request = array();
 
         foreach ($this->getClasses() as $class) {
-            /** @var $class IReflectionClass */
             $name = $this->buildName($class);
             $parent = $this->buildParent($class, ' ', '', ' <<', '>>', '');
             $interfaces = $this->buildInterfaces($class);
