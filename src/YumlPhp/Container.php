@@ -31,7 +31,7 @@ class Container extends \Pimple
         $services['browser'] = function () {
             if (function_exists('curl_version')) {
                 $client = new \Buzz\Client\Curl();
-                $client->setTimeout(30);
+                $client->setTimeout(120);
             } else {
                 $client = new \Buzz\Client\FileGetContents();
             }
