@@ -48,21 +48,4 @@ class ClassesRequest extends BaseRequest
             $request[] = sprintf("\t%s", join(';', $methods));
         }
     }
-
-    /**
-     * @param IReflectionClass $class
-     * @return array
-     */
-    private function determinePrefixAndSuffix(IReflectionClass $class)
-    {
-        $prefix = null;
-        $suffix = null;
-
-        if ($class->isInterface() || substr($class->getName(), -strlen('Interface')) === 'Interface') {
-            $suffix = '>>';
-            $prefix = '<<';
-        }
-
-        return array($prefix, $suffix);
-    }
 }

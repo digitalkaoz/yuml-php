@@ -74,14 +74,12 @@ class ClassesRequest extends BaseRequest
      * @param IReflectionClass $class
      * @return array
      */
-    private function determinePrefixAndSuffix(IReflectionClass $class)
+    protected function determinePrefixAndSuffix(IReflectionClass $class)
     {
-        $prefix = null;
-        $suffix = null;
+        list($prefix, $suffix) = parent::determinePrefixAndSuffix($class);
 
-        if ($class->isInterface() || substr($class->getName(), -strlen('Interface')) === 'Interface') {
-            $suffix = '>>{bg:orange}';
-            $prefix = '<<';
+        if ($this->isInterface($class)) {
+            $suffix .= '{bg:orange}';
         } elseif ($class->isAbstract()) {
             $suffix = '{bg:blue}';
         }

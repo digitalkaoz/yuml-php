@@ -229,4 +229,30 @@ abstract class ClassesRequest implements RequestInterface
     {
         return str_replace('\\', '/', $class->getName());
     }
+
+    /**
+     * @param IReflectionClass $class
+     * @return array
+     */
+    protected function determinePrefixAndSuffix(IReflectionClass $class)
+    {
+        $prefix = null;
+        $suffix = null;
+
+        if ($this->isInterface($class)) {
+            $suffix = '>>';
+            $prefix = '<<';
+        }
+
+        return array($prefix, $suffix);
+    }
+
+    /**
+     * @param IReflectionClass $class
+     * @return bool
+     */
+    protected function isInterface(IReflectionClass $class)
+    {
+        return $class->isInterface() || substr($class->getName(), -strlen('Interface')) === 'Interface';
+    }
 }
