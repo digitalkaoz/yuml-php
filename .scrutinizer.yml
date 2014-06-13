@@ -1,8 +1,12 @@
 filter:
     paths: [src/*]
 
+before_commands:
+    - "composer install --prefer-source"
+
 tools:
-    external_code_coverage: true
+    php_code_coverage: true
+    php_loc: true
     php_cs_fixer: true
     php_code_sniffer:
         config:
