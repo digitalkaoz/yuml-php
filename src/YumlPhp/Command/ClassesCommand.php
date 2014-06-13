@@ -49,20 +49,12 @@ EOT
      */
     protected function getBuilderConfig(BuilderInterface $builder, InputInterface $input)
     {
-        //scruffy, nofunky, plain
-        //dir: LR TB RL
-        //scale: 180 120 100 80 60
-        $style = $input->getOption('style') ? : 'plain;dir:TB;scale:80;';
-        $type = $builder->getType();
+        $config = parent::getBuilderConfig($builder, $input);
 
-        return array(
-            'url'            => 'http://yuml.me/diagram/' . $style . '/' . $type . '/',
-            'debug'          => $input->getOption('debug'),
+        return array_merge($config, array(
             'withMethods'    => $input->getOption('methods'),
             'withProperties' => $input->getOption('properties'),
-            'style'          => $style,
-            'filter'         => $input->getOption('filter'),
-            'autoload_path'  => $input->getArgument('source')
-        );
+            'filter'         => $input->getOption('filter')
+        ));
     }
 }

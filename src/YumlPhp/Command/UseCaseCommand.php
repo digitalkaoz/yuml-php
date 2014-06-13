@@ -11,9 +11,7 @@
 
 namespace YumlPhp\Command;
 
-use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Command\Command;
-use YumlPhp\Builder\BuilderInterface;
 
 /**
  * this command generates an use-case diagram
@@ -37,21 +35,6 @@ The <info>use-case</info> command generates an use-case diagram from a file
 
 <info>yuml-php use-case src/use-cases.txt</info> builds an use-case diagram for the file
 EOT
-        );
-    }
-
-    /**
-     * @inheritDoc
-     */
-    protected function getBuilderConfig(BuilderInterface $builder, InputInterface $input)
-    {
-        $style = $input->getOption('style') ? : 'plain;dir:LR;scale:80;';
-        $type = $builder->getType();
-
-        return array(
-            'url'   => 'http://yuml.me/diagram/' . $style . '/' . $type . '/',
-            'debug' => $input->getOption('debug'),
-            'style' => $input->getOption('style') ? : 'plain;dir:LR;scale:80;'
         );
     }
 }

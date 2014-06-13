@@ -188,7 +188,7 @@ abstract class ClassesRequest implements RequestInterface
     /**
      * extracts usages to other classes
      *
-     * @param IReflectionClass $class
+     * @param  IReflectionClass   $class
      * @return IReflectionClass[]
      */
     protected function buildUsages(IReflectionClass $class)

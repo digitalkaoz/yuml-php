@@ -100,5 +100,18 @@ abstract class BaseCommand extends Command
      * @param  InputInterface                    $input
      * @return array
      */
-    abstract protected function getBuilderConfig(BuilderInterface $builder, InputInterface $input);
+    protected function getBuilderConfig(BuilderInterface $builder, InputInterface $input)
+    {
+        //scruffy, nofunky, plain
+        //dir: LR TB RL
+        //scale: 180 120 100 80 60
+        $style = $input->getOption('style') ? : 'plain;dir:TB;scale:80;';
+        $type = $builder->getType();
+
+        return array(
+            'url'   => 'http://yuml.me/diagram/' . $style . '/' . $type . '/',
+            'debug' => $input->getOption('debug'),
+            'style' => $input->getOption('style') ? : 'plain;dir:LR;scale:80;'
+        );
+    }
 }
