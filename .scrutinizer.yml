@@ -2,7 +2,7 @@ filter:
     paths: [src/*]
 
 before_commands:
-    - "composer install --prefer-source"
+    - "composer install --prefer-dist"
 
 tools:
     php_code_coverage: true
