@@ -2,10 +2,12 @@
 
 namespace YumlPhp\Request\Http;
 
+use TokenReflection\IReflectionClass;
 use YumlPhp\Request\ClassesRequest as BaseRequest;
 
 /**
  * HttpClassesRequest
+ *
  * @author Robert Schönthal <seroscho@gmail.com>
  */
 class ClassesRequest extends BaseRequest
@@ -17,41 +19,70 @@ class ClassesRequest extends BaseRequest
     {
         $request = array();
         foreach ($this->getClasses() as $class) {
-            $name = $this->buildName($class);
-            $parent = $this->buildParent($class, '[', ']^');
-            $interfaces = $this->buildInterfaces($class, '<<', '>>{bg:orange}]^-.-[');
-            $props = $this->buildProperties($class);
-            $methods = $this->buildMethods($class);
-            $usages = $this->buildUsages($class);
-            $prefix = null;
-            $suffix = null;
-            $pattern = "%s[%s%s%s%s]";
-
-            //rebuild pattern
-            if (count($methods) || count($props)) {
-                $pattern = "%s[%s%s|%s%s]";
-            }
-            if (count($props) && count($methods)) {
-                $pattern = "%s[%s%s|%s|%s]";
-            }
-
-            $line = sprintf($pattern, $parent, $prefix . join(';', $interfaces), $name, join(';', $props), join(';', $methods));
-
-            if (!$class->isInterface()) {
-                foreach ($usages as $usage) {
-                    $request[] = sprintf('[%s]-.->[%s]', $name, $this->buildName($usage));
-                }
-            }
-
-            if ($class->isInterface()) {
-                array_unshift($request, $line);
-            } else {
-                $request[] = $line;
-            }
+            $this->addClass($class, $request);
+            $this->addAssociations($class, $request);
         }
 
         natcasesort($request);
 
         return $request;
+    }
+
+    /**
+     * @param IReflectionClass $class
+     * @param array            $request
+     */
+    private function addClass(IReflectionClass $class, array &$request)
+    {
+        $parent = $this->buildParent($class, '[', ']^');
+        $interfaces = $this->buildInterfaces($class, '<<', '>>{bg:orange}]^-.-[');
+        $props = $this->buildProperties($class);
+        $methods = $this->buildMethods($class);
+        $pattern = $this->determinePattern($methods, $props);
+
+        $line = sprintf($pattern, $parent, join(';', $interfaces), $this->buildName($class), join(';', $props), join(';', $methods));
+
+        if ($class->isInterface()) {
+            array_unshift($request, $line);
+        } else {
+            $request[] = $line;
+        }
+    }
+
+    /**
+     * @param IReflectionClass $class
+     * @param array            $request
+     */
+    private function addAssociations(IReflectionClass $class, array &$request)
+    {
+        $usages = $this->buildUsages($class);
+
+        if ($class->isInterface()) {
+            return;
+        }
+
+        foreach ($usages as $usage) {
+            $request[] = sprintf('[%s]-.->[%s]', $this->buildName($class), $this->buildName($usage));
+        }
+    }
+
+    /**
+     * @param array $methods
+     * @param array $props
+     * @return string
+     */
+    private function determinePattern(array $methods, array $props)
+    {
+        $pattern = "%s[%s%s%s%s]";
+
+        //rebuild pattern
+        if (count($methods) || count($props)) {
+            $pattern = "%s[%s%s|%s%s]";
+        }
+        if (count($props) && count($methods)) {
+            $pattern = "%s[%s%s|%s|%s]";
+        }
+
+        return $pattern;
     }
 }
