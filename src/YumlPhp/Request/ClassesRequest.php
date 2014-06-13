@@ -84,18 +84,6 @@ abstract class ClassesRequest implements RequestInterface
      */
     protected function buildName(IReflectionClass $class, $prefix = '<<', $suffix = '>>')
     {
-        $name = $this->prepare($class);
-
-        if ($class->isInterface() || substr($name, -strlen('Interface')) === 'Interface') {
-            $suffix = $suffix.'{bg:orange}';
-        } elseif ($class->isAbstract()) {
-            $prefix = '';
-            $suffix = '{bg:blue}';
-        } else {
-            $prefix = '';
-            $suffix = '';
-        }
-
         return $prefix . $this->prepare($class) . $suffix;
     }
 

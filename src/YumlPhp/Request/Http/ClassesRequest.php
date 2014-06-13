@@ -34,13 +34,15 @@ class ClassesRequest extends BaseRequest
      */
     private function addClass(IReflectionClass $class, array &$request)
     {
+        list($prefix, $suffix) = $this->determinePrefixAndSuffix($class);
+
         $parent = $this->buildParent($class, '[', ']^');
         $interfaces = $this->buildInterfaces($class, '<<', '>>{bg:orange}]^-.-[');
         $props = $this->buildProperties($class);
         $methods = $this->buildMethods($class);
         $pattern = $this->determinePattern($methods, $props);
 
-        $line = sprintf($pattern, $parent, join(';', $interfaces), $this->buildName($class), join(';', $props), join(';', $methods));
+        $line = sprintf($pattern, $parent, join(';', $interfaces), $this->buildName($class, $prefix, $suffix), join(';', $props), join(';', $methods));
 
         if ($class->isInterface()) {
             array_unshift($request, $line);
@@ -62,8 +64,29 @@ class ClassesRequest extends BaseRequest
         }
 
         foreach ($usages as $usage) {
-            $request[] = sprintf('[%s]-.->[%s]', $this->buildName($class), $this->buildName($usage));
+            list($prefix, $suffix) = $this->determinePrefixAndSuffix($usage);
+
+            $request[] = sprintf('[%s]-.->[%s]', $this->buildName($class), $this->buildName($usage, $prefix, $suffix));
         }
+    }
+
+    /**
+     * @param IReflectionClass $class
+     * @return array
+     */
+    private function determinePrefixAndSuffix(IReflectionClass $class)
+    {
+        $prefix = null;
+        $suffix = null;
+
+        if ($class->isInterface() || substr($class->getName(), -strlen('Interface')) === 'Interface') {
+            $suffix = '>>{bg:orange}';
+            $prefix = '<<';
+        } elseif ($class->isAbstract()) {
+            $suffix = '{bg:blue}';
+        }
+
+        return array($prefix, $suffix);
     }
 
     /**
