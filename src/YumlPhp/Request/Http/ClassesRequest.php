@@ -58,6 +58,7 @@ class ClassesRequest extends BaseRequest
     private function addAssociations(IReflectionClass $class, array &$request)
     {
         $usages = $this->buildUsages($class);
+        list($ownPrefix, $ownSuffix) = $this->determinePrefixAndSuffix($class);
 
         if ($class->isInterface()) {
             return;
@@ -66,12 +67,12 @@ class ClassesRequest extends BaseRequest
         foreach ($usages as $usage) {
             list($prefix, $suffix) = $this->determinePrefixAndSuffix($usage);
 
-            $request[] = sprintf('[%s]-.->[%s]', $this->buildName($class), $this->buildName($usage, $prefix, $suffix));
+            $request[] = sprintf('[%s]-.->[%s]', $this->buildName($class, $ownPrefix, $ownSuffix), $this->buildName($usage, $prefix, $suffix));
         }
     }
 
     /**
-     * @param IReflectionClass $class
+     * @param  IReflectionClass $class
      * @return array
      */
     protected function determinePrefixAndSuffix(IReflectionClass $class)
@@ -88,8 +89,8 @@ class ClassesRequest extends BaseRequest
     }
 
     /**
-     * @param array $methods
-     * @param array $props
+     * @param  array  $methods
+     * @param  array  $props
      * @return string
      */
     private function determinePattern(array $methods, array $props)

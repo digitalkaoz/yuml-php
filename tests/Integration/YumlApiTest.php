@@ -1,6 +1,6 @@
 <?php
 
-namespace YumlPhp\Tests\Integration;
+namespace YumlPhp\tests\Integration;
 
 use Buzz\Browser;
 use YumlPhp\Builder\BuilderInterface;

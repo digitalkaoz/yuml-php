@@ -93,27 +93,15 @@ abstract class ClassesRequest implements RequestInterface
      * @param  IReflectionClass $class
      * @param  string           $prefix
      * @param  string           $suffix
-     * @param  string           $interfacePrefix
-     * @param  string           $interfaceSuffix
-     * @param  string           $interfacesGlue
      * @return string
      */
-    protected function buildParent(IReflectionClass $class, $prefix = null, $suffix = null, $interfacePrefix = '<<', $interfaceSuffix = '>>', $interfacesGlue = null)
+    protected function buildParent(IReflectionClass $class, $prefix = null, $suffix = null)
     {
         if (!$class->getParentClass()) {
             return;
         }
 
-        $interfaces = null;
-        if ($interfacesGlue) {
-            $interfaces = $this->buildInterfaces($class->getParentClass());
-            $interfaces = count($interfaces) == 1 ? join($interfacesGlue, ($interfaces)) . $interfacesGlue : join($interfacesGlue, $interfaces);
-        }
-
-        $prefix = $class->getParentClass()->isInterface() ? $interfacePrefix : $prefix;
-        $suffix = $class->getParentClass()->isInterface() ? $interfaceSuffix : $suffix;
-
-        return $prefix . $interfaces . $this->prepare($class->getParentClass()) . $suffix;
+        return $prefix . $this->prepare($class->getParentClass()) . $suffix;
     }
 
     /**
@@ -132,11 +120,9 @@ abstract class ClassesRequest implements RequestInterface
             return $props;
         }
 
-        foreach ($class->getProperties() as $property) {
+        foreach ($class->getOwnProperties() as $property) {
             /** @var IReflectionProperty $property */
-            if ($property->getDeclaringClass() == $class) {
-                $props[] = ($property->isPublic() ? $public : $private) . $property->getName();
-            }
+            $props[] = ($property->isPublic() ? $public : $private) . $property->getName();
         }
 
         natcasesort($props);
@@ -161,9 +147,9 @@ abstract class ClassesRequest implements RequestInterface
             return $methods;
         }
 
-        foreach ($class->getMethods() as $method) {
+        foreach ($class->getOwnMethods() as $method) {
             /** @var IReflectionMethod $method */
-            if (!$method->isAbstract() && $method->getDeclaringClass() == $class && !$class->isInterface()) {
+            if (!$method->isAbstract() && !$class->isInterface()) {
                 $methods[] = (!$class->isInterface() ? ($method->isPublic() ? $public : $private) : null) . $method->getName() . $suffix;
             }
         }
@@ -182,11 +168,8 @@ abstract class ClassesRequest implements RequestInterface
     protected function buildUsages(IReflectionClass $class)
     {
         $usages = array();
-        foreach ($class->getMethods() as $method) {
+        foreach ($class->getOwnMethods() as $method) {
             /** @var IReflectionMethod $method */
-            if ($method->getDeclaringClass() !== $class) {
-                continue;
-            }
             foreach ($method->getParameters() as $parameter) {
                 /** @var IReflectionParameter $parameter */
                 if ($parameter->getClass()) {

@@ -33,7 +33,7 @@ class ClassesRequest extends BaseRequest
     private function addClass(IReflectionClass $class, array &$request)
     {
         list($prefix, $suffix) = $this->determinePrefixAndSuffix($class);
-        $parent = $this->buildParent($class, ' ', '', ' <<', '>>', '');
+        $parent = $this->buildParent($class, ' ', '');
         $interfaces = $this->buildInterfaces($class);
         $props = $this->buildProperties($class, '<info>+</info>', '<question>-</question>');
         $methods = $this->buildMethods($class, '<info>+</info>', '<question>-</question>');

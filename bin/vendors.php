@@ -7,7 +7,7 @@ $interpreter = PHP_OS == 'WINNT' ? 'php.exe' : '';
 $composer = $rootDir.'/composer.phar';
 
 //get composer
-if(file_exists($composer)){
+if (file_exists($composer)) {
     system(sprintf('php %s', $composer.' self-update'));
 } else {
     system(sprintf('curl %s | php -d=phar.readonly=Off -d=phar.require_hash=Off', 'http://getcomposer.org/installer'), $composerable);
