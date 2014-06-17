@@ -18,7 +18,7 @@ Installation
 ## Installation with [`composer`](https://github.com/composer/composer.git)
 
 ``` json
-"require"{
+"require" : {
     "digitalkaoz/yuml-php":  "@stable"
 }
 ```
