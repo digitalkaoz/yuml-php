@@ -11,8 +11,6 @@
 
 namespace YumlPhp\Command;
 
-use Symfony\Component\Console\Command\Command;
-
 /**
  * this command generates an activity diagram
  *

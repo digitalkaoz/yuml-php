@@ -143,13 +143,13 @@ abstract class ClassesRequest implements RequestInterface
     {
         $methods = array();
 
-        if (!$this->config['withMethods']) {
+        if (!$this->config['withMethods'] || $class->isInterface()) {
             return $methods;
         }
 
         foreach ($class->getOwnMethods() as $method) {
             /** @var IReflectionMethod $method */
-            if (!$method->isAbstract() && !$class->isInterface()) {
+            if (!$method->isAbstract()) {
                 $methods[] = (!$class->isInterface() ? ($method->isPublic() ? $public : $private) : null) . $method->getName() . $suffix;
             }
         }
