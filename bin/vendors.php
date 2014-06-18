@@ -8,7 +8,7 @@ $composer = $rootDir.'/composer.phar';
 
 //get composer
 if (file_exists($composer)) {
-    system(sprintf('php %s', $composer.' self-update'));
+    system(sprintf('php %s', $composer.' self-update'), $composerable);
 } else {
     system(sprintf('curl %s | php -d=phar.readonly=Off -d=phar.require_hash=Off', 'http://getcomposer.org/installer'), $composerable);
 }
