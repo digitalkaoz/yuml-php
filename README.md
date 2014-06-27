@@ -45,10 +45,11 @@ Usage
         --methods     build with methods
         --filter      to include/exclude files/folder
 
-
 ```sh
 yuml-php classes src/
 ```
+
+![Class Diagram](http://digitalkaoz.github.io/yuml-php/examples/classes_01.png)
 
 ### the `activity` command generates an activity diagram from a given file
 
@@ -67,6 +68,8 @@ yuml-php classes src/
 yuml-php activity activities.txt
 ```
 
+![Activity Diagramm](http://digitalkaoz.github.io/yuml-php/examples/activity_01.png)
+
 ### the `use-case` command generates a use-case diagram from a given file
 
     Usage:
@@ -83,6 +86,9 @@ yuml-php activity activities.txt
 ```sh
 yuml-php use-case use-cases.txt
 ```
+
+![Use-Case Diagramm](http://digitalkaoz.github.io/yuml-php/examples/usecase-01.png)
+
 Building the PHAR
 -----------------
 
