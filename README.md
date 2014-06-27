@@ -91,7 +91,7 @@ Building the PHAR
 Tests
 -----
 
-    php/bin/vendors.php
+    php bin/vendors.php
     phpunit
 
 
