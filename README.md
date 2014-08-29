@@ -17,11 +17,22 @@ Installation
 
 ## Installation with [`composer`](https://github.com/composer/composer.git)
 
+
 ``` json
 "require" : {
     "digitalkaoz/yuml-php":  "@stable"
-}
+    "andrewsville/php-token-reflection":    "dev-develop@dev"
+},
+"repositories" : [
+    {
+        "type" : "vcs",
+        "url" : "https://github.com/digitalkaoz/PHP-Token-Reflection"
+    }
+],
+
 ```
+
+You need to add my custom PHP-Token-Reflection Fork, since it has some unmerged but needed improvements!
 
 ## Installation with `PHAR`
 
