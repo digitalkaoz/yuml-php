@@ -20,7 +20,7 @@ Installation
 
 ``` json
 "require" : {
-    "digitalkaoz/yuml-php":  "@stable"
+    "digitalkaoz/yuml-php":  "@stable",
     "andrewsville/php-token-reflection":    "dev-develop@dev"
 },
 "repositories" : [
