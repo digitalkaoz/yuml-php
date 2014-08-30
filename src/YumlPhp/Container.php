@@ -2,13 +2,14 @@
 
 namespace YumlPhp;
 
+use \Pimple\Container as Pimple;
 /**
  * Container
  *
  * @author Robert Schönthal <seroscho@googlemail.com>
  * @codeCoverageIgnore
  */
-class Container extends \Pimple
+class Container extends Pimple
 {
     public function __construct()
     {
@@ -57,42 +58,42 @@ class Container extends \Pimple
 
     private function addBuilders(array &$services)
     {
-        $services['builder.classes.http'] = function (\Pimple $container) {
+        $services['builder.classes.http'] = function (Pimple $container) {
             return new \YumlPhp\Builder\HttpBuilder($container['request.classes.http'], $container['browser'], 'class');
         };
 
-        $services['builder.activity.http'] = function (\Pimple $container) {
+        $services['builder.activity.http'] = function (Pimple $container) {
             return new \YumlPhp\Builder\HttpBuilder($container['request.file.http'], $container['browser'], 'activity');
         };
 
-        $services['builder.use_case.http'] = function (\Pimple $container) {
+        $services['builder.use_case.http'] = function (Pimple $container) {
             return new \YumlPhp\Builder\HttpBuilder($container['request.file.http'], $container['browser'], 'usecase');
         };
 
-        $services['builder.classes.console'] = function (\Pimple $container) {
+        $services['builder.classes.console'] = function (Pimple $container) {
             return new \YumlPhp\Builder\ConsoleBuilder($container['request.classes.console'], 'class');
         };
 
-        $services['builder.activity.console'] = function (\Pimple $container) {
+        $services['builder.activity.console'] = function (Pimple $container) {
             return new \YumlPhp\Builder\ConsoleBuilder($container['request.file.console'], 'activity');
         };
 
-        $services['builder.use_case.console'] = function (\Pimple $container) {
+        $services['builder.use_case.console'] = function (Pimple $container) {
             return new \YumlPhp\Builder\ConsoleBuilder($container['request.file.console'], 'usecase');
         };
     }
 
     private function addCommands(array &$services)
     {
-        $services['command.classes'] = function (\Pimple $container) {
+        $services['command.classes'] = function (Pimple $container) {
             return new \YumlPhp\Command\ClassesCommand($container['builder.classes.http'], $container['builder.classes.console']);
         };
 
-        $services['command.activity'] = function (\Pimple $container) {
+        $services['command.activity'] = function (Pimple $container) {
             return new \YumlPhp\Command\ActivityCommand($container['builder.activity.http'], $container['builder.activity.console']);
         };
 
-        $services['command.use_case'] = function (\Pimple $container) {
+        $services['command.use_case'] = function (Pimple $container) {
             return new \YumlPhp\Command\UseCaseCommand($container['builder.use_case.http'], $container['builder.use_case.console']);
         };
     }
