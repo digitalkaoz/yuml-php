@@ -1,5 +1,10 @@
 language: php
+sudo: false
 
+cache:
+    directories:
+      - $HOME/.composer/cache
+      
 php: 
   - 5.3
   - 5.4
@@ -12,7 +17,7 @@ matrix:
     php: hhvm
 
 before_script:
-  - php bin/vendors.php
+  - composer self-update && composer update
 
 script: phpunit --coverage-text
 
