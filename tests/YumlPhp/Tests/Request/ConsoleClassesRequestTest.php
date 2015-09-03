@@ -1,20 +1,11 @@
 <?php
 
-/*
- * This file is part of yuml-php
- *
- * (c) Robert Schönthal <seroscho@googlemail.com>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace YumlPhp\Tests\Request;
 
 use YumlPhp\Request\Console\ClassesRequest;
 
 /**
- * FileRequestTest
+ * FileRequestTest.
  *
  * @author Robert Schönthal <seroscho@googlemail.com>
  *
@@ -25,13 +16,13 @@ class ConsoleClassesRequestTest extends \PHPUnit_Framework_TestCase
     public function testBuild()
     {
         $request = new ClassesRequest();
-        $request->configure(array(
+        $request->configure([
             'withProperties' => true,
-            'withMethods'    => true
-        ));
+            'withMethods'    => true,
+        ]);
         $request->setPath(__DIR__ . '/../Fixtures');
 
-        $this->assertEquals(array(
+        $this->assertEquals([
             '<info>YumlPhp/Tests/Fixtures/BarWithExternal</info><comment> Symfony/Component/Console/Input/StringInput</comment>',
             "\t<info>+</info>bar;<question>-</question>foo",
             "\t<info>+</info>bar();<question>-</question>foo()",
@@ -52,7 +43,7 @@ class ConsoleClassesRequestTest extends \PHPUnit_Framework_TestCase
             "\t<info>+</info>bar();<info>+</info>foo()",
             '<info><<YumlPhp/Tests/Fixtures/BarInterface>></info><comment></comment>',
             '<info><<YumlPhp/Tests/Fixtures/BazzInterface>></info><comment></comment>',
-            '<info><<YumlPhp/Tests/Fixtures/FooInterface>></info><comment></comment> <<YumlPhp/Tests/Fixtures/BazzInterface>>'
-        ), array_values($request->build()));
+            '<info><<YumlPhp/Tests/Fixtures/FooInterface>></info><comment></comment> <<YumlPhp/Tests/Fixtures/BazzInterface>>',
+        ], array_values($request->build()));
     }
 }

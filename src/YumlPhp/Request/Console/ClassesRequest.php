@@ -6,18 +6,18 @@ use TokenReflection\IReflectionClass;
 use YumlPhp\Request\ClassesRequest as BaseRequest;
 
 /**
- * ClassesRequest
+ * ClassesRequest.
  *
  * @author Robert Schönthal <seroscho@gmail.com>
  */
 class ClassesRequest extends BaseRequest
 {
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function build()
     {
-        $request = array();
+        $request = [];
 
         foreach ($this->getClasses() as $class) {
             $this->addClass($class, $request);
@@ -33,19 +33,19 @@ class ClassesRequest extends BaseRequest
     private function addClass(IReflectionClass $class, array &$request)
     {
         list($prefix, $suffix) = $this->determinePrefixAndSuffix($class);
-        $parent = $this->buildParent($class, ' ', '');
-        $interfaces = $this->buildInterfaces($class);
-        $props = $this->buildProperties($class, '<info>+</info>', '<question>-</question>');
-        $methods = $this->buildMethods($class, '<info>+</info>', '<question>-</question>');
+        $parent                = $this->buildParent($class, ' ', '');
+        $interfaces            = $this->buildInterfaces($class);
+        $props                 = $this->buildProperties($class, '<info>+</info>', '<question>-</question>');
+        $methods               = $this->buildMethods($class, '<info>+</info>', '<question>-</question>');
 
         //build pattern
-        $request[] = sprintf("<info>%s</info><comment>%s</comment>%s", $this->buildName($class, $prefix, $suffix), $parent, ($interfaces ? ' ' . join(' ', $interfaces) : null));
+        $request[] = sprintf('<info>%s</info><comment>%s</comment>%s', $this->buildName($class, $prefix, $suffix), $parent, ($interfaces ? ' ' . implode(' ', $interfaces) : null));
 
         if (count($props)) {
-            $request[] = sprintf("\t%s", join(';', $props));
+            $request[] = sprintf("\t%s", implode(';', $props));
         }
         if (count($methods)) {
-            $request[] = sprintf("\t%s", join(';', $methods));
+            $request[] = sprintf("\t%s", implode(';', $methods));
         }
     }
 }

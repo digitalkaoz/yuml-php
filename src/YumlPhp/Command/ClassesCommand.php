@@ -1,29 +1,20 @@
 <?php
 
-/*
- * This file is part of yuml-php
- *
- * (c) Robert Schönthal <seroscho@googlemail.com>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace YumlPhp\Command;
 
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use YumlPhp\Builder\BuilderInterface;
 
 /**
- * this command generates a class diagram
+ * this command generates a class diagram.
  *
  * @author Robert Schönthal <seroscho@googlemail.com>
  */
 class ClassesCommand extends BaseCommand
 {
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     protected function configure()
     {
@@ -31,7 +22,7 @@ class ClassesCommand extends BaseCommand
 
         $this->getDefinition()->addOption(new InputOption('properties', null, InputOption::VALUE_NONE, 'build with properties'));
         $this->getDefinition()->addOption(new InputOption('methods', null, InputOption::VALUE_NONE, 'build with methods'));
-        $this->getDefinition()->addOption(new InputOption('filter', null, InputOption::VALUE_IS_ARRAY|InputOption::VALUE_REQUIRED, 'glob pattern filter'));
+        $this->getDefinition()->addOption(new InputOption('filter', null, InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED, 'glob pattern filter'));
 
         $this
             ->setName('classes')
@@ -45,16 +36,16 @@ EOT
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     protected function getBuilderConfig(BuilderInterface $builder, InputInterface $input)
     {
         $config = parent::getBuilderConfig($builder, $input);
 
-        return array_merge($config, array(
+        return array_merge($config, [
             'withMethods'    => $input->getOption('methods'),
             'withProperties' => $input->getOption('properties'),
-            'filter'         => $input->getOption('filter')
-        ));
+            'filter'         => $input->getOption('filter'),
+        ]);
     }
 }

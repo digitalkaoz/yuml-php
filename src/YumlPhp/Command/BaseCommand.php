@@ -1,14 +1,5 @@
 <?php
 
-/*
- * This file is part of yuml-php
- *
- * (c) Robert Schönthal <seroscho@googlemail.com>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace YumlPhp\Command;
 
 use Symfony\Component\Console\Command\Command;
@@ -20,7 +11,7 @@ use YumlPhp\Builder;
 use YumlPhp\Builder\BuilderInterface;
 
 /**
- * this common command
+ * this common command.
  *
  * @author Robert Schönthal <seroscho@googlemail.com>
  */
@@ -47,7 +38,7 @@ abstract class BaseCommand extends Command
      */
     public function __construct(BuilderInterface $httpBuilder, BuilderInterface $consoleBuilder)
     {
-        $this->httpBuilder = $httpBuilder;
+        $this->httpBuilder    = $httpBuilder;
         $this->consoleBuilder = $consoleBuilder;
 
         parent::__construct();
@@ -55,16 +46,16 @@ abstract class BaseCommand extends Command
 
     protected function configure()
     {
-        $this->setDefinition(array(
+        $this->setDefinition([
             new InputArgument('source', InputArgument::REQUIRED, 'the input source'),
             new InputOption('console', null, InputOption::VALUE_NONE, 'log to console'),
             new InputOption('debug', null, InputOption::VALUE_NONE, 'debug'),
-            new InputOption('style', null, InputOption::VALUE_NONE, 'yuml style options')
-        ));
+            new InputOption('style', null, InputOption::VALUE_NONE, 'yuml style options'),
+        ]);
     }
 
     /**
-     * creates the builder
+     * creates the builder.
      *
      * @return BuilderInterface
      */
@@ -78,7 +69,7 @@ abstract class BaseCommand extends Command
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
@@ -87,17 +78,18 @@ abstract class BaseCommand extends Command
         if (!$messages) {
             $input->setOption('debug', true);
             $messages = $this->createBuilder($input)->build();
-            throw new \RuntimeException('Uml Build Error ' . "\n" . join("\n", $messages ? : array()));
+            throw new \RuntimeException('Uml Build Error ' . "\n" . implode("\n", $messages ?: []));
         }
 
         $output->writeln($messages);
     }
 
     /**
-     * creates the builder configuration
+     * creates the builder configuration.
      *
-     * @param  \YumlPhp\Builder\BuilderInterface $builder
-     * @param  InputInterface                    $input
+     * @param \YumlPhp\Builder\BuilderInterface $builder
+     * @param InputInterface                    $input
+     *
      * @return array
      */
     protected function getBuilderConfig(BuilderInterface $builder, InputInterface $input)
@@ -105,13 +97,13 @@ abstract class BaseCommand extends Command
         //scruffy, nofunky, plain
         //dir: LR TB RL
         //scale: 180 120 100 80 60
-        $style = $input->getOption('style') ? : 'plain;dir:TB;scale:80;';
-        $type = $builder->getType();
+        $style = $input->getOption('style') ?: 'plain;dir:TB;scale:80;';
+        $type  = $builder->getType();
 
-        return array(
+        return [
             'url'   => 'http://yuml.me/diagram/' . $style . '/' . $type . '/',
             'debug' => $input->getOption('debug'),
-            'style' => $input->getOption('style') ? : 'plain;dir:LR;scale:80;'
-        );
+            'style' => $input->getOption('style') ?: 'plain;dir:LR;scale:80;',
+        ];
     }
 }

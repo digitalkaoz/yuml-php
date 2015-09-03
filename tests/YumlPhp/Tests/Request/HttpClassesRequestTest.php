@@ -1,20 +1,11 @@
 <?php
 
-/*
- * This file is part of yuml-php
- *
- * (c) Robert Schönthal <seroscho@googlemail.com>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace YumlPhp\Tests\Request;
 
 use YumlPhp\Request\Http\ClassesRequest;
 
 /**
- * FileRequestTest
+ * FileRequestTest.
  *
  * @author Robert Schönthal <seroscho@googlemail.com>
  *
@@ -27,7 +18,7 @@ class HttpClassesRequestTest extends \PHPUnit_Framework_TestCase
         $request = new ClassesRequest();
         $request->setPath(__DIR__ . '/../Fixtures');
 
-        $this->assertEquals(array(
+        $this->assertEquals([
             '[<<YumlPhp/Tests/Fixtures/BarInterface>>{bg:orange}]',
             '[<<YumlPhp/Tests/Fixtures/BarInterface>>{bg:orange}]^-.-[<<YumlPhp/Tests/Fixtures/BarWithInterface>>{bg:orange}]',
             '[<<YumlPhp/Tests/Fixtures/BazzInterface>>{bg:orange}]',
@@ -37,7 +28,7 @@ class HttpClassesRequestTest extends \PHPUnit_Framework_TestCase
             '[YumlPhp/Tests/Fixtures/Bar]',
             '[YumlPhp/Tests/Fixtures/Bazz]',
             '[YumlPhp/Tests/Fixtures/Bazz]^[<<YumlPhp/Tests/Fixtures/BazzInterface>>{bg:orange}]^-.-[<<YumlPhp/Tests/Fixtures/FooBazzWithInterface>>{bg:orange}]',
-            '[YumlPhp/Tests/Fixtures/Bazz]^[YumlPhp/Tests/Fixtures/Foo]'
-        ), array_values($request->build()));
+            '[YumlPhp/Tests/Fixtures/Bazz]^[YumlPhp/Tests/Fixtures/Foo]',
+        ], array_values($request->build()));
     }
 }

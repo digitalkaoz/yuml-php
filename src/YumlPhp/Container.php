@@ -2,9 +2,10 @@
 
 namespace YumlPhp;
 
-use \Pimple\Container as Pimple;
+use Pimple\Container as Pimple;
+
 /**
- * Container
+ * Container.
  *
  * @author Robert Schönthal <seroscho@googlemail.com>
  * @codeCoverageIgnore
@@ -18,7 +19,7 @@ class Container extends Pimple
 
     private function buildContainer()
     {
-        $services = array();
+        $services = [];
 
         $this->addCommonServices($services);
         $this->addBuilders($services);
@@ -97,5 +98,4 @@ class Container extends Pimple
             return new \YumlPhp\Command\UseCaseCommand($container['builder.use_case.http'], $container['builder.use_case.console']);
         };
     }
-
 }

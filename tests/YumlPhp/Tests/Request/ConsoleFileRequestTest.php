@@ -5,7 +5,7 @@ namespace YumlPhp\Tests\Request;
 use YumlPhp\Request\Console\FileRequest;
 
 /**
- * FileRequestTest
+ * FileRequestTest.
  *
  * @author Robert Schönthal <seroscho@googlemail.com>
  *
@@ -20,12 +20,12 @@ class ConsoleFileRequestTest extends \PHPUnit_Framework_TestCase
         $request = new FileRequest();
         $request->setPath($file);
 
-        $this->assertEquals(array(
-            "(start)->|a|",
+        $this->assertEquals([
+            '(start)->|a|',
             "\n\n|a|->(Make Coffee)->|b|",
             "\n\n|a|->(Make Breakfast)->|b|",
             "\n\n|b|-><c>[want more coffee]->(Make Coffee)",
-            "\n\n<c>[satisfied]->(end)"
-        ), $request->build());
+            "\n\n<c>[satisfied]->(end)",
+        ], $request->build());
     }
 }

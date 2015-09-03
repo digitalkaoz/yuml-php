@@ -6,18 +6,18 @@ use TokenReflection\IReflectionClass;
 use YumlPhp\Request\ClassesRequest as BaseRequest;
 
 /**
- * HttpClassesRequest
+ * HttpClassesRequest.
  *
  * @author Robert Schönthal <seroscho@gmail.com>
  */
 class ClassesRequest extends BaseRequest
 {
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function build()
     {
-        $request = array();
+        $request = [];
         foreach ($this->getClasses() as $class) {
             $this->addClass($class, $request);
             $this->addAssociations($class, $request);
@@ -36,13 +36,13 @@ class ClassesRequest extends BaseRequest
     {
         list($prefix, $suffix) = $this->determinePrefixAndSuffix($class);
 
-        $parent = $this->buildParent($class, '[', ']^');
+        $parent     = $this->buildParent($class, '[', ']^');
         $interfaces = $this->buildInterfaces($class, '<<', '>>{bg:orange}]^-.-[');
-        $props = $this->buildProperties($class);
-        $methods = $this->buildMethods($class);
-        $pattern = $this->determinePattern($methods, $props);
+        $props      = $this->buildProperties($class);
+        $methods    = $this->buildMethods($class);
+        $pattern    = $this->determinePattern($methods, $props);
 
-        $line = sprintf($pattern, $parent, join(';', $interfaces), $this->buildName($class, $prefix, $suffix), join(';', $props), join(';', $methods));
+        $line = sprintf($pattern, $parent, implode(';', $interfaces), $this->buildName($class, $prefix, $suffix), implode(';', $props), implode(';', $methods));
 
         if ($class->isInterface()) {
             array_unshift($request, $line);
@@ -57,7 +57,7 @@ class ClassesRequest extends BaseRequest
      */
     private function addAssociations(IReflectionClass $class, array &$request)
     {
-        $usages = $this->buildUsages($class);
+        $usages                      = $this->buildUsages($class);
         list($ownPrefix, $ownSuffix) = $this->determinePrefixAndSuffix($class);
 
         if ($class->isInterface()) {
@@ -72,7 +72,8 @@ class ClassesRequest extends BaseRequest
     }
 
     /**
-     * @param  IReflectionClass $class
+     * @param IReflectionClass $class
+     *
      * @return array
      */
     protected function determinePrefixAndSuffix(IReflectionClass $class)
@@ -85,24 +86,25 @@ class ClassesRequest extends BaseRequest
             $suffix = '{bg:blue}';
         }
 
-        return array($prefix, $suffix);
+        return [$prefix, $suffix];
     }
 
     /**
-     * @param  array  $methods
-     * @param  array  $props
+     * @param array $methods
+     * @param array $props
+     *
      * @return string
      */
     private function determinePattern(array $methods, array $props)
     {
-        $pattern = "%s[%s%s%s%s]";
+        $pattern = '%s[%s%s%s%s]';
 
         //rebuild pattern
         if (count($methods) || count($props)) {
-            $pattern = "%s[%s%s|%s%s]";
+            $pattern = '%s[%s%s|%s%s]';
         }
         if (count($props) && count($methods)) {
-            $pattern = "%s[%s%s|%s|%s]";
+            $pattern = '%s[%s%s|%s|%s]';
         }
 
         return $pattern;

@@ -1,14 +1,5 @@
 <?php
 
-/*
- * This file is part of yuml-php
- *
- * (c) Robert Schönthal <seroscho@googlemail.com>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace YumlPhp\Tests\Builder;
 
 use Buzz\Browser;
@@ -51,22 +42,22 @@ class HttpBuilderTest extends \PHPUnit_Framework_TestCase
         $this->browser->expects($this->atLeastOnce())->method('post')->will($this->returnValue($response));
 
         $result = $this->builder
-            ->configure(array(
+            ->configure([
                 'url'   => 'http://lolcathost',
-                'debug' => false
-            ))
+                'debug' => false,
+            ])
             ->setPath(sys_get_temp_dir())
             ->build();
 
         $this->assertInternalType('array', $result);
         $this->assertGreaterThan(0, count($result));
 
-        $this->assertEquals(array(
+        $this->assertEquals([
             '<info>PNG</info> http://yuml.me/foo',
             '<info>URL</info> http://yuml.me/edit/foo',
             '<info>PDF</info> http://yuml.me/foo',
             '<info>JSON</info> http://yuml.me/foo',
-            '<info>SVG</info> http://yuml.me/foo'
-        ), $result);
+            '<info>SVG</info> http://yuml.me/foo',
+        ], $result);
     }
 }

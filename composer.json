@@ -4,25 +4,25 @@
     "description":  "a PHP Adapter for http://yuml.me",
     "type":         "library",
     "license":      "MIT",
+    "minimum-stability": "dev",
+    "prefer-stable": true,
 
     "authors": [
         {
             "name":     "Robert Schönthal",
-            "email":    "seroscho@googlemail.com",
+            "email":    "robert.schoenthal@gmail.com",
             "homepage": "http://digitalkaoz.net"
         }
     ],
 
     "require": {
-        "ext-tokenizer":                        "*",
-        "pimple/pimple":                        "@stable",
-        "symfony/console":                      "@stable",
+        "pimple/pimple":                        "~3.0",
+        "symfony/console":                      "~2.3",
         "kriswallsmith/buzz":                   "@stable",
-        "andrewsville/php-token-reflection":    "dev-develop@dev"
+        "roave/better-reflection":              "dev-master"
     },
-
-    "require-dev" : {
-        "kherge/box": "@stable"
+    "require-dev": {
+        "phpunit/phpunit": "~4"
     },
 
     "autoload": {
@@ -36,13 +36,6 @@
             "YumlPhp\\Tests\\Integration\\": "tests/Integration"
         }
     },
-
-    "repositories" : [
-        {
-            "type" : "vcs",
-            "url" : "https://github.com/digitalkaoz/PHP-Token-Reflection"
-        }
-    ],
 
 
     "bin": ["bin/yuml-php"]

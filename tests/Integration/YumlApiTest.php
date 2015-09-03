@@ -25,8 +25,8 @@ class YumlApiTest extends \PHPUnit_Framework_TestCase
 
         $b = new Browser();
         foreach ($result as $message) {
-            $url = explode(' ', $message);
-            $response = $b->get($url[1]);
+            $url         = explode(' ', $message);
+            $response    = $b->get($url[1]);
             $contentType = null;
 
             switch ($url[0]) {
@@ -52,19 +52,19 @@ class YumlApiTest extends \PHPUnit_Framework_TestCase
 
     public function fileProvider()
     {
-        return array(
-            array(new HttpBuilder(new FileRequest(), new Browser(), 'activity'), __DIR__ . '/../YumlPhp/Tests/Fixtures/activity.txt', array(
+        return [
+            [new HttpBuilder(new FileRequest(), new Browser(), 'activity'), __DIR__ . '/../YumlPhp/Tests/Fixtures/activity.txt', [
                 'url'   => 'http://yuml.me/diagram/plain;dir:TB/activity/',
-                'debug' => false
-            )),
-            array(new HttpBuilder(new FileRequest(), new Browser(), 'usecase'), __DIR__ . '/../YumlPhp/Tests/Fixtures/use-case.txt',array(
+                'debug' => false,
+            ]],
+            [new HttpBuilder(new FileRequest(), new Browser(), 'usecase'), __DIR__ . '/../YumlPhp/Tests/Fixtures/use-case.txt',[
                 'url'   => 'http://yuml.me/diagram/plain;dir:TB/usecase/',
-                'debug' => false
-            )),
-            array(new HttpBuilder(new ClassesRequest(), new Browser(), 'classes'), __DIR__ . '/../YumlPhp/Tests/Fixtures', array(
-                'url'            => 'http://yuml.me/diagram/plain;dir:TB/class/',
-                'debug' => false
-            ))
-        );
+                'debug' => false,
+            ]],
+            [new HttpBuilder(new ClassesRequest(), new Browser(), 'classes'), __DIR__ . '/../YumlPhp/Tests/Fixtures', [
+                'url'   => 'http://yuml.me/diagram/plain;dir:TB/class/',
+                'debug' => false,
+            ]],
+        ];
     }
 }

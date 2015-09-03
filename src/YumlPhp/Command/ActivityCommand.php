@@ -1,25 +1,16 @@
 <?php
 
-/*
- * This file is part of yuml-php
- *
- * (c) Robert Schönthal <seroscho@googlemail.com>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace YumlPhp\Command;
 
 /**
- * this command generates an activity diagram
+ * this command generates an activity diagram.
  *
  * @author Robert Schönthal <seroscho@googlemail.com>
  */
 class ActivityCommand extends BaseCommand
 {
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     protected function configure()
     {

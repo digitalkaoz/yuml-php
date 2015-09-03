@@ -5,7 +5,6 @@ namespace YumlPhp\Tests\Fixtures;
 use Symfony\Component\Console\Input\StringInput;
 
 /**
- *
  * @author caziel
  */
 class BarWithExternal extends StringInput

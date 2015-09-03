@@ -1,14 +1,5 @@
 <?php
 
-/*
- * This file is part of yuml-php
- *
- * (c) Robert Schönthal <seroscho@googlemail.com>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace YumlPhp\Tests\Builder;
 
 use YumlPhp\Builder\BuilderInterface;
@@ -40,20 +31,20 @@ class ConsoleBuilderTest extends \PHPUnit_Framework_TestCase
             ->build();
 
         $expected = file_get_contents($fixture);
-        $current = str_replace(array('<question>','<comment>', '<info>', '</comment>', '</question>', '</info>'), '', str_replace("\n\n", "\n", $result));
+        $current  = str_replace(['<question>', '<comment>', '<info>', '</comment>', '</question>', '</info>'], '', str_replace("\n\n", "\n", $result));
 
         $this->assertEquals($expected, $current);
     }
 
     public function fileProvider()
     {
-        return array(
-            array(new ConsoleBuilder(new FileRequest(), 'activity'), __DIR__ . '/../Fixtures/activity.txt', __DIR__ . '/../Fixtures/activity.txt', 'activity', array()),
-            array(new ConsoleBuilder(new FileRequest(), 'usecase'), __DIR__ . '/../Fixtures/use-case.txt', __DIR__ . '/../Fixtures/use-case.txt', 'usecase', array()),
-            array(new ConsoleBuilder(new ClassesRequest(), 'classes'), __DIR__ . '/../Fixtures', __DIR__ . '/../Fixtures/classes.txt', 'classes', array()),
-            array(new ConsoleBuilder(new ClassesRequest(), 'classes'), __DIR__ . '/../Fixtures', __DIR__ . '/../Fixtures/classes-props.txt', 'classes', array('withProperties' => true)),
-            array(new ConsoleBuilder(new ClassesRequest(), 'classes'), __DIR__ . '/../Fixtures', __DIR__ . '/../Fixtures/classes-methods.txt', 'classes', array('withMethods' => true)),
-            array(new ConsoleBuilder(new ClassesRequest(), 'classes'), __DIR__ . '/../Fixtures', __DIR__ . '/../Fixtures/classes-full.txt', 'classes', array('withMethods' => true, 'withProperties' => true, 'debug')),
-        );
+        return [
+            [new ConsoleBuilder(new FileRequest(), 'activity'), __DIR__ . '/../Fixtures/activity.txt', __DIR__ . '/../Fixtures/activity.txt', 'activity', []],
+            [new ConsoleBuilder(new FileRequest(), 'usecase'), __DIR__ . '/../Fixtures/use-case.txt', __DIR__ . '/../Fixtures/use-case.txt', 'usecase', []],
+            [new ConsoleBuilder(new ClassesRequest(), 'classes'), __DIR__ . '/../Fixtures', __DIR__ . '/../Fixtures/classes.txt', 'classes', []],
+            [new ConsoleBuilder(new ClassesRequest(), 'classes'), __DIR__ . '/../Fixtures', __DIR__ . '/../Fixtures/classes-props.txt', 'classes', ['withProperties' => true]],
+            [new ConsoleBuilder(new ClassesRequest(), 'classes'), __DIR__ . '/../Fixtures', __DIR__ . '/../Fixtures/classes-methods.txt', 'classes', ['withMethods' => true]],
+            [new ConsoleBuilder(new ClassesRequest(), 'classes'), __DIR__ . '/../Fixtures', __DIR__ . '/../Fixtures/classes-full.txt', 'classes', ['withMethods' => true, 'withProperties' => true, 'debug']],
+        ];
     }
 }

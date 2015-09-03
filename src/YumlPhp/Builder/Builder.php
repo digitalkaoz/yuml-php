@@ -1,20 +1,11 @@
 <?php
 
-/*
- * This file is part of yuml-php
- *
- * (c) Robert Schönthal <seroscho@googlemail.com>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace YumlPhp\Builder;
 
 use YumlPhp\Request\RequestInterface;
 
 /**
- * Description of Builder
+ * Description of Builder.
  *
  * @author Robert Schönthal <seroscho@googlemail.com>
  */
@@ -25,7 +16,7 @@ abstract class Builder implements BuilderInterface
      */
     protected $inspector;
 
-    protected $path, $request = array(), $configuration = array();
+    protected $path, $request = [], $configuration = [];
     /**
      * @var
      */
@@ -38,11 +29,11 @@ abstract class Builder implements BuilderInterface
     public function __construct(RequestInterface $inspector, $type)
     {
         $this->inspector = $inspector;
-        $this->type = $type;
+        $this->type      = $type;
     }
 
     /**
-     * creates and returns an inspector
+     * creates and returns an inspector.
      *
      * @return RequestInterface
      */
@@ -55,7 +46,7 @@ abstract class Builder implements BuilderInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function configure($config)
     {
@@ -65,7 +56,7 @@ abstract class Builder implements BuilderInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function setPath($path)
     {
@@ -75,7 +66,7 @@ abstract class Builder implements BuilderInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function build($pattern = '*.php')
     {
@@ -85,7 +76,7 @@ abstract class Builder implements BuilderInterface
     }
 
     /**
-     * returns the builder type
+     * returns the builder type.
      *
      * @return string
      */

@@ -1,8 +1,8 @@
 <?php
 
 namespace YumlPhp\Tests\Fixtures;
+
 /**
- *
  * @author caziel
  */
 class Foo extends Bazz
