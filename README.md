@@ -10,7 +10,7 @@ a `php adapater` for [http://yuml.me](http://yuml.me)
 [![Latest Stable Version](https://poser.pugx.org/digitalkaoz/yuml-php/version.svg)](https://packagist.org/packages/digitalkaoz/yuml-php)
 [![Total Downloads](https://poser.pugx.org/digitalkaoz/yuml-php/downloads.svg)](https://packagist.org/packages/digitalkaoz/yuml-php)
 [![License](https://poser.pugx.org/digitalkaoz/yuml-php/license.svg)](https://packagist.org/packages/digitalkaoz/yuml-php)
-[![HHVM Status](http://hhvm.h4cc.de/badge/digitalkaoz/yuml-php.png)](http://hhvm.h4cc.de/package/digitalkaoz/yuml-php)
+[![StyleCI](https://styleci.io/repos/3463559/shield)](https://styleci.io/repos/3463559)
 
 Installation
 ------------
