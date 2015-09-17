@@ -2,7 +2,7 @@
 
 namespace YumlPhp\Request\Console;
 
-use TokenReflection\IReflectionClass;
+use BetterReflection\Reflection\ReflectionClass;
 use YumlPhp\Request\ClassesRequest as BaseRequest;
 
 /**
@@ -27,10 +27,10 @@ class ClassesRequest extends BaseRequest
     }
 
     /**
-     * @param IReflectionClass $class
-     * @param array            $request
+     * @param ReflectionClass $class
+     * @param array           $request
      */
-    private function addClass(IReflectionClass $class, array &$request)
+    private function addClass(ReflectionClass $class, array &$request)
     {
         list($prefix, $suffix) = $this->determinePrefixAndSuffix($class);
         $parent                = $this->buildParent($class, ' ', '');
@@ -39,7 +39,7 @@ class ClassesRequest extends BaseRequest
         $methods               = $this->buildMethods($class, '<info>+</info>', '<question>-</question>');
 
         //build pattern
-        $request[] = sprintf('<info>%s</info><comment>%s</comment>%s', $this->buildName($class, $prefix, $suffix), $parent, ($interfaces ? ' ' . implode(' ', $interfaces) : null));
+        $request[] = sprintf('<info>%s</info><comment>%s</comment>%s', $this->buildName($class->getName(), $prefix, $suffix), $parent, ($interfaces ? ' ' . implode(' ', $interfaces) : null));
 
         if (count($props)) {
             $request[] = sprintf("\t%s", implode(';', $props));

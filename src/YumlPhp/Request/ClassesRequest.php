@@ -2,12 +2,15 @@
 
 namespace YumlPhp\Request;
 
-use TokenReflection\Broker;
-use TokenReflection\Exception\BaseException;
-use TokenReflection\IReflectionClass;
-use TokenReflection\IReflectionMethod;
-use TokenReflection\IReflectionParameter;
-use TokenReflection\IReflectionProperty;
+use BetterReflection\Reflection\ReflectionClass;
+use BetterReflection\Reflection\ReflectionMethod;
+use BetterReflection\Reflection\ReflectionParameter;
+use BetterReflection\Reflection\ReflectionProperty;
+use BetterReflection\Reflector\ClassReflector;
+use BetterReflection\Reflector\Exception\IdentifierNotFound;
+use BetterReflection\SourceLocator\StringSourceLocator;
+use Symfony\Component\Finder\Finder;
+use Symfony\Component\Finder\SplFileInfo;
 
 /**
  * The console application that handles the commands.
@@ -48,65 +51,78 @@ abstract class ClassesRequest implements RequestInterface
     /**
      * reflects given classes.
      *
-     * @return IReflectionClass[]
+     * @return ReflectionClass[]
      */
     protected function getClasses()
     {
-        try {
-            $broker = new Broker(new Broker\Backend\Memory());
-            $broker->processDirectory(realpath($this->path), $this->config['filter']);
-            $classes = $broker->getClasses();
+        $finder = Finder::create()->files()->name('*.php');
 
-            natcasesort($classes);
-
-            return $classes;
-        } catch (BaseException $e) {
-            throw new \RuntimeException($e->getDetail());
+        foreach ($this->config['filter'] as $filter) {
+            $finder->notName($filter);
         }
+
+        $files = $finder->in(realpath($this->path));
+
+        $content = null;
+        foreach ($files as $file) {
+            /* @var SplFileInfo $file */
+            if (!is_null($content)) {
+                $fileContent = str_replace(['<?php', '<?', '?>'], '', $file->getContents());
+            } else {
+                $fileContent = $file->getContents();
+            }
+            $content .= $fileContent;
+        }
+        $locator = new StringSourceLocator($content);
+        $classes = (new ClassReflector($locator))->getAllClasses();
+
+        return $classes;
     }
 
     /**
      * builds the name for a class.
      *
-     * @param IReflectionClass $class
-     * @param string           $prefix
-     * @param string           $suffix
+     * @param string $className
+     * @param string $prefix
+     * @param string $suffix
      *
      * @return string
      */
-    protected function buildName(IReflectionClass $class, $prefix = '<<', $suffix = '>>')
+    protected function buildName($className, $prefix = '<<', $suffix = '>>')
     {
-        return $prefix . $this->prepare($class) . $suffix;
+        return $prefix . $this->prepareClassName($className) . $suffix;
     }
 
     /**
      * builds the parent for a class.
      *
-     * @param IReflectionClass $class
-     * @param string           $prefix
-     * @param string           $suffix
+     * @param ReflectionClass $class
+     * @param string          $prefix
+     * @param string          $suffix
      *
      * @return string
      */
-    protected function buildParent(IReflectionClass $class, $prefix = null, $suffix = null)
+    protected function buildParent(ReflectionClass $class, $prefix = null, $suffix = null)
     {
-        if (!$class->getParentClass()) {
-            return;
+        try {
+            if ($class->getParentClass()) {
+                return $prefix . $this->prepare($class->getParentClass()) . $suffix;
+            }
+        } catch (IdentifierNotFound $e) {
+            return $prefix . $this->prepareClassName($e->getClassName()) . $suffix;
         }
-
-        return $prefix . $this->prepare($class->getParentClass()) . $suffix;
     }
 
     /**
      * collects all properties for current class (only self defined ones).
      *
-     * @param IReflectionClass $class
-     * @param string           $public
-     * @param string           $private
+     * @param ReflectionClass $class
+     * @param string          $public
+     * @param string          $private
      *
      * @return array
      */
-    protected function buildProperties(IReflectionClass $class, $public = '+', $private = '-')
+    protected function buildProperties(ReflectionClass $class, $public = '+', $private = '-')
     {
         $props = [];
 
@@ -114,8 +130,8 @@ abstract class ClassesRequest implements RequestInterface
             return $props;
         }
 
-        foreach ($class->getOwnProperties() as $property) {
-            /* @var IReflectionProperty $property */
+        foreach ($class->getProperties() as $property) {
+            /* @var ReflectionProperty $property */
             $props[] = ($property->isPublic() ? $public : $private) . $property->getName();
         }
 
@@ -127,14 +143,14 @@ abstract class ClassesRequest implements RequestInterface
     /**
      * collects all methods for current class (only self defined ones).
      *
-     * @param IReflectionClass $class
-     * @param string           $public
-     * @param string           $private
-     * @param string           $suffix
+     * @param ReflectionClass $class
+     * @param string          $public
+     * @param string          $private
+     * @param string          $suffix
      *
      * @return array
      */
-    protected function buildMethods(IReflectionClass $class, $public = '+', $private = '-', $suffix = '()')
+    protected function buildMethods(ReflectionClass $class, $public = '+', $private = '-', $suffix = '()')
     {
         $methods = [];
 
@@ -142,8 +158,8 @@ abstract class ClassesRequest implements RequestInterface
             return $methods;
         }
 
-        foreach ($class->getOwnMethods() as $method) {
-            /** @var IReflectionMethod $method */
+        foreach ($class->getImmediateMethods() as $method) {
+            /** @var ReflectionMethod $method */
             if (!$method->isAbstract()) {
                 $methods[] = (!$class->isInterface() ? ($method->isPublic() ? $public : $private) : null) . $method->getName() . $suffix;
             }
@@ -157,19 +173,24 @@ abstract class ClassesRequest implements RequestInterface
     /**
      * extracts usages to other classes.
      *
-     * @param IReflectionClass $class
+     * @param ReflectionClass $class
      *
-     * @return IReflectionClass[]
+     * @return ReflectionClass[]
      */
-    protected function buildUsages(IReflectionClass $class)
+    protected function buildUsages(ReflectionClass $class)
     {
         $usages = [];
-        foreach ($class->getOwnMethods() as $method) {
-            /** @var IReflectionMethod $method */
+        foreach ($class->getImmediateMethods() as $method) {
+            /** @var ReflectionMethod $method */
             foreach ($method->getParameters() as $parameter) {
-                /** @var IReflectionParameter $parameter */
-                if ($parameter->getClass()) {
-                    $usages[$parameter->getClassName()] = $parameter->getClass();
+                /* @var ReflectionParameter $parameter */
+
+                try {
+                    if ($parameter->getClass()) {
+                        $usages[$parameter->getClass()->getName()] = $parameter->getClass()->getName();
+                    }
+                } catch (IdentifierNotFound $e) {
+                    $usages[$e->getClassName()] = $e->getClassName();
                 }
             };
         }
@@ -180,15 +201,21 @@ abstract class ClassesRequest implements RequestInterface
     /**
      * collects all interfaces for current class (only self implemented ones).
      *
-     * @param IReflectionClass $class
-     * @param string           $prefix
-     * @param string           $suffix
+     * @param ReflectionClass $class
+     * @param string          $prefix
+     * @param string          $suffix
      *
      * @return array
      */
-    protected function buildInterfaces(IReflectionClass $class, $prefix = '<<', $suffix = '>>')
+    protected function buildInterfaces(ReflectionClass $class, $prefix = '<<', $suffix = '>>')
     {
-        $interfaces = array_diff($class->getInterfaces(), ($class->getParentClass() ? $class->getParentClass()->getInterfaces() : []));
+        try {
+            $parentInterfaces = $class->getParentClass() ? $class->getParentClass()->getInterfaces() : [];
+        } catch (IdentifierNotFound $e) {
+            $parentInterfaces = [];
+        }
+
+        $interfaces = array_diff($class->getImmediateInterfaces(), $parentInterfaces);
 
         foreach ($interfaces as $key => $interface) {
             $interfaces[$key] = $prefix . $this->prepare($interface) . $suffix;
@@ -202,21 +229,33 @@ abstract class ClassesRequest implements RequestInterface
     /**
      * prepares a class name into its FQDN with namespace if not found in current class namespaces.
      *
-     * @param IReflectionClass $class
+     * @param ReflectionClass $class
      *
      * @return string
      */
-    protected function prepare(IReflectionClass $class)
+    protected function prepare(ReflectionClass $class)
     {
-        return str_replace('\\', '/', $class->getName());
+        return $this->prepareClassName($class->getName());
     }
 
     /**
-     * @param IReflectionClass $class
+     * prepares a class name into its FQDN with namespace if not found in current class namespaces.
+     *
+     * @param string $className
+     *
+     * @return string
+     */
+    protected function prepareClassName($className)
+    {
+        return str_replace('\\', '/', $className);
+    }
+
+    /**
+     * @param ReflectionClass $class
      *
      * @return array
      */
-    protected function determinePrefixAndSuffix(IReflectionClass $class)
+    protected function determinePrefixAndSuffix(ReflectionClass $class)
     {
         $prefix = null;
         $suffix = null;
@@ -230,11 +269,11 @@ abstract class ClassesRequest implements RequestInterface
     }
 
     /**
-     * @param IReflectionClass $class
+     * @param ReflectionClass $class
      *
      * @return bool
      */
-    protected function isInterface(IReflectionClass $class)
+    protected function isInterface(ReflectionClass $class)
     {
         return $class->isInterface() || substr($class->getName(), -strlen('Interface')) === 'Interface';
     }

@@ -2,7 +2,7 @@
 
 namespace YumlPhp\Request\Http;
 
-use TokenReflection\IReflectionClass;
+use BetterReflection\Reflection\ReflectionClass;
 use YumlPhp\Request\ClassesRequest as BaseRequest;
 
 /**
@@ -29,10 +29,10 @@ class ClassesRequest extends BaseRequest
     }
 
     /**
-     * @param IReflectionClass $class
-     * @param array            $request
+     * @param ReflectionClass $class
+     * @param array           $request
      */
-    private function addClass(IReflectionClass $class, array &$request)
+    private function addClass(ReflectionClass $class, array &$request)
     {
         list($prefix, $suffix) = $this->determinePrefixAndSuffix($class);
 
@@ -42,7 +42,7 @@ class ClassesRequest extends BaseRequest
         $methods    = $this->buildMethods($class);
         $pattern    = $this->determinePattern($methods, $props);
 
-        $line = sprintf($pattern, $parent, implode(';', $interfaces), $this->buildName($class, $prefix, $suffix), implode(';', $props), implode(';', $methods));
+        $line = sprintf($pattern, $parent, implode(';', $interfaces), $this->buildName($class->getName(), $prefix, $suffix), implode(';', $props), implode(';', $methods));
 
         if ($class->isInterface()) {
             array_unshift($request, $line);
@@ -52,10 +52,10 @@ class ClassesRequest extends BaseRequest
     }
 
     /**
-     * @param IReflectionClass $class
-     * @param array            $request
+     * @param ReflectionClass $class
+     * @param array           $request
      */
-    private function addAssociations(IReflectionClass $class, array &$request)
+    private function addAssociations(ReflectionClass $class, array &$request)
     {
         $usages                      = $this->buildUsages($class);
         list($ownPrefix, $ownSuffix) = $this->determinePrefixAndSuffix($class);
@@ -65,18 +65,24 @@ class ClassesRequest extends BaseRequest
         }
 
         foreach ($usages as $usage) {
-            list($prefix, $suffix) = $this->determinePrefixAndSuffix($usage);
+            if ($usage instanceof ReflectionClass) {
+                list($prefix, $suffix) = $this->determinePrefixAndSuffix($usage);
+                $usage                 = $usage->getName();
+            } else {
+                $prefix = null;
+                $suffix = '{bg:yellow}';
+            }
 
-            $request[] = sprintf('[%s]-.->[%s]', $this->buildName($class, $ownPrefix, $ownSuffix), $this->buildName($usage, $prefix, $suffix));
+            $request[] = sprintf('[%s]-.->[%s]', $this->buildName($class->getName(), $ownPrefix, $ownSuffix), $this->buildName($usage, $prefix, $suffix));
         }
     }
 
     /**
-     * @param IReflectionClass $class
+     * @param ReflectionClass $class
      *
      * @return array
      */
-    protected function determinePrefixAndSuffix(IReflectionClass $class)
+    protected function determinePrefixAndSuffix(ReflectionClass $class)
     {
         list($prefix, $suffix) = parent::determinePrefixAndSuffix($class);
 
